@@ -2,6 +2,10 @@ import {useState, useEffect} from "react";
 import Modal from "react-modal";
 import search from "./assets/Search.png";
 
+/**
+ * Komponen utama aplikasi.
+ * Merender Header dan ActivityBody sebagai struktur dasar halaman.
+ */
 function App() {
     return (
         <>
@@ -11,6 +15,10 @@ function App() {
     );
 }
 
+/**
+ * Menampilkan header aplikasi dengan judul dan styling latar belakang.
+ * Digunakan sebagai bagian atas halaman.
+ */
 function Header() {
     return (
         <div className="py-8 bg-batumbured">
@@ -21,6 +29,10 @@ function Header() {
     );
 }
 
+/**
+ * Menampilkan tampilan ketika tidak ada aktivitas sama sekali.
+ * Berisi ikon pencarian dan teks "Belum ada Aktivitas".
+ */
 function NoActivties() {
     return (
         <>
@@ -30,6 +42,22 @@ function NoActivties() {
     );
 }
 
+/**
+ * Komponen utama untuk logika aktivitas.
+ *
+ * Fitur yang ditangani:
+ * - Membaca dan menyimpan data ke localStorage.
+ * - Menambah aktivitas baru.
+ * - Menghapus aktivitas dengan modal konfirmasi.
+ * - Mengubah judul aktivitas.
+ * - Mengubah status aktivitas (TODO → IN PROGRESS → DONE).
+ * - Mengelola modal konfirmasi delete.
+ *
+ * State:
+ * - activities: daftar aktivitas.
+ * - showModal: status modal tampil / tidak.
+ * - pendingDeleteId: ID aktivitas yang akan dihapus.
+ */
 function ActivityBody() {
     const STORAGE_KEY = "batumbu.activities";
 
@@ -166,6 +194,12 @@ function ActivityBody() {
     );
 }
 
+/**
+ * Menampilkan judul "Aktivitas" dan tombol untuk menambah aktivitas.
+ *
+ * @param {Object} props
+ * @param {Function} props.addActivities - Fungsi untuk menambah aktivitas baru.
+ */
 function ActivityHeader({addActivities}) {
     return (
         <div className="flex justify-between">
@@ -180,6 +214,15 @@ function ActivityHeader({addActivities}) {
     );
 }
 
+/**
+ * Menampilkan seluruh daftar aktivitas.
+ *
+ * @param {Object} props
+ * @param {Array} props.activities - Daftar aktivitas.
+ * @param {Function} props.onDelete - Handler untuk membuka modal delete.
+ * @param {Function} props.onChangeTitle - Handler untuk update judul.
+ * @param {Function} props.onToggleStatus - Handler untuk ubah status.
+ */
 function ActivityList({activities, onDelete, onChangeTitle, onToggleStatus}) {
     return (
         <>
@@ -196,6 +239,19 @@ function ActivityList({activities, onDelete, onChangeTitle, onToggleStatus}) {
     );
 }
 
+/**
+ * Menampilkan satu item aktivitas lengkap dengan:
+ * - Status + warna status.
+ * - Input judul.
+ * - Tombol delete.
+ * - Tombol toggle status.
+ *
+ * @param {Object} props
+ * @param {Object} props.activity - Objek aktivitas.
+ * @param {Function} props.onDelete - Handler membuka modal delete.
+ * @param {Function} props.onChangeTitle - Handler ubah judul.
+ * @param {Function} props.onToggleStatus - Handler ubah status.
+ */
 function Activity({activity, onDelete, onChangeTitle, onToggleStatus}) {
     const STATUS_CLASS = {
         TODO: "text-gray-500",

@@ -142,7 +142,7 @@ function ActivityBody() {
                     isOpen={showModal}
                     onRequestClose={closeModal}
                     shouldCloseOnOverlayClick={true}
-                    style={{modalStyle}}
+                    style={modalStyle}
                 >
                     <div className="bg-white rounded-xl p-6 w-full max-w-md">
                         <p className="text-center font-bold text-2xl">

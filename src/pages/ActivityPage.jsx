@@ -1,21 +1,20 @@
-import {useState, useEffect} from "react";
-import Modal from "react-modal";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import Header from "../components/Header.jsx";
 import NoActivties from "../components/NoActivities.jsx";
-import {modalStyle} from "../components/modalStyle.js";
+import ConfirmModal from "../components/CornfirmModal.jsx";
 
 /**
  * Komponen utama aplikasi.
  * Merender Header dan ActivityBody sebagai struktur dasar halaman.
  */
 function ActivityPage() {
-    const STORAGE_KEY = "batumbu.login"
+    const LOGIN_KEY = "batumbu.login"
     const navigate = useNavigate();
 
     const [account, setAccount] = useState(() => {
         try {
-            const raw = localStorage.getItem(STORAGE_KEY);
+            const raw = localStorage.getItem(LOGIN_KEY);
             return raw ? JSON.parse(raw) : "";
         } catch (e) {
             console.error("Failed to parse login from storage", e);
@@ -25,16 +24,15 @@ function ActivityPage() {
 
     useEffect(() => {
         if (!account) navigate("/")
-    }, [account]);
+    }, [account, navigate]);
 
     return (
         <>
-            <Header setAccount={setAccount} STORAGE_KEY={STORAGE_KEY}/>
+            <Header setAccount={setAccount} LOGIN_KEY={LOGIN_KEY}/>
             <ActivityBody account={account}/>
         </>
     );
 }
-
 
 
 /**
@@ -118,7 +116,7 @@ function ActivityBody({account}) {
         } catch (e) {
             console.error("Failed to save activities to localStorage", e);
         }
-    }, [activities]);
+    }, [STORAGE_KEY, activities]);
 
 
     return (
@@ -134,34 +132,15 @@ function ActivityBody({account}) {
                 />}
 
 
-                <Modal
-                    isOpen={showModal}
-                    onRequestClose={closeModal}
-                    shouldCloseOnOverlayClick={true}
-                    style={modalStyle}
-                >
-                    <div className="bg-white rounded-xl p-6 w-full max-w-md">
-                        <p className="text-center font-bold text-2xl">
-                            Apakah mau delete "{pendingTitle}"?
-                        </p>
+                <ConfirmModal
+                    open={showModal}
+                    onClose={closeModal}
+                    title={`Apakah mau delete "${pendingTitle}"?`}
+                    onConfirm={() => removeActivities(pendingDeleteId)}
+                    confirmLabel="Delete"
+                    cancelLabel="Cancel"
+                />
 
-                        <div className="flex justify-center space-x-6 mt-6">
-                            <button
-                                className="bg-batumbured rounded-xl text-white font-bold opacity-80 hover:opacity-100 cursor-pointer px-6 py-2"
-                                onClick={() => removeActivities(pendingDeleteId)}
-                            >
-                                Delete
-                            </button>
-
-                            <button
-                                className="bg-gray-300 rounded-xl font-bold opacity-80 hover:opacity-100 cursor-pointer px-6 py-2"
-                                onClick={closeModal}
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                    </div>
-                </Modal>
             </div>
         </div>
     );
@@ -233,7 +212,6 @@ function Activity({activity, onDelete, onChangeTitle, onToggleStatus}) {
 
     return (
         <div
-            // clickable row — navigate to sub-activity page
             className={`bg-white mb-2 rounded-xl p-4 flex justify-between items-center w-full cursor-pointer opacity-80 hover:opacity-100 ${divBorder}`}
             role="group"
             onClick={() => navigate(`/activities/${id}`)}

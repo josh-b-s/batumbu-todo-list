@@ -4,7 +4,7 @@ import show from "../assets/show.png";
 import hide from "../assets/hide.png";
 
 function LoginPage() {
-    const STORAGE_KEY = "batumbu.login";
+    const LOGIN_KEY = "batumbu.login";
     const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
@@ -16,7 +16,7 @@ function LoginPage() {
 
     const [account, setAccount] = useState(() => {
         try {
-            const raw = localStorage.getItem(STORAGE_KEY);
+            const raw = localStorage.getItem(LOGIN_KEY);
             return raw ? JSON.parse(raw) : "";
         } catch (e) {
             console.error("Failed to parse login from storage", e);
@@ -68,7 +68,7 @@ function LoginPage() {
 
         setAccount(email.trim());
         try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(email.trim()));
+            localStorage.setItem(LOGIN_KEY, JSON.stringify(email.trim()));
         } catch (err) {
             console.error("Failed to save login state", err);
         }
@@ -76,7 +76,7 @@ function LoginPage() {
 
     useEffect(() => {
         if (account) navigate("/activities");
-    }, [account]);
+    }, [account, navigate]);
 
     return (
         <div className="flex items-center justify-center h-screen">

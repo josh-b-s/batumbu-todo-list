@@ -4,6 +4,11 @@ import show from "../assets/show.png";
 import hide from "../assets/hide.png";
 
 function LoginPage() {
+    const accounts = {
+        "test1@gmail.com": "pass",
+        "test2@gmail.com": "pass",
+    };
+
     const LOGIN_KEY = "batumbu.login";
     const navigate = useNavigate();
 
@@ -12,7 +17,6 @@ function LoginPage() {
     const [message, setMessage] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState({email: false, password: false});
-    const [touched, setTouched] = useState({email: false, password: false});
 
     const [account, setAccount] = useState(() => {
         try {
@@ -24,10 +28,6 @@ function LoginPage() {
         }
     });
 
-    const accounts = {
-        "test1@gmail.com": "pass",
-        "test2@gmail.com": "pass",
-    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -40,28 +40,24 @@ function LoginPage() {
 
         if (!emailRe.test(emailTrim)) {
             setErrors((e) => ({...e, email: true}));
-            setTouched((t) => ({...t, email: true}));
             setMessage("Please enter a valid email address (e.g. you@mail.com)");
             return;
         }
 
         if (!accounts[emailTrim]) {
             setErrors((e) => ({...e, email: true}));
-            setTouched((t) => ({...t, email: true}));
             setMessage("Email not registered!");
             return;
         }
 
         if (!password) {
             setErrors((e) => ({...e, password: true}));
-            setTouched((t) => ({...t, password: true}));
             setMessage("Please enter a password!");
             return;
         }
 
         if (accounts[emailTrim] !== password) {
             setErrors((e) => ({...e, password: true}));
-            setTouched((t) => ({...t, password: true}));
             setMessage("Password incorrect!");
             return;
         }
@@ -89,15 +85,11 @@ function LoginPage() {
                     value={email}
                     onChange={(event) => {
                         setEmail(event.target.value);
-                        if (!touched.email) setTouched((t) => ({...t, email: true}));
                         if (errors.email) setErrors((e) => ({...e, email: false}));
                         setMessage("");
                     }}
-                    onBlur={() => {
-                        if (!touched.email) setTouched((t) => ({...t, email: true}));
-                    }}
                     className={`p-1 rounded-md focus:outline-2 w-full border ${
-                        errors.email && touched.email ? "border-red-500 ring-1 ring-red-300" : "border-gray-300"
+                        errors.email ? "border-red-500 ring-1 ring-red-300" : "border-gray-300"
                     }`}
                 />
 
@@ -109,15 +101,11 @@ function LoginPage() {
                         value={password}
                         onChange={(event) => {
                             setPassword(event.target.value);
-                            if (!touched.password) setTouched((t) => ({...t, password: true}));
                             if (errors.password) setErrors((e) => ({...e, password: false}));
                             setMessage("");
                         }}
-                        onBlur={() => {
-                            if (!touched.password) setTouched((t) => ({...t, password: true}));
-                        }}
                         className={`p-1 rounded-md focus:outline-2 w-full pr-10 border ${
-                            errors.password && touched.password ? "border-red-500 ring-1 ring-red-300" : "border-gray-300"
+                            errors.password ? "border-red-500 ring-1 ring-red-300" : "border-gray-300"
                         }`}
                         placeholder=""
                     />

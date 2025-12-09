@@ -246,7 +246,7 @@ function SubActivity({sub, onDelete, onChangeTitle, onchangePriority, onToggleCh
         />
 
         <input
-          className={`${titleClasses} placeholder-black focus:placeholder:opacity-0 flex-1 bg-transparent border-0`}
+          className={`${titleClasses} placeholder-black focus:placeholder:opacity-0 flex-1 bg-transparent border-0 w-0`}
           value={title}
           onChange={(e) => onChangeTitle(id, e.target.value)}
           placeholder="Aktivitas Baru"

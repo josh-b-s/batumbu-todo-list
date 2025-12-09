@@ -19,8 +19,8 @@ function Header({setAccount, LOGIN_KEY}) {
   };
 
   return (
-    <div className="py-8 px-32 bg-batumbured flex flex-row justify-between">
-      <h1 className="text-2xl text-white font-bold">Batumbu Internship Management</h1>
+    <div className="py-8 px-4 sm:px-12 lg:px-32 bg-batumbured flex flex-row justify-between space-x-5">
+      <h1 className="text-xl sm:text-2xl text-white font-bold">Batumbu Internship Management</h1>
 
       <button
         onClick={() => setShowModal(true)}

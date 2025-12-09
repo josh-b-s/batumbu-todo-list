@@ -120,7 +120,7 @@ function ActivityBody({account}) {
 
 
   return (
-    <div className="mt-10 mx-48">
+    <div className="mt-10 mx-4 sm:mx-20 lg:mx-48">
       <ActivityHeader addActivities={addActivities}/>
       <div className="mt-8">
         {activities.length <= 0 && <NoActivties/>}
@@ -154,10 +154,10 @@ function ActivityBody({account}) {
  */
 function ActivityHeader({addActivities}) {
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between space-x-5">
       <h2 className="text-4xl font-bold">Aktivitas</h2>
       <button
-        className="bg-batumbured rounded-full w-12 h-12 text-white font-bold opacity-80 hover:opacity-100 text-2xl cursor-pointer"
+        className="bg-batumbured rounded-full min-w-12 min-h-12 text-white font-bold opacity-80 hover:opacity-100 text-2xl cursor-pointer"
         onClick={addActivities}
       >
         +

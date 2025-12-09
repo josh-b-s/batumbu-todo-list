@@ -145,7 +145,7 @@ function ActivityBody({account, activityId}) {
 
 
   return (
-    <div className="mt-10 mx-48">
+    <div className="mt-10 mx-4 sm:mx-20 lg:mx-48">
       <ActivityHeader addSubActivity={addSubActivity} onBack={() => navigate(-1)}
                       activityTitle={activity?.title}
                       enabled={(activity?.subActivities?.length ?? 0) < 10}
@@ -183,7 +183,7 @@ function ActivityHeader({addSubActivity, onBack, activityTitle, enabled}) {
   const color = enabled ? "bg-batumbured" : "bg-gray-500";
 
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center space-x-5">
       <div className="flex items-center gap-4">
         <button onClick={onBack} className="text-5xl opacity-70 hover:opacity-100 cursor-pointer">
           ←
@@ -192,7 +192,7 @@ function ActivityHeader({addSubActivity, onBack, activityTitle, enabled}) {
       </div>
 
       <button
-        className={`${color} rounded-full w-12 h-12 text-white font-bold opacity-80 hover:opacity-100 text-2xl cursor-pointer`}
+        className={`${color} rounded-full min-w-12 min-h-12 text-white font-bold opacity-80 hover:opacity-100 text-2xl cursor-pointer`}
         onClick={enabled ? addSubActivity : undefined}
       >
         +

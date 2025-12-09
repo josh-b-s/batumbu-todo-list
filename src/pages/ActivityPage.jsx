@@ -155,7 +155,7 @@ function ActivityBody({account}) {
 function ActivityHeader({addActivities}) {
   return (
     <div className="flex justify-between space-x-5">
-      <h2 className="text-4xl font-bold">Aktivitas</h2>
+      <h2 className="text-3xl sm:text-4xl  font-bold">Aktivitas</h2>
       <button
         className="bg-batumbured rounded-full min-w-12 min-h-12 text-white font-bold opacity-80 hover:opacity-100 text-2xl cursor-pointer"
         onClick={addActivities}

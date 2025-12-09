@@ -188,7 +188,7 @@ function ActivityHeader({addSubActivity, onBack, activityTitle, enabled}) {
         <button onClick={onBack} className="text-5xl opacity-70 hover:opacity-100 cursor-pointer">
           ←
         </button>
-        <h2 className="text-4xl font-bold">{activityTitle || "Aktivitas Baru"}</h2>
+        <h2 className="text-3xl sm:text-4xl font-bold max-w-60">{activityTitle || "Aktivitas Baru"}</h2>
       </div>
 
       <button

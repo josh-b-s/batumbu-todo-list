@@ -9,10 +9,6 @@ import {useActivityFilter} from "../contexts/ActivityFilterContext.tsx";
 import {useActivities} from "../contexts/ActivityContext.tsx";
 import {ActivityItem, ActivityStatus} from "../types/activity.ts";
 
-interface ActivityHeaderProps {
-    addActivities: () => void;
-}
-
 interface ActivityListProps {
     activities: ActivityItem[];
 }
@@ -40,50 +36,63 @@ export default function ActivityPage(): JSX.Element {
 function ActivityBody(): JSX.Element {
     const {
         activities,
-        addActivities,
         removeActivities,
         showModal,
         closeModal,
-        pendingDeleteId
+        pendingDeleteId,
+        addActivities
     } = useActivities()
     const pendingActivity =
         activities.find((a) => a.id === pendingDeleteId) ?? null;
     const pendingTitle =
         (pendingActivity?.title.trim() || "") || "Aktivitas Baru";
+    const { statusFilter } = useActivityFilter();
+
+    const filteredActivities = () => {
+        if (statusFilter === "All") return activities;
+        return activities.filter((a) => a.status === statusFilter);
+    }
 
     return (
         <div className="mt-10 mx-4 sm:mx-20 lg:mx-48">
-            <ActivityHeader addActivities={addActivities}/>
+            <ActivityHeader/>
 
             <hr className="mt-4 border-gray-400 sm:border-0"/>
 
             <div className="mt-4">
-                {activities.length <= 0 && <NoActivities/>}
+                {filteredActivities().length <= 0 && <NoActivities/>}
 
-                {activities.length > 0 && (
+                {filteredActivities().length > 0 && (
                     <ActivityList
-                        activities={activities}
+                        activities={filteredActivities()}
                     />
                 )}
+                <button
+                    className="bg-batumbured rounded-xl w-full py-2 text-white font-bold opacity-80 hover:opacity-100 text-2xl cursor-pointer block sm:hidden"
+                    onClick={addActivities}
+                >
+                    + Tambah
+                </button>
 
-                <ConfirmModal
-                    open={showModal}
-                    onClose={closeModal}
-                    title={`Apakah mau delete "${pendingTitle}"?`}
-                    onConfirm={() => {
-                        removeActivities(pendingDeleteId)
-                        closeModal()
-                    }}
-                    confirmLabel="Delete"
-                    cancelLabel="Cancel"
-                />
             </div>
+            <ConfirmModal
+                open={showModal}
+                onClose={closeModal}
+                title={`Apakah mau delete "${pendingTitle}"?`}
+                onConfirm={() => {
+                    removeActivities(pendingDeleteId)
+                    closeModal()
+                }}
+                confirmLabel="Delete"
+                cancelLabel="Cancel"
+            />
         </div>
     );
 }
 
-function ActivityHeader({addActivities}: ActivityHeaderProps): JSX.Element {
+function ActivityHeader(): JSX.Element {
     const {statusFilter, setStatusFilter} = useActivityFilter();
+    const {addActivities} = useActivities();
     return (
         <div className="flex justify-between space-x-5">
             <h2 className="text-3xl sm:text-4xl font-bold">Aktivitas</h2>

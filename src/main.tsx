@@ -10,15 +10,15 @@ import {ActivityFilterProvider} from "./contexts/ActivityFilterContext.tsx";
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
-        <AccountProvider>
-            <ActivityProvider>
-                <ActivityFilterProvider>
+        <ActivityFilterProvider>
+            <AccountProvider>
+                <ActivityProvider>
                     <StyledEngineProvider enableCssLayer>
                         <GlobalStyles styles="@layer theme, base, mui, components, utilities;"/>
                         <App/>
                     </StyledEngineProvider>
-                </ActivityFilterProvider>
-            </ActivityProvider>
-        </AccountProvider>
+                </ActivityProvider>
+            </AccountProvider>
+        </ActivityFilterProvider>
     </StrictMode>
 )

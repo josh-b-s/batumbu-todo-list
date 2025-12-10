@@ -23,16 +23,16 @@ export default function PriorityDropdown({
                                              },
                                              className = "",
                                          }: PriorityDropdownProps): JSX.Element {
+    const [openStyle, setOpenStyle] = React.useState<String>("")
+
     const handleChange = (event: SelectChangeEvent<Priority>) => {
         onChange(event.target.value as Priority);
     };
 
     return (
         <FormControl
-            className={className}
+            className={`${className} ${openStyle}`}
             sx={{
-                minWidth: 100,
-                mr: 2,
                 "& .MuiOutlinedInput-notchedOutline": {border: "none"},
                 "& .MuiSelect-select": {
                     color: "white",
@@ -54,6 +54,8 @@ export default function PriorityDropdown({
                 onChange={handleChange}
                 size="small"
                 displayEmpty
+                onOpen={() => setOpenStyle("opacity-100")}
+                onClose={() =>setOpenStyle("opacity-80")}
                 MenuProps={{
                     PaperProps: {
                         sx: {

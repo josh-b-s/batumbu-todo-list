@@ -2,6 +2,7 @@ import React, {JSX, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import show from "../assets/show.png";
 import hide from "../assets/hide.png";
+import {useAccount} from "../contexts/AccountContext.tsx";
 
 const accounts: Record<string, string> = {
     "test1@gmail.com": "pass",
@@ -9,7 +10,6 @@ const accounts: Record<string, string> = {
 };
 
 export default function LoginPage(): JSX.Element {
-
     const LOGIN_KEY = "batumbu.login";
     const navigate = useNavigate();
 
@@ -22,15 +22,8 @@ export default function LoginPage(): JSX.Element {
         password: false,
     });
 
-    const [account, setAccount] = useState<string>(() => {
-        try {
-            const raw = localStorage.getItem(LOGIN_KEY);
-            return raw ? (JSON.parse(raw) as string) : "";
-        } catch (e) {
-            console.error("Failed to parse login from storage", e);
-            return "";
-        }
-    });
+    // useAccount hook — expect it to provide { account, login }
+    const {account, login} = useAccount();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -64,10 +57,12 @@ export default function LoginPage(): JSX.Element {
             return;
         }
 
-        const trimmed = emailTrim;
-        setAccount(trimmed);
+        // call context login function (context should update state + persist)
+        login(emailTrim);
+
+        // optional: if your context's login doesn't persist, you can persist here.
         try {
-            localStorage.setItem(LOGIN_KEY, JSON.stringify(trimmed));
+            localStorage.setItem(LOGIN_KEY, JSON.stringify(emailTrim));
         } catch (err) {
             console.error("Failed to save login state", err);
         }
@@ -76,18 +71,6 @@ export default function LoginPage(): JSX.Element {
     useEffect(() => {
         if (account) navigate("/activities");
     }, [account, navigate]);
-
-    const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
-        if (errors.email) setErrors((s) => ({...s, email: false}));
-        setMessage("");
-    };
-
-    const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
-        if (errors.password) setErrors((s) => ({...s, password: false}));
-        setMessage("");
-    };
 
     return (
         <div className="flex items-center justify-center h-screen">
@@ -98,7 +81,11 @@ export default function LoginPage(): JSX.Element {
                 <input
                     type="text"
                     value={email}
-                    onChange={onEmailChange}
+                    onChange={(e) => {
+                        setEmail(e.target.value);
+                        if (errors.email) setErrors((s) => ({...s, email: false}));
+                        setMessage("");
+                    }}
                     className={`p-1 rounded-md focus:outline-2 w-full border ${
                         errors.email ? "border-red-500 ring-1 ring-red-300" : "border-gray-300"
                     }`}
@@ -110,7 +97,11 @@ export default function LoginPage(): JSX.Element {
                     <input
                         type={showPassword ? "text" : "password"}
                         value={password}
-                        onChange={onPasswordChange}
+                        onChange={(e) => {
+                            setPassword(e.target.value);
+                            if (errors.password) setErrors((s) => ({...s, password: false}));
+                            setMessage("");
+                        }}
                         className={`p-1 rounded-md focus:outline-2 w-full pr-10 border ${
                             errors.password ? "border-red-500 ring-1 ring-red-300" : "border-gray-300"
                         }`}

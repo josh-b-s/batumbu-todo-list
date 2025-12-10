@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import NoActivities from "../components/NoActivities";
 import PriorityDropdown from "../components/PriorityDropdown";
 import ConfirmModal from "../components/ConfirmModal";
+import {useAccount} from "../contexts/AccountContext.tsx";
 
 type Priority = "Low" | "Medium" | "High" | "Urgent";
 
@@ -22,19 +23,9 @@ interface ActivityItem {
 }
 
 export default function SubActivityPage(): JSX.Element {
-    const LOGIN_KEY = "batumbu.login";
     const navigate = useNavigate();
     const {id: activityId} = useParams<{ id: string }>();
-
-    const [account, setAccount] = useState<string>(() => {
-        try {
-            const raw = localStorage.getItem(LOGIN_KEY);
-            return raw ? (JSON.parse(raw) as string) : "";
-        } catch (e) {
-            console.error("Failed to parse login from storage", e);
-            return "";
-        }
-    });
+    const {account} = useAccount()
 
     useEffect(() => {
         if (!account) navigate("/");
@@ -42,7 +33,7 @@ export default function SubActivityPage(): JSX.Element {
 
     return (
         <>
-            <Header setAccount={setAccount} LOGIN_KEY={LOGIN_KEY}/>
+            <Header/>
             <ActivityBody account={account} activityId={activityId ?? ""}/>
         </>
     );
@@ -284,9 +275,9 @@ function SubActivity({
                 />
             </div>
 
-            <div className="space-x-2 flex items-center">
+            <div className="flex items-center">
                 <PriorityDropdown value={priority} onChange={(newP) => onchangePriority(id, newP)}
-                                  className={`${styles.bg} rounded-xl`}/>
+                                  className={`${styles.bg} rounded-xl mr-2 opacity-80 hover:opacity-100`}/>
 
                 <button className="text-gray-500 cursor-pointer hover:text-gray-900 hover:underline"
                         onClick={() => onDelete(id)}>

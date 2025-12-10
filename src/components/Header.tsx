@@ -1,5 +1,6 @@
 import React, {JSX, useState} from "react";
 import ConfirmModal from "./ConfirmModal";
+import {useAccount} from "../contexts/AccountContext.tsx";
 
 /**
  * Props untuk Header
@@ -13,18 +14,9 @@ interface HeaderProps {
  * Menampilkan header aplikasi dengan judul dan styling latar belakang.
  * Digunakan sebagai bagian atas halaman.
  */
-export default function Header({setAccount, LOGIN_KEY}: HeaderProps): JSX.Element {
+export default function Header(): JSX.Element {
     const [showModal, setShowModal] = useState<boolean>(false);
-
-    const logout = () => {
-        setAccount("");
-        try {
-            localStorage.removeItem(LOGIN_KEY);
-        } catch (err) {
-            console.error("Failed to remove login state", err);
-        }
-        setShowModal(false);
-    };
+    const {logout} = useAccount();
 
     return (
         <div className="py-8 px-4 sm:px-12 lg:px-32 bg-batumbured flex flex-row justify-between space-x-5">

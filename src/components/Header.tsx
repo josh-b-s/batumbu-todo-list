@@ -1,6 +1,7 @@
 import React, {JSX, useState} from "react";
 import ConfirmModal from "./ConfirmModal";
 import {useAccount} from "../contexts/AccountContext.tsx";
+import AccountDropdown from "./AccountDropdown.tsx";
 /**
  * Menampilkan header aplikasi dengan judul dan styling latar belakang.
  * Digunakan sebagai bagian atas halaman.
@@ -16,10 +17,12 @@ export default function Header(): JSX.Element {
 
             <button
                 onClick={() => setShowModal(true)}
-                className="bg-white rounded-xl font-bold opacity-80 hover:opacity-100 cursor-pointer px-4 py-2"
+                className="bg-white rounded-xl font-bold opacity-80 hover:opacity-100 cursor-pointer px-4 py-2 hidden sm:block"
             >
                 Log out
             </button>
+
+            <AccountDropdown className="hover:opacity-100 cursor-pointer block sm:hidden"/>
 
             <ConfirmModal
                 open={showModal}

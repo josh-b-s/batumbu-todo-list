@@ -46,7 +46,7 @@ function ActivityBody(): JSX.Element {
         activities.find((a) => a.id === pendingDeleteId) ?? null;
     const pendingTitle =
         (pendingActivity?.title.trim() || "") || "Aktivitas Baru";
-    const { statusFilter } = useActivityFilter();
+    const {statusFilter} = useActivityFilter();
 
     const filteredActivities = () => {
         if (statusFilter === "All") return activities;

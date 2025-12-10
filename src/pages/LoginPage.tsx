@@ -10,20 +10,16 @@ const accounts: Record<string, string> = {
 };
 
 export default function LoginPage(): JSX.Element {
-    const LOGIN_KEY = "batumbu.login";
     const navigate = useNavigate();
-
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [message, setMessage] = useState<string>("");
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const {account, login} = useAccount();
     const [errors, setErrors] = useState<{ email: boolean; password: boolean }>({
         email: false,
         password: false,
     });
-
-    // useAccount hook — expect it to provide { account, login }
-    const {account, login} = useAccount();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -57,15 +53,7 @@ export default function LoginPage(): JSX.Element {
             return;
         }
 
-        // call context login function (context should update state + persist)
         login(emailTrim);
-
-        // optional: if your context's login doesn't persist, you can persist here.
-        try {
-            localStorage.setItem(LOGIN_KEY, JSON.stringify(emailTrim));
-        } catch (err) {
-            console.error("Failed to save login state", err);
-        }
     };
 
     useEffect(() => {
@@ -73,10 +61,10 @@ export default function LoginPage(): JSX.Element {
     }, [account, navigate]);
 
     return (
-        <div className="flex items-center justify-center h-screen">
-            <form onSubmit={handleSubmit} className="p-7 w-100 bg-white rounded-xl shadow-2xl space-y-4">
+        <div className="flex items-center justify-center h-screen bg-white sm:bg-transparent">
+            <form onSubmit={handleSubmit} className="p-7 bg-white space-y-4 w-full sm:w-100 sm:rounded-xl sm:shadow-2xl flex flex-col items-center">
                 <h1 className="font-bold text-center text-2xl">Batumbu Internship Management</h1>
-
+                <div className={"w-full space-y-3"}>
                 <label>Email</label>
                 <input
                     type="text"
@@ -121,11 +109,11 @@ export default function LoginPage(): JSX.Element {
                 </div>
 
                 <p className="text-center text-red-800">{message}</p>
-
+        </div>
                 <input
                     type="submit"
                     value="Login"
-                    className="bg-batumbured rounded-xl text-white font-bold opacity-80 hover:opacity-100 cursor-pointer w-full py-2"
+                    className="bg-batumbured rounded-xl text-white font-bold opacity-80 hover:opacity-100 cursor-pointer w-75 sm:w-full py-2"
                 />
             </form>
         </div>

@@ -1,5 +1,5 @@
-import React, { JSX } from "react";
-import { FormControl, MenuItem, Select, SelectChangeEvent, Box } from "@mui/material";
+import React, {JSX} from "react";
+import {Box, FormControl, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import FilterIcon from "@mui/icons-material/FilterAlt";
 
 type Status = "All" | "TODO" | "IN PROGRESS" | "DONE" | "PENDING" | "DECLINED";
@@ -13,7 +13,8 @@ interface StatusDropdownProps {
 
 export default function StatusDropdown({
                                            value = "All",
-                                           onChange = () => {},
+                                           onChange = () => {
+                                           },
                                            className = "",
                                            filter = false,
                                        }: StatusDropdownProps): JSX.Element {
@@ -29,7 +30,7 @@ export default function StatusDropdown({
 
     const renderIcon = () => {
         if (filter === true) {
-            return <FilterIcon sx={{ fontSize: 18, opacity: 0.9 }} />;
+            return <FilterIcon sx={{fontSize: 18, opacity: 0.9}}/>;
         }
         return null;
     };
@@ -40,7 +41,7 @@ export default function StatusDropdown({
             onClick={stop}
             onMouseDown={stop}
             sx={{
-                "& .MuiOutlinedInput-notchedOutline": { border: "none" },
+                "& .MuiOutlinedInput-notchedOutline": {border: "none"},
                 "& .MuiSelect-select": {
                     color: "white",
                     fontWeight: 700,
@@ -48,8 +49,8 @@ export default function StatusDropdown({
                     alignItems: "center",
                     gap: 1,
                 },
-                "& .MuiSvgIcon-root": { color: "white" },
-                "& .MuiOutlinedInput-root": { borderRadius: "14px" }
+                "& .MuiSvgIcon-root": {color: "white"},
+                "& .MuiOutlinedInput-root": {borderRadius: "14px"}
             }}
         >
             <Select
@@ -59,14 +60,14 @@ export default function StatusDropdown({
                 onMouseDown={stop}
                 displayEmpty
                 onOpen={() => setOpenStyle("opacity-100")}
-                onClose={() =>setOpenStyle("opacity-80")}
-                sx={{ borderRadius: "14px", height: "3rem" }}
+                onClose={() => setOpenStyle("opacity-80")}
+                sx={{borderRadius: "14px", height: "3rem"}}
                 MenuProps={{
                     PaperProps: {
                         sx: {
                             borderRadius: 3,
                             bgcolor: "white",
-                            "& .MuiMenuItem-root": { borderRadius: 2, mx: 1, my: 0.5 },
+                            "& .MuiMenuItem-root": {borderRadius: 2, mx: 1, my: 0.5},
                         },
                         onMouseDown: stop,
                         onClick: stop,
@@ -79,8 +80,8 @@ export default function StatusDropdown({
                     </Box>
                 )}
             >
-                {filter ? <MenuItem value="All">All</MenuItem>: null }
-                <MenuItem value="TODO">TODO</MenuItem>
+                {filter ? <MenuItem value="All">All</MenuItem> : null}
+                <MenuItem value="TODO">{"TODO"}</MenuItem>
                 <MenuItem value="IN PROGRESS">IN PROGRESS</MenuItem>
                 <MenuItem value="DONE">DONE</MenuItem>
                 <MenuItem value="PENDING">PENDING</MenuItem>

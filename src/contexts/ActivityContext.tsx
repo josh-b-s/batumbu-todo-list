@@ -1,22 +1,27 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
-import type { ActivityItem } from "../types/activity"; // adjust path/type
-import { useAccount } from "./AccountContext";
+import React, {createContext, useContext, useEffect, useState} from "react";
+import type {ActivityItem, ActivityStatus} from "../types/activity"; // adjust path/type
+import {useAccount} from "./AccountContext";
 
 interface ActivityContextValue {
     activities: ActivityItem[];
     setActivities: React.Dispatch<React.SetStateAction<ActivityItem[]>>;
-    reload: () => void;
+    addActivities: () => void;
+    removeActivities: (id: string | null) => void;
+    updateTitle: (id: string, newTitle: string) => void
+    changeStatus: (id: string, newStatus: ActivityStatus) => void;
+    openDeleteModal: (id: string) => void
+    closeModal: () => void
+    showModal: boolean
+    pendingDeleteId: string | null;
 }
 
 const ActivityContext = createContext<ActivityContextValue | undefined>(undefined);
 
-export function ActivityProvider({ children }: { children: React.ReactNode }) {
-    const { account, ready } = useAccount();
-    const STORAGE_KEY = account ? `batumbu.${account}` : null;
+export function ActivityProvider({children}: { children: React.ReactNode }) {
+    const {account} = useAccount();
+    const STORAGE_KEY = account ? `batumbu.${account}` : "";
 
-    // local state — initialize once when account is known
     const [activities, setActivities] = useState<ActivityItem[]>(() => {
-        // This initialiser runs on first render; if account is null we return [].
         try {
             if (!STORAGE_KEY) return [];
             const raw = localStorage.getItem(STORAGE_KEY);
@@ -27,7 +32,50 @@ export function ActivityProvider({ children }: { children: React.ReactNode }) {
         }
     });
 
-    // persist whenever activities or STORAGE_KEY changes
+    const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
+    const [showModal, setShowModal] = useState<boolean>(false);
+
+    const addActivities = () => {
+        setActivities((prev) => [
+            ...prev,
+            {
+                id: crypto.randomUUID(),
+                title: "",
+                status: "TODO",
+                subActivities: [],
+            },
+        ]);
+    };
+
+    const removeActivities = (id: string | null) => {
+        if (!id) return;
+        setActivities((prev) => prev.filter((activity) => activity.id !== id));
+    };
+
+    const updateTitle = (id: string, newTitle: string) => {
+        setActivities((prev) =>
+            prev.map((a) => (a.id === id ? {...a, title: newTitle} : a))
+        );
+    };
+
+    const changeStatus = (id: string, newStatus: ActivityStatus) => {
+        setActivities((prev) =>
+            prev.map((a) =>
+                a.id === id ? {...a, status: newStatus} : a
+            )
+        );
+    };
+
+    const openDeleteModal = (id: string) => {
+        setPendingDeleteId(id);
+        setShowModal(true);
+    };
+
+    const closeModal = () => {
+        setPendingDeleteId(null);
+        setShowModal(false);
+    };
+
     useEffect(() => {
         if (!STORAGE_KEY) return;
         try {
@@ -35,9 +83,8 @@ export function ActivityProvider({ children }: { children: React.ReactNode }) {
         } catch (e) {
             console.error("Failed to save activities to localStorage", e);
         }
-    }, [STORAGE_KEY, activities]);
+    }, [activities]);
 
-    // If account changes (e.g. logout/login) we should reload activities for the new account
     useEffect(() => {
         if (!STORAGE_KEY) {
             setActivities([]);
@@ -50,20 +97,22 @@ export function ActivityProvider({ children }: { children: React.ReactNode }) {
             console.error("Failed to load activities after account change", e);
             setActivities([]);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [STORAGE_KEY, ready]); // run when account (STORAGE_KEY) changes and when rehydrate finished
+    }, [STORAGE_KEY]);
 
-    const reload = () => {
-        if (!STORAGE_KEY) return;
-        try {
-            const raw = localStorage.getItem(STORAGE_KEY);
-            setActivities(raw ? (JSON.parse(raw) as ActivityItem[]) : []);
-        } catch (e) {
-            console.error("Failed to reload activities", e);
-        }
+
+    const value = {
+        activities,
+        setActivities,
+        addActivities,
+        removeActivities,
+        updateTitle,
+        changeStatus,
+        openDeleteModal,
+        closeModal,
+        showModal,
+        pendingDeleteId
     };
 
-    const value = useMemo(() => ({ activities, setActivities, reload }), [activities]);
 
     return <ActivityContext.Provider value={value}>{children}</ActivityContext.Provider>;
 }

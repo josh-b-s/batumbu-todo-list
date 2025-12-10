@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {createContext, useContext, useState} from "react";
 
 const LOGIN_KEY = "batumbu.login";
 
@@ -6,26 +6,21 @@ export interface AccountContextValue {
     account: string;
     login: (accountId: string) => void;
     logout: () => void;
-    ready: boolean;
 }
 
 const AccountContext = createContext<AccountContextValue | undefined>(undefined);
 
-export function AccountProvider({ children }: { children: React.ReactNode }) {
-    const [account, setAccount] = useState<string>("");
-    const [ready, setReady] = useState(false);
-
-    useEffect(() => {
+export function AccountProvider({children}: { children: React.ReactNode }) {
+    const [account, setAccount] = useState(() => {
         try {
             const raw = localStorage.getItem(LOGIN_KEY);
-            setAccount(raw ? (JSON.parse(raw) as string) : "");
+            return raw ? (JSON.parse(raw) as string) : "";
         } catch (e) {
-            console.error("Account rehydrate failed", e);
-            setAccount("");
-        } finally {
-            setReady(true);
+            console.error("Getting account failed", e);
+            return "";
         }
-    }, []);
+    });
+
 
     const login = (accountId: string) => {
         setAccount(accountId);
@@ -46,7 +41,7 @@ export function AccountProvider({ children }: { children: React.ReactNode }) {
     };
 
     return (
-        <AccountContext.Provider value={{ account, login, logout, ready }}>
+        <AccountContext.Provider value={{account, login, logout}}>
             {children}
         </AccountContext.Provider>
     );

@@ -55,7 +55,7 @@ export default function PriorityDropdown({
                 size="small"
                 displayEmpty
                 onOpen={() => setOpenStyle("opacity-100")}
-                onClose={() =>setOpenStyle("opacity-80")}
+                onClose={() => setOpenStyle("opacity-80")}
                 MenuProps={{
                     PaperProps: {
                         sx: {

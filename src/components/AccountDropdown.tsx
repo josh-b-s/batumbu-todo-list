@@ -1,10 +1,8 @@
 import React from "react";
 import {Icon, Menu, MenuItem} from "@mui/material";
-import {useAccount} from "../contexts/AccountContext.tsx";
 import AccountIcon from "@mui/icons-material/AccountCircle";
 
-export default function AccountDropdown({className = ""}: { className?: string }) {
-    const {logout} = useAccount();
+export default function AccountDropdown({className = "", setShowModal}: { className?: string, setShowModal: (show: boolean) => void }) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const openStyle = open ? "opacity-100" : "opacity-80";
@@ -49,7 +47,7 @@ export default function AccountDropdown({className = ""}: { className?: string }
                 onClick={(e) => e.stopPropagation()} // prevent parent clicks
             >
                 <MenuItem onClick={() => {
-                    logout();
+                    setShowModal(true);
                     handleClose();
                 }}>Logout</MenuItem>
             </Menu>

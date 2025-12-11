@@ -23,7 +23,7 @@ export default function Header(): JSX.Element {
                 Log out
             </button>
 
-            <AccountDropdown className="opacity-80 hover:opacity-100 cursor-pointer block sm:hidden"/>
+            <AccountDropdown className="opacity-80 hover:opacity-100 cursor-pointer block sm:hidden" setShowModal={setShowModal}/>
 
             <ConfirmModal
                 open={showModal}

@@ -50,6 +50,7 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
     const removeActivities = (id: string | null) => {
         if (!id) return;
         setActivities((prev) => prev.filter((activity) => activity.id !== id));
+        closeModal()
     };
 
     const updateTitle = (id: string, newTitle: string) => {

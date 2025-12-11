@@ -1,26 +1,14 @@
-import React, {JSX, useEffect, useState} from "react";
+import React, {JSX, useEffect} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import Header from "../components/Header";
 import NoActivities from "../components/NoActivities";
 import PriorityDropdown from "../components/PriorityDropdown";
 import ConfirmModal from "../components/ConfirmModal";
 import {useAccount} from "../contexts/AccountContext.tsx";
+import {Priority, SubActivity} from "../types/activity.ts";
+import {useActivities} from "../contexts/ActivityContext.tsx";
+import {SubActivityProvider, useSubActivities} from "../contexts/SubActivityContext.tsx";
 
-type Priority = "Low" | "Medium" | "High" | "Urgent";
-
-interface SubItem {
-    id: string;
-    title: string;
-    priority?: Priority;
-    checked?: boolean;
-}
-
-interface ActivityItem {
-    id: string;
-    title?: string;
-    status?: string;
-    subActivities?: SubItem[];
-}
 
 export default function SubActivityPage(): JSX.Element {
     const navigate = useNavigate();
@@ -32,175 +20,76 @@ export default function SubActivityPage(): JSX.Element {
     }, [account, navigate]);
 
     return (
-        <>
+        <SubActivityProvider activityId={activityId ?? ""}>
             <Header/>
-            <ActivityBody account={account} activityId={activityId ?? ""}/>
-        </>
+            <ActivityBody activityId={activityId ?? ""}/>
+        </SubActivityProvider>
     );
 }
 
 function ActivityBody({
-                          account,
                           activityId,
                       }: {
-    account: string;
     activityId: string;
 }): JSX.Element {
     const navigate = useNavigate();
-    const STORAGE_KEY = `batumbu.${account}`;
+    const {activities} = useActivities();
+    const {
+        removeSubActivity,
+        pendingDeleteSubId,
+        closeModal,
+        showModal,
+        subActivities
+    } = useSubActivities()
+    const pendingTitle = (subActivities.find((s) => s.id === pendingDeleteSubId)?.title || "Aktivitas Baru").trim();
 
-    const [activities, setActivities] = useState<ActivityItem[]>(() => {
-        try {
-            const raw = localStorage.getItem(STORAGE_KEY);
-            return raw ? (JSON.parse(raw) as ActivityItem[]) : [];
-        } catch (e) {
-            console.error("Failed to parse activities from storage", e);
-            return [];
-        }
-    });
-
-    const [showModal, setShowModal] = useState<boolean>(false);
-    const [pendingDeleteSubId, setPendingDeleteSubId] = useState<string | null>(null);
-
-    const activity = activities.find((a) => a.id === activityId) ?? null;
-    const subActivities = activity?.subActivities ?? [];
 
     useEffect(() => {
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(activities));
-        } catch (e) {
-            console.error("Failed to save activities to localStorage", e);
-        }
-    }, [activities, STORAGE_KEY]);
-
-    const addSubActivity = (): void => {
-        if (!activity) return;
-        const newSub: SubItem = {id: crypto.randomUUID(), title: "", priority: "Low", checked: false};
-        const next = activities.map((a) =>
-            a.id === activityId ? {...a, subActivities: [...(a.subActivities ?? []), newSub]} : a
-        );
-        setActivities(next);
-    };
-
-    const removeSubActivity = (subId: string | null): void => {
-        if (!activity || !subId) return;
-        const next = activities.map((a) =>
-            a.id === activityId ? {...a, subActivities: (a.subActivities ?? []).filter((s) => s.id !== subId)} : a
-        );
-        setActivities(next);
-        closeModal();
-    };
-
-    const openDeleteModal = (subId: string): void => {
-        setPendingDeleteSubId(subId);
-        setShowModal(true);
-    };
-
-    const closeModal = (): void => {
-        setPendingDeleteSubId(null);
-        setShowModal(false);
-    };
-
-    const updateSubTitle = (subId: string, newTitle: string): void => {
-        if (!activity) return;
-        const next = activities.map((a) =>
-            a.id === activityId
-                ? {
-                    ...a,
-                    subActivities: (a.subActivities ?? []).map((s) => (s.id === subId ? {...s, title: newTitle} : s))
-                }
-                : a
-        );
-        setActivities(next);
-    };
-
-    const changePriority = (subId: string, newPriority: Priority): void => {
-        if (!activity) return;
-        const next = activities.map((a) =>
-            a.id === activityId
-                ? {
-                    ...a,
-                    subActivities: (a.subActivities ?? []).map((s) => (s.id === subId ? {...s, priority: newPriority} : s))
-                }
-                : a
-        );
-        setActivities(next);
-    };
-
-    const toggleChecked = (subId: string): void => {
-        if (!activity) return;
-        const next = activities.map((a) =>
-            a.id === activityId
-                ? {
-                    ...a,
-                    subActivities: (a.subActivities ?? []).map((s) => (s.id === subId ? {...s, checked: !s.checked} : s))
-                }
-                : a
-        );
-        setActivities(next);
-    };
-
-    useEffect(() => {
-        if (activityId && !activity) {
+        if (activityId && !subActivities) {
             navigate("/activities", {replace: true});
         }
-    }, [activityId, activity, activities, navigate]);
-
-    const pendingTitle = (subActivities.find((s) => s.id === pendingDeleteSubId)?.title || "Aktivitas Baru").trim();
+    }, [activityId, subActivities, activities, navigate]);
 
     return (
         <div className="mt-10 mx-4 sm:mx-20 lg:mx-48">
-            <ActivityHeader
-                addSubActivity={addSubActivity}
-                onBack={() => navigate(-1)}
-                activityTitle={activity?.title}
-                enabled={(activity?.subActivities?.length ?? 0) < 10}
-            />
+            <ActivityHeader/>
             <div className="mt-8">
                 {subActivities.length <= 0 && <NoActivities/>}
                 {subActivities.length > 0 && (
                     <ActivityList
                         activities={subActivities}
-                        onDelete={openDeleteModal}
-                        onChangeTitle={updateSubTitle}
-                        onchangePriority={changePriority}
-                        onToggleChecked={toggleChecked}
                     />
                 )}
-
-                <ConfirmModal
-                    open={showModal}
-                    onClose={closeModal}
-                    title={`Apakah mau delete "${pendingTitle}"?`}
-                    onConfirm={() => removeSubActivity(pendingDeleteSubId)}
-                    confirmLabel="Delete"
-                    cancelLabel="Cancel"
-                />
             </div>
+            <ConfirmModal
+                open={showModal}
+                onClose={closeModal}
+                title={`Apakah mau delete "${pendingTitle}"?`}
+                onConfirm={() => removeSubActivity(pendingDeleteSubId)}
+                confirmLabel="Delete"
+                cancelLabel="Cancel"
+            />
         </div>
     );
 }
 
-function ActivityHeader({
-                            addSubActivity,
-                            onBack,
-                            activityTitle,
-                            enabled,
-                        }: {
-    addSubActivity: () => void;
-    onBack: () => void;
-    activityTitle?: string;
-    enabled: boolean;
-}): JSX.Element {
+function ActivityHeader(): JSX.Element {
+    const {
+        addSubActivity,
+        activity,
+        subActivities
+    } = useSubActivities()
+    const navigate = useNavigate();
+    const enabled = subActivities.length < 10;
     const color = enabled ? "bg-batumbured" : "bg-gray-500";
 
     return (
         <div className="flex justify-between items-center space-x-5">
             <div className="flex items-center gap-4">
-                <button onClick={onBack} className="text-5xl opacity-70 hover:opacity-100 cursor-pointer">
+                <button onClick={() => navigate(-1)} className="text-5xl opacity-70 hover:opacity-100 cursor-pointer">
                     ←
                 </button>
-                <h2 className="text-3xl sm:text-4xl font-bold max-w-60">{activityTitle || "Aktivitas Baru"}</h2>
+                <h2 className="text-3xl sm:text-4xl font-bold max-w-60">{activity?.title || "Aktivitas Baru"}</h2>
             </div>
 
             <button
@@ -214,17 +103,9 @@ function ActivityHeader({
 }
 
 function ActivityList({
-                          activities,
-                          onDelete,
-                          onChangeTitle,
-                          onchangePriority,
-                          onToggleChecked,
+                          activities
                       }: {
-    activities: SubItem[];
-    onDelete: (id: string) => void;
-    onChangeTitle: (id: string, newTitle: string) => void;
-    onchangePriority: (id: string, newPriority: Priority) => void;
-    onToggleChecked: (id: string) => void;
+    activities: SubActivity[];
 }): JSX.Element {
     return (
         <>
@@ -232,10 +113,6 @@ function ActivityList({
                 <SubActivity
                     key={activity.id}
                     sub={activity}
-                    onDelete={onDelete}
-                    onChangeTitle={onChangeTitle}
-                    onchangePriority={onchangePriority}
-                    onToggleChecked={onToggleChecked}
                 />
             ))}
         </>
@@ -243,18 +120,11 @@ function ActivityList({
 }
 
 function SubActivity({
-                         sub,
-                         onDelete,
-                         onChangeTitle,
-                         onchangePriority,
-                         onToggleChecked,
+                         sub
                      }: {
-    sub: SubItem;
-    onDelete: (id: string) => void;
-    onChangeTitle: (id: string, newTitle: string) => void;
-    onchangePriority: (id: string, newPriority: Priority) => void;
-    onToggleChecked: (id: string) => void;
+    sub: SubActivity
 }): JSX.Element {
+    const {toggleChecked, updateSubTitle, changePriority, openDeleteModal} = useSubActivities();
     const {id, title = "", priority = "Low", checked = false} = sub;
     const styles = PRIORITY_STYLES[priority] ?? PRIORITY_STYLES.Low;
 
@@ -264,23 +134,23 @@ function SubActivity({
         <div
             className={`bg-white mb-2 rounded-xl p-4 flex justify-between items-center w-full border-2 ${styles.border} space-x-5`}>
             <div className="flex items-center gap-3 flex-1">
-                <input id={`chk-${id}`} type="checkbox" checked={checked} onChange={() => onToggleChecked(id)}
+                <input id={`chk-${id}`} type="checkbox" checked={checked} onChange={() => toggleChecked(id)}
                        className="h-5 w-5"/>
 
                 <input
                     className={`${titleClasses} placeholder-black focus:placeholder:opacity-0 flex-1 bg-transparent border-0`}
                     value={title}
-                    onChange={(e) => onChangeTitle(id, e.target.value)}
+                    onChange={(e) => updateSubTitle(id, e.target.value)}
                     placeholder="Aktivitas Baru"
                 />
             </div>
 
             <div className="flex items-center">
-                <PriorityDropdown value={priority} onChange={(newP) => onchangePriority(id, newP)}
+                <PriorityDropdown value={priority} onChange={(newP) => changePriority(id, newP)}
                                   className={`${styles.bg} rounded-xl mr-2 opacity-80 hover:opacity-100`}/>
 
                 <button className="text-gray-500 cursor-pointer hover:text-gray-900 hover:underline"
-                        onClick={() => onDelete(id)}>
+                        onClick={() => openDeleteModal(id)}>
                     Delete
                 </button>
             </div>

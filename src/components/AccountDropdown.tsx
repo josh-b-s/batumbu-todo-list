@@ -6,8 +6,8 @@ import AccountIcon from "@mui/icons-material/AccountCircle";
 export default function AccountDropdown({className = ""}: { className?: string }) {
     const {logout} = useAccount();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
     const open = Boolean(anchorEl);
+    const openStyle = open ? "opacity-100" : "opacity-80";
     const handleOpen = (e: React.MouseEvent<HTMLElement>) => {
         e.stopPropagation();
         setAnchorEl(e.currentTarget);
@@ -17,14 +17,11 @@ export default function AccountDropdown({className = ""}: { className?: string }
         setAnchorEl(null);
     };
 
-    // @ts-ignore
-    // @ts-ignore
-    // @ts-ignore
     return (
         <>
             <Icon
                 onClick={handleOpen}
-                className={className}
+                className={`${className} ${openStyle}`}
                 aria-label="account"
                 sx={{bgcolor: "transparent", color: "white", width: 48, height: 48}}
             >
@@ -36,16 +33,18 @@ export default function AccountDropdown({className = ""}: { className?: string }
                 open={open}
                 //@ts-ignore
                 onClose={handleClose}
-                PaperProps={{
-                    sx: {
-                        borderRadius: 3,
-                        bgcolor: "white",
-                        "& .MuiMenuItem-root": {
-                            borderRadius: 2,
-                            mx: 1,
-                            my: 0.5,
+                slotProps={{
+                    paper: {
+                        sx: {
+                            borderRadius: 3,
+                            bgcolor: "white",
+                            "& .MuiMenuItem-root": {
+                                borderRadius: 2,
+                                mx: 1,
+                                my: 0.5,
+                            },
                         },
-                    },
+                    }
                 }}
                 onClick={(e) => e.stopPropagation()} // prevent parent clicks
             >

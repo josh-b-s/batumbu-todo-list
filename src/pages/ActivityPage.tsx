@@ -79,10 +79,7 @@ function ActivityBody(): JSX.Element {
                 open={showModal}
                 onClose={closeModal}
                 title={`Apakah mau delete "${pendingTitle}"?`}
-                onConfirm={() => {
-                    removeActivities(pendingDeleteId)
-                    closeModal()
-                }}
+                onConfirm={() => removeActivities(pendingDeleteId)}
                 confirmLabel="Delete"
                 cancelLabel="Cancel"
             />

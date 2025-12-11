@@ -62,54 +62,55 @@ export default function LoginPage(): JSX.Element {
 
     return (
         <div className="flex items-center justify-center h-screen bg-white sm:bg-transparent">
-            <form onSubmit={handleSubmit} className="p-7 bg-white space-y-4 w-full sm:w-100 sm:rounded-xl sm:shadow-2xl flex flex-col items-center">
+            <form onSubmit={handleSubmit}
+                  className="p-7 bg-white space-y-4 w-full sm:w-100 sm:rounded-xl sm:shadow-2xl flex flex-col items-center">
                 <h1 className="font-bold text-center text-2xl">Batumbu Internship Management</h1>
                 <div className={"w-full space-y-3"}>
-                <label>Email</label>
-                <input
-                    type="text"
-                    value={email}
-                    onChange={(e) => {
-                        setEmail(e.target.value);
-                        if (errors.email) setErrors((s) => ({...s, email: false}));
-                        setMessage("");
-                    }}
-                    className={`p-1 rounded-md focus:outline-2 w-full border ${
-                        errors.email ? "border-red-500 ring-1 ring-red-300" : "border-gray-300"
-                    }`}
-                />
-
-                <label>Password</label>
-
-                <div className="relative">
+                    <label>Email</label>
                     <input
-                        type={showPassword ? "text" : "password"}
-                        value={password}
+                        type="text"
+                        value={email}
                         onChange={(e) => {
-                            setPassword(e.target.value);
-                            if (errors.password) setErrors((s) => ({...s, password: false}));
+                            setEmail(e.target.value);
+                            if (errors.email) setErrors((s) => ({...s, email: false}));
                             setMessage("");
                         }}
-                        className={`p-1 rounded-md focus:outline-2 w-full pr-10 border ${
-                            errors.password ? "border-red-500 ring-1 ring-red-300" : "border-gray-300"
+                        className={`p-1 rounded-md focus:outline-2 w-full border ${
+                            errors.email ? "border-red-500 ring-1 ring-red-300" : "border-gray-300"
                         }`}
-                        placeholder=""
                     />
 
-                    <button
-                        type="button"
-                        onClick={() => setShowPassword((s) => !s)}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 p-1 cursor-pointer"
-                        aria-pressed={showPassword}
-                        aria-label={showPassword ? "Hide password" : "Show password"}
-                    >
-                        {showPassword ? <img src={hide} alt="hide" className="h-5 w-5"/> :
-                            <img src={show} alt="show" className="h-5 w-5"/>}
-                    </button>
-                </div>
+                    <label>Password</label>
 
-                <p className="text-center text-red-800">{message}</p>
-        </div>
+                    <div className="relative">
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                                if (errors.password) setErrors((s) => ({...s, password: false}));
+                                setMessage("");
+                            }}
+                            className={`p-1 rounded-md focus:outline-2 w-full pr-10 border ${
+                                errors.password ? "border-red-500 ring-1 ring-red-300" : "border-gray-300"
+                            }`}
+                            placeholder=""
+                        />
+
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword((s) => !s)}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 p-1 cursor-pointer"
+                            aria-pressed={showPassword}
+                            aria-label={showPassword ? "Hide password" : "Show password"}
+                        >
+                            {showPassword ? <img src={hide} alt="hide" className="h-5 w-5"/> :
+                                <img src={show} alt="show" className="h-5 w-5"/>}
+                        </button>
+                    </div>
+
+                    <p className="text-center text-red-800">{message}</p>
+                </div>
                 <input
                     type="submit"
                     value="Login"

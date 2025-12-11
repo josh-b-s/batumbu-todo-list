@@ -7,7 +7,8 @@ import StatusDropdown from "../components/StatusDropdown.tsx";
 import {useAccount} from "../contexts/AccountContext.tsx";
 import {useActivityFilter} from "../contexts/ActivityFilterContext.tsx";
 import {useActivities} from "../contexts/ActivityContext.tsx";
-import {ActivityItem, ActivityStatus} from "../types/activity.ts";
+import {ActivityItem} from "../types/activity.ts";
+import {MAX_CHAR_LEN, STATUS_STYLES} from "../consts.ts";
 
 interface ActivityListProps {
     activities: ActivityItem[];
@@ -139,15 +140,15 @@ function Activity({
             onClick={() => navigate(`/activities/${id}`)}
             role="group"
         >
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 w-150 min-w-0 mr-5">
                 <p className={`font-bold text-left ${styles.text}`}>
                     {status}
                 </p>
 
                 <input
-                    className="font-bold placeholder-black focus:placeholder-transparent"
+                    className={`truncate font-bold placeholder-black focus:placeholder-transparent w-full`}
                     value={title}
-                    onChange={(e) => updateTitle(id, e.target.value)}
+                    onChange={(e) => updateTitle(id, e.target.value.length > MAX_CHAR_LEN ? title : e.target.value)}
                     onClick={(e) => e.stopPropagation()}
                     placeholder="Aktivitas Baru"
                 />
@@ -172,11 +173,3 @@ function Activity({
     );
 }
 
-const STATUS_STYLES: Record<ActivityStatus, { border: string; text: string }> = {
-    All: {border: "", text: ""},
-    TODO: {border: "", text: "text-gray-500"},
-    "IN PROGRESS": {border: "border-2 border-blue-500", text: "text-blue-500"},
-    DONE: {border: "border-2 border-green-500", text: "text-green-500"},
-    PENDING: {border: "border-2 border-yellow-500", text: "text-yellow-500"},
-    DECLINED: {border: "border-2 border-red-500", text: "text-red-500"},
-};

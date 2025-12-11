@@ -15,6 +15,7 @@ interface SubActivityContextValue {
     openDeleteModal: (id: string) => void;
     closeModal: () => void;
     pendingDeleteSubId: string | null;
+    isEditable: boolean
 }
 
 const SubActivityContext = createContext<SubActivityContextValue | undefined>(undefined);
@@ -83,6 +84,8 @@ export function SubActivityProvider({children, activityId}: { children: React.Re
         setShowModal(false);
     };
 
+    const isEditable = activity?.status != "DONE" && activity?.status != "DECLINED";
+
     const value = useMemo(() => ({
         subActivities,
         addSubActivity,
@@ -94,7 +97,8 @@ export function SubActivityProvider({children, activityId}: { children: React.Re
         openDeleteModal,
         closeModal,
         pendingDeleteSubId,
-        activity
+        activity,
+        isEditable
     }), [subActivities, showModal, pendingDeleteSubId, activities]);
 
     return <SubActivityContext.Provider value={value}>{children}</SubActivityContext.Provider>;

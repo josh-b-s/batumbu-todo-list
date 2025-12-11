@@ -7,6 +7,7 @@ interface PriorityDropdownProps {
     value?: Priority;
     onChange?: (newPriority: Priority) => void;
     className?: string;
+    disabled?: boolean;
 }
 
 /**
@@ -22,6 +23,7 @@ export default function PriorityDropdown({
                                              onChange = () => {
                                              },
                                              className = "",
+                                             disabled = false,
                                          }: PriorityDropdownProps): JSX.Element {
     const [openStyle, setOpenStyle] = React.useState<String>("")
 
@@ -48,6 +50,7 @@ export default function PriorityDropdown({
                     boxShadow: "none",
                 },
             }}
+            disabled={disabled}
         >
             <Select
                 value={value}
@@ -72,6 +75,7 @@ export default function PriorityDropdown({
                 sx={{
                     borderRadius: "14px",
                 }}
+                className={disabled? "" : "opacity-80 hover:opacity-100"}
             >
                 <MenuItem value="Low">Low</MenuItem>
                 <MenuItem value="Medium">Medium</MenuItem>

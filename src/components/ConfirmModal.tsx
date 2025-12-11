@@ -50,17 +50,18 @@ export default function ConfirmModal({
                     top: "50%",
                     left: "50%",
                     transform: "translate(-50%, -50%)",
-                    width: "100%",
-                    maxWidth: 480,
+                    maxWidth: 500,
+                    minWidth: 0,
                     bgcolor: "background.paper",
                     borderRadius: 2,
                     boxShadow: 24,
                     p: 3,
                     outline: "none",
+                    width: "calc(100% - 24px)"
                 }}
-                className="bg-white rounded-xl p-6 w-full max-w-md"
+                className="bg-white rounded-xl p-6"
             >
-                <p id="confirm-modal-title" className="text-center font-bold text-2xl">
+                <p id="confirm-modal-title" className="text-center font-bold text-2xl truncate whitespace-normal">
                     {title}
                 </p>
 

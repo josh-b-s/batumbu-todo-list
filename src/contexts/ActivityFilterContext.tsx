@@ -1,15 +1,15 @@
 import React, {createContext, useContext, useState} from "react";
-import {ActivityStatus} from "../types/activity.ts";
+import {ActivityFilter} from "../types/activity.ts";
 
 export interface ActivityFilterContextValue {
-    statusFilter: ActivityStatus;
-    setStatusFilter: (filter: ActivityStatus) => void;
+    statusFilter: ActivityFilter;
+    setStatusFilter: (filter: ActivityFilter) => void;
 }
 
 const ActivityFilterContext = createContext<ActivityFilterContextValue | undefined>(undefined);
 
 export function ActivityFilterProvider({children}: { children: React.ReactNode }) {
-    const [statusFilter, setStatusFilter] = useState<ActivityStatus>("All")
+    const [statusFilter, setStatusFilter] = useState<ActivityFilter>("All")
 
     return (
         <ActivityFilterContext.Provider value={{statusFilter, setStatusFilter}}>

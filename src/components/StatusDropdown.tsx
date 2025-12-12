@@ -1,12 +1,11 @@
 import React, {JSX} from "react";
 import {Box, FormControl, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import FilterIcon from "@mui/icons-material/FilterAlt";
-
-type Status = "All" | "TODO" | "IN PROGRESS" | "DONE" | "PENDING" | "DECLINED";
+import {ActivityFilter} from "../types/activity.ts";
 
 interface StatusDropdownProps {
-    value?: Status;
-    onChange?: (newPriority: Status) => void;
+    value?: ActivityFilter;
+    onChange?: (newPriority: ActivityFilter) => void;
     className?: string;
     filter?: boolean;
 }
@@ -20,8 +19,8 @@ export default function StatusDropdown({
                                        }: StatusDropdownProps): JSX.Element {
     const [openStyle, setOpenStyle] = React.useState<String>("")
 
-    const handleChange = (event: SelectChangeEvent<Status>) => {
-        onChange(event.target.value as Status);
+    const handleChange = (event: SelectChangeEvent<ActivityFilter>) => {
+        onChange(event.target.value as ActivityFilter);
     };
 
     const stop = (e: React.SyntheticEvent) => {

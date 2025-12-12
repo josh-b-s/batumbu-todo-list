@@ -1,7 +1,6 @@
 import React, {JSX} from "react";
 import {FormControl, MenuItem, Select, SelectChangeEvent} from "@mui/material";
-
-type Priority = "Low" | "Medium" | "High" | "Urgent";
+import {Priority} from "../types/activity.ts";
 
 interface PriorityDropdownProps {
     value?: Priority;

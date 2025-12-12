@@ -1,7 +1,6 @@
 import {ActivityStatus, Priority} from "./types/activity.ts";
 
 export const STATUS_STYLES: Record<ActivityStatus, { border: string; text: string }> = {
-    All: {border: "", text: ""},
     TODO: {border: "", text: "text-gray-500"},
     "IN PROGRESS": {border: "border-2 border-blue-500", text: "text-blue-500"},
     DONE: {border: "border-2 border-green-500", text: "text-green-500"},
@@ -21,3 +20,27 @@ export const MAX_CHAR_LEN = 50
 export const enabledStyle = (enabled: boolean) => {
     return enabled ? "bg-batumbured opacity-80 hover:opacity-100 cursor-pointer" : "bg-gray-500";
 }
+export const STATUS_LABEL: Record<ActivityStatus, string> = {
+    TODO: "Back to Backlog",
+    "IN PROGRESS": "Start",
+    DONE: "Mark as Done",
+    PENDING: "Put on Hold",
+    DECLINED: "Decline"
+};
+
+export const PRIMARY_NEXT: Record<ActivityStatus, ActivityStatus | null> = {
+    TODO: "IN PROGRESS",
+    "IN PROGRESS": "DONE",
+    DONE: "TODO",
+    PENDING: "IN PROGRESS",
+    DECLINED: null
+};
+
+export const SECONDARY_NEXT: Record<ActivityStatus, ActivityStatus | null> = {
+    TODO: "DECLINED",
+    "IN PROGRESS": "PENDING",
+    DONE: "DECLINED",
+    PENDING: "DECLINED",
+    DECLINED: null
+};
+

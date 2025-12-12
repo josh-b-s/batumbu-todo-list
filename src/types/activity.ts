@@ -1,4 +1,5 @@
-export type ActivityStatus = "All" | "TODO" | "IN PROGRESS" | "DONE" | "PENDING" | "DECLINED";
+export type ActivityStatus = "TODO" | "IN PROGRESS" | "DONE" | "PENDING" | "DECLINED";
+export type ActivityFilter = ActivityStatus | "All";
 export type Priority = "Low" | "Medium" | "High" | "Urgent";
 
 export interface SubActivity {

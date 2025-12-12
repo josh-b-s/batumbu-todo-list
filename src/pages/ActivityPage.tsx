@@ -7,8 +7,8 @@ import StatusDropdown from "../components/StatusDropdown.tsx";
 import {useAccount} from "../contexts/AccountContext.tsx";
 import {useActivityFilter} from "../contexts/ActivityFilterContext.tsx";
 import {useActivities} from "../contexts/ActivityContext.tsx";
-import {ActivityItem} from "../types/activity.ts";
-import {MAX_CHAR_LEN, STATUS_STYLES} from "../consts.ts";
+import {ActivityItem, ActivityStatus} from "../types/activity.ts";
+import {PRIMARY_NEXT, MAX_CHAR_LEN, SECONDARY_NEXT, STATUS_STYLES, STATUS_LABEL} from "../consts.ts";
 
 interface ActivityListProps {
     activities: ActivityItem[];
@@ -132,7 +132,18 @@ function Activity({
     const {id, title, status} = activity;
     const styles = STATUS_STYLES[status] ?? STATUS_STYLES.TODO;
     const {updateTitle, changeStatus, openDeleteModal} = useActivities()
-
+    function makeToggle(
+        mapping: Record<ActivityStatus, ActivityStatus | null>,
+    ) {
+        return (id: string) => {
+            const next = mapping[status];
+            if (next) changeStatus(id, next as ActivityStatus);
+        };
+    }
+    const togglePrimary = makeToggle(PRIMARY_NEXT);
+    const toggleSecondary = makeToggle(SECONDARY_NEXT);
+    const primaryLabel = STATUS_LABEL[PRIMARY_NEXT[status]!]
+    const secondaryLabel = STATUS_LABEL[SECONDARY_NEXT[status]!]
 
     return (
         <div
@@ -165,8 +176,28 @@ function Activity({
                     Delete
                 </button>
 
-                <StatusDropdown value={status} onChange={(newStatus) => changeStatus(id, newStatus)}
-                                className={`bg-batumbured rounded-xl mr-2 opacity-80 hover:opacity-100`}/>
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        togglePrimary(id);
+                    }}
+                    className={`${primaryLabel ? "block" : "hidden"} bg-batumbured rounded-xl text-white font-bold opacity-80 hover:opacity-100 cursor-pointer px-6 py-2`}
+                >
+
+                    {primaryLabel}
+                </button>
+
+
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        toggleSecondary(id);
+                    }}
+                    className={`${secondaryLabel ? "block" : "hidden"} bg-batumbured rounded-xl text-white font-bold opacity-80 hover:opacity-100 cursor-pointer px-6 py-2`}
+                >
+
+                    {secondaryLabel}
+                </button>
 
             </div>
         </div>

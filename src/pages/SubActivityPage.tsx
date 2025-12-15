@@ -42,8 +42,11 @@ function ActivityBody({
         showModal,
         subActivities,
         addSubActivity,
-        isEditable
+        isEditable,
+        activity
     } = useSubActivities()
+    const {changeDescription} = useActivities();
+
     const pendingTitle = (subActivities.find((s) => s.id === pendingDeleteSubId)?.title || "Aktivitas Baru").trim();
     const enabled = subActivities.length < 10 && isEditable;
 
@@ -61,6 +64,15 @@ function ActivityBody({
             <hr className="mt-4 border-gray-400 sm:border-0"/>
 
             <div className="mt-4">
+
+                <div className="bg-white rounded-xl p-3">
+                    <p className="text-gray-500 font-bold">Deskripsi</p>
+                    <textarea placeholder="Deskripsi di sini"
+                              value={activity?.description}
+                              onChange={e => changeDescription(activityId, e.target.value)}
+                              className="w-full hover:bg-gray-200 rounded-md p-1 field-sizing-content resize-none focus:bg-transparent" />
+                </div>
+
                 {subActivities.length <= 0 && <NoActivities/>}
                 {subActivities.length > 0 && (
                     <ActivityList

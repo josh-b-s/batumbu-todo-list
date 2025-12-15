@@ -14,4 +14,5 @@ export interface ActivityItem {
     title: string;
     status: ActivityStatus;
     subActivities: SubActivity[];
+    description: string;
 }

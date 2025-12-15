@@ -131,7 +131,7 @@ function Activity({
     const navigate = useNavigate();
     const {id, title, status} = activity;
     const styles = STATUS_STYLES[status] ?? STATUS_STYLES.TODO;
-    const {updateTitle, changeStatus, openDeleteModal} = useActivities()
+    const {changeTitle, changeStatus, openDeleteModal} = useActivities()
 
 
     return (
@@ -148,7 +148,7 @@ function Activity({
                 <input
                     className={`truncate font-bold placeholder-black focus:placeholder-transparent w-full`}
                     value={title}
-                    onChange={(e) => updateTitle(id, e.target.value.length > MAX_CHAR_LEN ? title : e.target.value)}
+                    onChange={(e) => changeTitle(id, e.target.value.length > MAX_CHAR_LEN ? title : e.target.value)}
                     onClick={(e) => e.stopPropagation()}
                     placeholder="Aktivitas Baru"
                 />

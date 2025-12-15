@@ -6,12 +6,13 @@ interface ActivityContextValue {
     setActivities: React.Dispatch<React.SetStateAction<ActivityItem[]>>;
     addActivities: () => void;
     removeActivities: (id: string | null) => void;
-    updateTitle: (id: string, newTitle: string) => void
+    changeTitle: (id: string, newTitle: string) => void
     changeStatus: (id: string, newStatus: ActivityStatus) => void;
     openDeleteModal: (id: string) => void
     closeModal: () => void
     showModal: boolean
     pendingDeleteId: string | null;
+    changeDescription: (id: string, description: string) => void;
 }
 
 const ActivityContext = createContext<ActivityContextValue | undefined>(undefined);
@@ -41,6 +42,7 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
                 title: "",
                 status: "TODO",
                 subActivities: [],
+                description: "",
             },
         ]);
     };
@@ -51,7 +53,7 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
         closeModal()
     };
 
-    const updateTitle = (id: string, newTitle: string) => {
+    const changeTitle = (id: string, newTitle: string) => {
         setActivities((prev) =>
             prev.map((a) => (a.id === id ? {...a, title: newTitle} : a))
         );
@@ -99,17 +101,25 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
     }, [STORAGE_KEY]);
 
 
+    const changeDescription = (id: string, description: string) => {
+        setActivities((prev) =>
+            prev.map((a) => (a.id === id ? {...a, description: description} : a))
+        );
+    }
+
+
     const value = {
         activities,
         setActivities,
         addActivities,
         removeActivities,
-        updateTitle,
+        changeTitle,
         changeStatus,
         openDeleteModal,
         closeModal,
         showModal,
-        pendingDeleteId
+        pendingDeleteId,
+        changeDescription,
     };
 
 

@@ -30,7 +30,7 @@ export default function AccountDropdown({className = "", setShowModal}: {
             >
                 <AccountIcon sx={{fontSize: 50}}/>
             </Icon>
-            <p className="hidden sm:block">
+            <p>
                 {accounts[account].name}
             </p>
 

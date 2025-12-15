@@ -1,5 +1,7 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
-import type {ActivityItem, ActivityStatus} from "../types/activity"; // adjust path/type
+import type {ActivityItem, ActivityStatus} from "../types/activity";
+import {accounts} from "../types/account.ts";
+import {useAccount} from "./AccountContext.tsx"; // adjust path/type
 
 interface ActivityContextValue {
     activities: ActivityItem[];
@@ -13,6 +15,7 @@ interface ActivityContextValue {
     showModal: boolean
     pendingDeleteId: string | null;
     changeDescription: (id: string, description: string) => void;
+    isEditableByClient: boolean
 }
 
 const ActivityContext = createContext<ActivityContextValue | undefined>(undefined);
@@ -107,6 +110,8 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
         );
     }
 
+    const {account} = useAccount()
+    const isEditableByClient= accounts[account].role == "engineer";
 
     const value = {
         activities,
@@ -120,6 +125,7 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
         showModal,
         pendingDeleteId,
         changeDescription,
+        isEditableByClient
     };
 
 

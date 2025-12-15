@@ -131,22 +131,22 @@ function Activity({
     const navigate = useNavigate();
     const {id, title, status} = activity;
     const styles = STATUS_STYLES[status] ?? STATUS_STYLES.TODO;
-    const {changeTitle, changeStatus, openDeleteModal} = useActivities()
+    const {changeTitle, changeStatus, openDeleteModal, isEditableByClient} = useActivities()
 
 
     return (
         <div
-            className={`bg-white mb-2 rounded-xl p-4 flex justify-between items-center w-full cursor-pointer ${styles.border}`}
+            className={`bg-white mb-2 gap-3 rounded-xl p-4 flex justify-between items-center w-full cursor-pointer ${styles.border}`}
             onClick={() => navigate(`/activities/${id}`)}
             role="group"
         >
-            <div className="flex flex-col gap-2 w-150 min-w-0 mr-5">
+            <div className="flex flex-col min-w-0">
                 <p className={`font-bold text-left ${styles.text}`}>
                     {status}
                 </p>
 
                 <input
-                    className={`truncate font-bold placeholder-black focus:placeholder-transparent w-full`}
+                    className={`truncate font-bold placeholder-black focus:placeholder-transparent field-sizing-content focus:p-1 `}
                     value={title}
                     onChange={(e) => changeTitle(id, e.target.value.length > MAX_CHAR_LEN ? title : e.target.value)}
                     onClick={(e) => e.stopPropagation()}
@@ -156,7 +156,7 @@ function Activity({
 
             <div className="space-x-2 flex items-center">
                 <button
-                    className="text-gray-500 cursor-pointer hover:text-gray-900 hover:underline"
+                    className={`${isEditableByClient ? "block" : "hidden"} text-gray-500 cursor-pointer hover:text-gray-900 hover:underline`}
                     onClick={(e) => {
                         e.stopPropagation();
                         openDeleteModal(id);
@@ -166,7 +166,7 @@ function Activity({
                 </button>
 
                 <StatusDropdown value={status} onChange={(newStatus) => changeStatus(id, newStatus as ActivityStatus)}
-                                className={`bg-batumbured rounded-xl mr-2 opacity-80 hover:opacity-100`}/>
+                                className={`${isEditableByClient ? "block" : "hidden"} bg-batumbured rounded-xl mr-2 opacity-80 hover:opacity-100`}/>
 
             </div>
         </div>

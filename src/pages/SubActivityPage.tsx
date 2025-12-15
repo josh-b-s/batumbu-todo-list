@@ -65,7 +65,7 @@ function ActivityBody({
 
             <div className="mt-4">
 
-                <div className="bg-white rounded-xl p-3">
+                <div className="bg-white rounded-xl p-3 mb-2">
                     <p className="text-gray-500 font-bold">Deskripsi</p>
                     <textarea placeholder="Deskripsi di sini"
                               value={activity?.description}
@@ -151,7 +151,7 @@ function SubActivity({
                      }: {
     sub: SubActivity
 }): JSX.Element {
-    const {toggleChecked, updateSubTitle, changePriority, openDeleteModal, isEditable} = useSubActivities();
+    const {toggleChecked, updateSubTitle, changePriority, openDeleteModal, isEditable, isEditableByClient} = useSubActivities();
     const {id, title = "", priority = "Low", checked = false} = sub;
     const styles = PRIORITY_STYLES[priority] ?? PRIORITY_STYLES.Low;
     const titleClasses = checked ? "font-bold line-through text-gray-400 opacity-70 placeholder-gray-400" : "font-bold text-gray-900";
@@ -159,14 +159,14 @@ function SubActivity({
     return (
         <div
             className={`bg-white mb-2 rounded-xl p-4 flex justify-between items-center w-full border-2 ${styles.border} space-x-5`}>
-            <div className="flex items-center gap-3 flex-1">
+            <div className="flex items-center gap-3">
                 <input id={`chk-${id}`} type="checkbox" checked={checked} onChange={() => toggleChecked(id)}
                        className="h-5 w-5"
-                       disabled={!isEditable}
+                       disabled={!isEditableByClient}
                 />
 
                 <input
-                    className={`${titleClasses} truncate placeholder-black focus:placeholder:opacity-0 flex-1 bg-transparent border-0 w-full`}
+                    className={`${titleClasses} truncate placeholder-black focus:placeholder:opacity-0 flex-1 bg-transparent field-sizing-content focus:p-1`}
                     value={title}
                     onChange={(e) => updateSubTitle(id, e.target.value.length > MAX_CHAR_LEN ? title : e.target.value)}
                     placeholder="Aktivitas Baru"
@@ -177,10 +177,10 @@ function SubActivity({
             <div className="flex items-center">
                 <PriorityDropdown value={priority} onChange={(newP) => changePriority(id, newP)}
                                   className={`${styles.bg} rounded-xl mr-2`}
-                                  disabled={!isEditable}/>
+                                  disabled={!isEditableByClient}/>
 
                 <button
-                    className={`${isEditable ? "block" : "hidden"} text-gray-500 cursor-pointer hover:text-gray-900 hover:underline`}
+                    className={`${isEditableByClient ? "block" : "hidden"} text-gray-500 cursor-pointer hover:text-gray-900 hover:underline`}
                     onClick={() => openDeleteModal(id)}
                 >
                     Delete

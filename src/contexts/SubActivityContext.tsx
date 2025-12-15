@@ -1,6 +1,8 @@
 import React, {createContext, useContext, useMemo, useState} from "react";
 import type {ActivityItem, Priority, SubActivity} from "../types/activity"; // your types
-import {useActivities} from "./ActivityContext"; // Activity context hook
+import {useActivities} from "./ActivityContext";
+import {accounts} from "../types/account.ts";
+import {useAccount} from "./AccountContext.tsx"; // Activity context hook
 
 interface SubActivityContextValue {
     subActivities: SubActivity[];
@@ -16,6 +18,7 @@ interface SubActivityContextValue {
     closeModal: () => void;
     pendingDeleteSubId: string | null;
     isEditable: boolean
+    isEditableByClient: boolean
 }
 
 const SubActivityContext = createContext<SubActivityContextValue | undefined>(undefined);
@@ -84,7 +87,9 @@ export function SubActivityProvider({children, activityId}: { children: React.Re
         setShowModal(false);
     };
 
-    const isEditable = activity?.status != "DONE" && activity?.status != "DECLINED";
+    const {account} = useAccount()
+    const isEditable = activity?.status != "DONE" && activity?.status != "DECLINED"
+    const isEditableClient= isEditable && accounts[account].role == "engineer";
 
     const value = useMemo(() => ({
         subActivities,
@@ -98,7 +103,8 @@ export function SubActivityProvider({children, activityId}: { children: React.Re
         closeModal,
         pendingDeleteSubId,
         activity,
-        isEditable
+        isEditable,
+        isEditableByClient: isEditableClient,
     }), [subActivities, showModal, pendingDeleteSubId, activities]);
 
     return <SubActivityContext.Provider value={value}>{children}</SubActivityContext.Provider>;

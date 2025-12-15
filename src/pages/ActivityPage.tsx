@@ -105,7 +105,7 @@ function ActivityHeader(): JSX.Element {
 
                 <button
                     className="bg-batumbured rounded-full min-w-12 min-h-12 text-white font-bold opacity-80 hover:opacity-100 text-2xl cursor-pointer hidden sm:block"
-                    onClick={() => accounts[account].role == "engineer" ? addActivities() : openAddModal()}
+                    onClick={() => accounts[account]?.role == "engineer" ? addActivities() : openAddModal()}
                 >
                     +
                 </button>

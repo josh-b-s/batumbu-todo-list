@@ -89,7 +89,7 @@ export function SubActivityProvider({children, activityId}: { children: React.Re
 
     const {account} = useAccount()
     const isEditable = activity?.status != "DONE" && activity?.status != "DECLINED"
-    const isEditableByClient= isEditable && accounts[account].role == "engineer";
+    const isEditableByClient= isEditable && accounts[account]?.role == "engineer";
 
     const value = useMemo(() => ({
         subActivities,

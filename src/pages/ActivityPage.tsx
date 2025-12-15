@@ -9,6 +9,8 @@ import {useActivityFilter} from "../contexts/ActivityFilterContext.tsx";
 import {useActivities} from "../contexts/ActivityContext.tsx";
 import {ActivityItem, ActivityStatus} from "../types/activity.ts";
 import {MAX_CHAR_LEN, STATUS_STYLES} from "../consts.ts";
+import {accounts} from "../types/account.ts";
+import AddActivityModal from "../components/AddActivityModal.tsx";
 
 interface ActivityListProps {
     activities: ActivityItem[];
@@ -38,8 +40,8 @@ function ActivityBody(): JSX.Element {
     const {
         activities,
         removeActivities,
-        showModal,
-        closeModal,
+        showDeleteModal,
+        closeDeleteModal,
         pendingDeleteId,
         addActivities
     } = useActivities()
@@ -70,27 +72,30 @@ function ActivityBody(): JSX.Element {
                 )}
                 <button
                     className="bg-batumbured rounded-xl w-full py-2 text-white font-bold opacity-80 hover:opacity-100 text-2xl cursor-pointer block sm:hidden"
-                    onClick={addActivities}
+                    onClick={() => addActivities()}
                 >
                     + Tambah
                 </button>
 
             </div>
             <ConfirmModal
-                open={showModal}
-                onClose={closeModal}
+                open={showDeleteModal}
+                onClose={closeDeleteModal}
                 title={`Apakah mau delete "${pendingTitle}"?`}
                 onConfirm={() => removeActivities(pendingDeleteId)}
                 confirmLabel="Delete"
                 cancelLabel="Cancel"
             />
+            <AddActivityModal/>
         </div>
     );
 }
 
 function ActivityHeader(): JSX.Element {
     const {statusFilter, setStatusFilter} = useActivityFilter();
-    const {addActivities} = useActivities();
+    const {addActivities, openAddModal} = useActivities();
+    const {account} = useAccount();
+
     return (
         <div className="flex justify-between space-x-5">
             <h2 className="text-3xl sm:text-4xl font-bold">Aktivitas</h2>
@@ -100,7 +105,7 @@ function ActivityHeader(): JSX.Element {
 
                 <button
                     className="bg-batumbured rounded-full min-w-12 min-h-12 text-white font-bold opacity-80 hover:opacity-100 text-2xl cursor-pointer hidden sm:block"
-                    onClick={addActivities}
+                    onClick={() => accounts[account].role == "engineer" ? addActivities() : openAddModal()}
                 >
                     +
                 </button>
@@ -172,4 +177,3 @@ function Activity({
         </div>
     );
 }
-

@@ -6,16 +6,19 @@ import {useAccount} from "./AccountContext.tsx"; // adjust path/type
 interface ActivityContextValue {
     activities: ActivityItem[];
     setActivities: React.Dispatch<React.SetStateAction<ActivityItem[]>>;
-    addActivities: () => void;
+    addActivities: (title?: string, description?:string) => void;
     removeActivities: (id: string | null) => void;
     changeTitle: (id: string, newTitle: string) => void
     changeStatus: (id: string, newStatus: ActivityStatus) => void;
     openDeleteModal: (id: string) => void
-    closeModal: () => void
-    showModal: boolean
+    closeDeleteModal: () => void
+    showDeleteModal: boolean
     pendingDeleteId: string | null;
     changeDescription: (id: string, description: string) => void;
-    isEditableByClient: boolean
+    isEditableByClient: boolean,
+    openAddModal: () => void,
+    closeAddModal: () => void,
+    showAddModal: boolean,
 }
 
 const ActivityContext = createContext<ActivityContextValue | undefined>(undefined);
@@ -35,17 +38,26 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
     });
 
     const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
-    const [showModal, setShowModal] = useState<boolean>(false);
+    const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
-    const addActivities = () => {
+    const [showAddModal, setShowAddModal] = useState<boolean>(false);
+
+    const openAddModal = () => {
+        setShowAddModal(true);
+    }
+    const closeAddModal = () => {
+        setShowAddModal(false);
+    }
+
+    const addActivities = (title = "", description = "") => {
         setActivities((prev) => [
             ...prev,
             {
                 id: crypto.randomUUID(),
-                title: "",
+                title: title,
                 status: "TODO",
                 subActivities: [],
-                description: "",
+                description: description,
             },
         ]);
     };
@@ -53,7 +65,7 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
     const removeActivities = (id: string | null) => {
         if (!id) return;
         setActivities((prev) => prev.filter((activity) => activity.id !== id));
-        closeModal()
+        closeDeleteModal()
     };
 
     const changeTitle = (id: string, newTitle: string) => {
@@ -72,12 +84,12 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
 
     const openDeleteModal = (id: string) => {
         setPendingDeleteId(id);
-        setShowModal(true);
+        setShowDeleteModal(true);
     };
 
-    const closeModal = () => {
+    const closeDeleteModal = () => {
         setPendingDeleteId(null);
-        setShowModal(false);
+        setShowDeleteModal(false);
     };
 
     useEffect(() => {
@@ -111,7 +123,7 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
     }
 
     const {account} = useAccount()
-    const isEditableByClient= accounts[account].role == "engineer";
+    const isEditableByClient = accounts[account].role == "engineer";
 
     const value = {
         activities,
@@ -121,11 +133,14 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
         changeTitle,
         changeStatus,
         openDeleteModal,
-        closeModal,
-        showModal,
+        closeDeleteModal,
+        showDeleteModal,
         pendingDeleteId,
         changeDescription,
-        isEditableByClient
+        isEditableByClient,
+        openAddModal,
+        closeAddModal,
+        showAddModal
     };
 
 

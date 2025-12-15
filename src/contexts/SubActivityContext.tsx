@@ -89,7 +89,7 @@ export function SubActivityProvider({children, activityId}: { children: React.Re
 
     const {account} = useAccount()
     const isEditable = activity?.status != "DONE" && activity?.status != "DECLINED"
-    const isEditableClient= isEditable && accounts[account].role == "engineer";
+    const isEditableByClient= isEditable && accounts[account].role == "engineer";
 
     const value = useMemo(() => ({
         subActivities,
@@ -104,7 +104,7 @@ export function SubActivityProvider({children, activityId}: { children: React.Re
         pendingDeleteSubId,
         activity,
         isEditable,
-        isEditableByClient: isEditableClient,
+        isEditableByClient,
     }), [subActivities, showModal, pendingDeleteSubId, activities]);
 
     return <SubActivityContext.Provider value={value}>{children}</SubActivityContext.Provider>;

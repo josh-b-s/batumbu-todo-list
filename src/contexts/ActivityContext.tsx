@@ -123,7 +123,7 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
     }
 
     const {account} = useAccount()
-    const isEditableByClient = accounts[account].role == "engineer";
+    const isEditableByClient = accounts[account]?.role == "engineer";
 
     const value = {
         activities,

@@ -31,7 +31,7 @@ export default function AccountDropdown({className = "", setShowModal}: {
                 <AccountIcon sx={{fontSize: 50}}/>
             </Icon>
             <p>
-                {accounts[account].name}
+                {accounts[account]?.name}
             </p>
 
             <Menu

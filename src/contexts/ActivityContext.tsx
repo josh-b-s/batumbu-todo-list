@@ -1,6 +1,5 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
 import type {ActivityItem, ActivityStatus} from "../types/activity"; // adjust path/type
-import {useAccount} from "./AccountContext";
 
 interface ActivityContextValue {
     activities: ActivityItem[];
@@ -18,8 +17,7 @@ interface ActivityContextValue {
 const ActivityContext = createContext<ActivityContextValue | undefined>(undefined);
 
 export function ActivityProvider({children}: { children: React.ReactNode }) {
-    const {account} = useAccount();
-    const STORAGE_KEY = account ? `batumbu.${account}` : "";
+    const STORAGE_KEY = `batumbu.activities`
 
     const [activities, setActivities] = useState<ActivityItem[]>(() => {
         try {

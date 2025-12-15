@@ -3,11 +3,8 @@ import {useNavigate} from "react-router-dom";
 import show from "../assets/show.png";
 import hide from "../assets/hide.png";
 import {useAccount} from "../contexts/AccountContext.tsx";
+import {accounts} from "../types/account.ts";
 
-const accounts: Record<string, string> = {
-    "test1@gmail.com": "pass",
-    "test2@gmail.com": "pass",
-};
 
 export default function LoginPage(): JSX.Element {
     const navigate = useNavigate();
@@ -47,7 +44,7 @@ export default function LoginPage(): JSX.Element {
             return;
         }
 
-        if (accounts[emailTrim] !== password) {
+        if (accounts[emailTrim].pass !== password) {
             setErrors((e) => ({...e, password: true}));
             setMessage("Password incorrect!");
             return;

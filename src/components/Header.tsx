@@ -16,14 +16,7 @@ export default function Header(): JSX.Element {
             <h1 className="text-2xl text-white font-bold hidden sm:block">Batumbu Internship Management</h1>
             <h1 className="text-2xl text-white font-bold block sm:hidden">Batumbu</h1>
 
-            <button
-                onClick={() => setShowModal(true)}
-                className="bg-white rounded-xl font-bold opacity-80 hover:opacity-100 cursor-pointer px-4 py-2 hidden sm:block"
-            >
-                Log out
-            </button>
-
-            <AccountDropdown className="opacity-80 hover:opacity-100 cursor-pointer block sm:hidden" setShowModal={setShowModal}/>
+            <AccountDropdown className="opacity-80 hover:opacity-100 cursor-pointer" setShowModal={setShowModal}/>
 
             <ConfirmModal
                 open={showModal}

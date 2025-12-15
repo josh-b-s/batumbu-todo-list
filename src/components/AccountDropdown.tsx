@@ -1,9 +1,15 @@
 import React from "react";
 import {Icon, Menu, MenuItem} from "@mui/material";
 import AccountIcon from "@mui/icons-material/AccountCircle";
+import {useAccount} from "../contexts/AccountContext.tsx";
+import {accounts} from "../types/account.ts";
 
-export default function AccountDropdown({className = "", setShowModal}: { className?: string, setShowModal: (show: boolean) => void }) {
+export default function AccountDropdown({className = "", setShowModal}: {
+    className?: string,
+    setShowModal: (show: boolean) => void
+}) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const {account} = useAccount()
     const open = Boolean(anchorEl);
     const openStyle = open ? "opacity-100" : "opacity-80";
     const handleOpen = (e: React.MouseEvent<HTMLElement>) => {
@@ -16,15 +22,17 @@ export default function AccountDropdown({className = "", setShowModal}: { classN
     };
 
     return (
-        <>
+        <div className={`${className} ${openStyle} flex items-center space-x-2 font-bold text-white`}
+             onClick={handleOpen}>
             <Icon
-                onClick={handleOpen}
-                className={`${className} ${openStyle}`}
                 aria-label="account"
                 sx={{bgcolor: "transparent", color: "white", width: 48, height: 48}}
             >
                 <AccountIcon sx={{fontSize: 50}}/>
             </Icon>
+            <p>
+                {accounts[account].name}
+            </p>
 
             <Menu
                 anchorEl={anchorEl}
@@ -51,6 +59,6 @@ export default function AccountDropdown({className = "", setShowModal}: { classN
                     handleClose();
                 }}>Logout</MenuItem>
             </Menu>
-        </>
+        </div>
     );
 }

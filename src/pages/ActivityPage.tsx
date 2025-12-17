@@ -1,4 +1,4 @@
-import React, {JSX, useEffect} from "react";
+import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import Header from "../components/Header";
 import NoActivities from "../components/NoActivities";
@@ -8,53 +8,61 @@ import {useAccount} from "../contexts/AccountContext.tsx";
 import {useActivityFilter} from "../contexts/ActivityFilterContext.tsx";
 import {useActivities} from "../contexts/ActivityContext.tsx";
 import {ActivityItem, ActivityStatus} from "../types/activity.ts";
-import {MAX_CHAR_LEN, STATUS_STYLES} from "../consts.ts";
+import {MAX_TITLE_CHAR_LEN, STATUS_STYLES} from "../consts.ts";
 import {accounts} from "../types/account.ts";
 import AddActivityModal from "../components/AddActivityModal.tsx";
+import AddActivityButtonMobile from "../components/AddActivityButtonMobile.tsx";
+import AddActivityButton from "../components/AddActivityButton.tsx";
+import ActivityList from "../components/ActivityList.tsx";
 
-interface ActivityListProps {
-    activities: ActivityItem[];
-}
-
-interface ActivityProps {
-    activity: ActivityItem;
-}
-
-export default function ActivityPage(): JSX.Element {
+export default function ActivityPage() {
     const navigate = useNavigate();
     const {account} = useAccount()
-
     useEffect(() => {
         if (!account) navigate("/");
     }, [account, navigate]);
 
-    return (
-        <>
-            <Header/>
-            <ActivityBody/>
-        </>
-    );
-}
-
-function ActivityBody(): JSX.Element {
     const {
         activities,
         removeActivities,
         showDeleteModal,
         closeDeleteModal,
         pendingDeleteId,
-        addActivities
     } = useActivities()
     const pendingActivity =
         activities.find((a) => a.id === pendingDeleteId) ?? null;
     const pendingTitle =
         (pendingActivity?.title.trim() || "") || "Aktivitas Baru";
+
+    return (
+        <>
+            <Header/>
+            <ActivityBody/>
+            <ConfirmModal
+                open={showDeleteModal}
+                onClose={closeDeleteModal}
+                title={`Apakah mau delete "${pendingTitle}"?`}
+                onConfirm={() => removeActivities(pendingDeleteId)}
+                confirmLabel="Delete"
+            />
+            <AddActivityModal/>
+        </>
+    );
+}
+
+function ActivityBody() {
+    const {
+        activities,
+        addActivities
+    } = useActivities()
+
     const {statusFilter} = useActivityFilter();
 
     const filteredActivities = () => {
         if (statusFilter === "All") return activities;
         return activities.filter((a) => a.status === statusFilter);
     }
+    const noActivities = filteredActivities().length <= 0
     const {account} = useAccount();
     const {openAddModal} = useActivities();
 
@@ -65,35 +73,17 @@ function ActivityBody(): JSX.Element {
             <hr className="mt-4 border-gray-400 sm:border-0"/>
 
             <div className="mt-4">
-                {filteredActivities().length <= 0 && <NoActivities/>}
+                {noActivities && <NoActivities/>}
+                {!noActivities && <ActivityList activities={filteredActivities()} ActivityElement={Activity}/>}
 
-                {filteredActivities().length > 0 && (
-                    <ActivityList
-                        activities={filteredActivities()}
-                    />
-                )}
-                <button
-                    className="bg-batumbured rounded-xl w-full py-2 text-white font-bold opacity-80 hover:opacity-100 text-2xl cursor-pointer block sm:hidden"
-                    onClick={() => accounts[account]?.role == "engineer" ? addActivities() : openAddModal()}
-                >
-                    + Tambah
-                </button>
-
+                <AddActivityButtonMobile
+                    onClick={() => accounts[account]?.role == "engineer" ? addActivities() : openAddModal()}/>
             </div>
-            <ConfirmModal
-                open={showDeleteModal}
-                onClose={closeDeleteModal}
-                title={`Apakah mau delete "${pendingTitle}"?`}
-                onConfirm={() => removeActivities(pendingDeleteId)}
-                confirmLabel="Delete"
-                cancelLabel="Cancel"
-            />
-            <AddActivityModal/>
         </div>
     );
 }
 
-function ActivityHeader(): JSX.Element {
+function ActivityHeader() {
     const {statusFilter, setStatusFilter} = useActivityFilter();
     const {addActivities, openAddModal} = useActivities();
     const {account} = useAccount();
@@ -105,36 +95,16 @@ function ActivityHeader(): JSX.Element {
                 <StatusDropdown value={statusFilter} onChange={(newStatus) => setStatusFilter(newStatus)}
                                 className={`bg-batumbured rounded-3xl opacity-80 hover:opacity-100`} filter={true}/>
 
-                <button
-                    className="bg-batumbured rounded-full min-w-12 min-h-12 text-white font-bold opacity-80 hover:opacity-100 text-2xl cursor-pointer hidden sm:block"
-                    onClick={() => accounts[account]?.role == "engineer" ? addActivities() : openAddModal()}
-                >
-                    +
-                </button>
+                <AddActivityButton
+                    onClick={() => accounts[account]?.role == "engineer" ? addActivities() : openAddModal()}/>
             </div>
 
         </div>
     );
 }
 
-function ActivityList({
-                          activities,
-                      }: ActivityListProps): JSX.Element {
-    return (
-        <>
-            {activities.map((activity) => (
-                <Activity
-                    key={activity.id}
-                    activity={activity}
-                />
-            ))}
-        </>
-    );
-}
 
-function Activity({
-                      activity,
-                  }: ActivityProps): JSX.Element {
+function Activity({activity,}: { activity: ActivityItem }) {
     const navigate = useNavigate();
     const {id, title, status, creator} = activity;
     const styles = STATUS_STYLES[status] ?? STATUS_STYLES.TODO;
@@ -156,7 +126,7 @@ function Activity({
                     <input
                         className={`truncate font-bold placeholder-black focus:placeholder-transparent field-sizing-content focus:p-1 `}
                         value={title}
-                        onChange={(e) => changeTitle(id, e.target.value.length > MAX_CHAR_LEN ? title : e.target.value)}
+                        onChange={(e) => changeTitle(id, e.target.value.length > MAX_TITLE_CHAR_LEN ? title : e.target.value)}
                         onClick={(e) => e.stopPropagation()}
                         placeholder="Aktivitas Baru"
                     />

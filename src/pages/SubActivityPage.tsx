@@ -1,17 +1,21 @@
-import React, {JSX, useEffect} from "react";
+import React, {useEffect} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import Header from "../components/Header";
 import NoActivities from "../components/NoActivities";
 import PriorityDropdown from "../components/PriorityDropdown";
 import ConfirmModal from "../components/ConfirmModal";
 import {useAccount} from "../contexts/AccountContext.tsx";
-import {SubActivity} from "../types/activity.ts";
+import {SubActivityItem} from "../types/activity.ts";
 import {useActivities} from "../contexts/ActivityContext.tsx";
 import {SubActivityProvider, useSubActivities} from "../contexts/SubActivityContext.tsx";
-import {enabledStyle, MAX_CHAR_LEN, PRIORITY_STYLES} from "../consts.ts";
+import {MAX_TITLE_CHAR_LEN, PRIORITY_STYLES} from "../consts.ts";
+import AddActivityButtonMobile from "../components/AddActivityButtonMobile.tsx";
+import AddActivityButton from "../components/AddActivityButton.tsx";
+import ActivityList from "../components/ActivityList.tsx";
+import SubActivityDescBox from "../components/SubActivityDescBox.tsx";
 
 
-export default function SubActivityPage(): JSX.Element {
+export default function SubActivityPage() {
     const navigate = useNavigate();
     const {id: activityId} = useParams<{ id: string }>();
     const {account} = useAccount()
@@ -20,35 +24,31 @@ export default function SubActivityPage(): JSX.Element {
         if (!account) navigate("/");
     }, [account, navigate]);
 
+
     return (
         <SubActivityProvider activityId={activityId ?? ""}>
             <Header/>
-            <ActivityBody activityId={activityId ?? ""}/>
+            <SubActivityBody activityId={activityId ?? ""}/>
+
         </SubActivityProvider>
     );
 }
 
-function ActivityBody({
-                          activityId,
-                      }: {
-    activityId: string;
-}): JSX.Element {
+function SubActivityBody({activityId}: { activityId: string }) {
     const navigate = useNavigate();
     const {activities} = useActivities();
     const {
+        subActivities,
+        addSubActivity,
+        isEditableByClient,
         removeSubActivity,
         pendingDeleteSubId,
         closeModal,
-        showModal,
-        subActivities,
-        addSubActivity,
-        isEditable,
-        activity
+        showModal
     } = useSubActivities()
-    const {changeDescription} = useActivities();
-
+    const enabled = subActivities.length < 10 && isEditableByClient;
+    const noActivities = subActivities.length <= 0
     const pendingTitle = (subActivities.find((s) => s.id === pendingDeleteSubId)?.title || "Aktivitas Baru").trim();
-    const enabled = subActivities.length < 10 && isEditable;
 
 
     useEffect(() => {
@@ -64,28 +64,10 @@ function ActivityBody({
             <hr className="mt-4 border-gray-400 sm:border-0"/>
 
             <div className="mt-4">
-
-                <div className="bg-white rounded-xl p-3 mb-2">
-                    <p className="text-gray-500 font-bold">Deskripsi</p>
-                    <textarea placeholder="Deskripsi di sini"
-                              value={activity?.description}
-                              onChange={e => changeDescription(activityId, e.target.value)}
-                              className="w-full hover:bg-gray-200 rounded-md p-1 field-sizing-content resize-none focus:bg-transparent" />
-                </div>
-
-                {subActivities.length <= 0 && <NoActivities/>}
-                {subActivities.length > 0 && (
-                    <ActivityList
-                        activities={subActivities}
-                    />
-                )}
-                <button
-                    className={`${enabledStyle(enabled)} bg-batumbured rounded-xl w-full py-2 text-white font-bold text-2xl block sm:hidden`}
-                    onClick={addSubActivity}
-                    disabled={!enabled}
-                >
-                    + Tambah
-                </button>
+                <SubActivityDescBox activityId={activityId}/>
+                {noActivities && <NoActivities/>}
+                {!noActivities && <ActivityList activities={subActivities} ActivityElement={SubActivity}/>}
+                <AddActivityButtonMobile onClick={addSubActivity} enabled={enabled}/>
             </div>
             <ConfirmModal
                 open={showModal}
@@ -93,21 +75,20 @@ function ActivityBody({
                 title={`Apakah mau delete "${pendingTitle}"?`}
                 onConfirm={() => removeSubActivity(pendingDeleteSubId)}
                 confirmLabel="Delete"
-                cancelLabel="Cancel"
             />
         </div>
     );
 }
 
-function ActivityHeader(): JSX.Element {
+function ActivityHeader() {
     const {
         addSubActivity,
         activity,
         subActivities,
-        isEditable,
+        isEditableByClient,
     } = useSubActivities()
     const navigate = useNavigate();
-    const enabled = subActivities.length < 10 && isEditable;
+    const enabled = subActivities.length < 10 && isEditableByClient;
 
     return (
         <div className="flex justify-between items-center space-x-5">
@@ -118,41 +99,24 @@ function ActivityHeader(): JSX.Element {
                 <h2 className="text-3xl sm:text-4xl font-bold truncate">{activity?.title || "Aktivitas Baru"}</h2>
             </div>
 
-            <button
-                className={`${enabledStyle(enabled)} rounded-full min-w-12 min-h-12 text-white font-bold text-2xl hidden sm:block`}
-                onClick={addSubActivity}
-                disabled={!enabled}
-            >
-                +
-            </button>
+            <AddActivityButton onClick={addSubActivity} enabled={enabled}/>
         </div>
     );
 }
 
-function ActivityList({
-                          activities
-                      }: {
-    activities: SubActivity[];
-}): JSX.Element {
-    return (
-        <>
-            {activities.map((activity) => (
-                <SubActivity
-                    key={activity.id}
-                    sub={activity}
-                />
-            ))}
-        </>
-    );
-}
-
 function SubActivity({
-                         sub
+                         activity
                      }: {
-    sub: SubActivity
-}): JSX.Element {
-    const {toggleChecked, updateSubTitle, changePriority, openDeleteModal, isEditable, isEditableByClient} = useSubActivities();
-    const {id, title = "", priority = "Low", checked = false} = sub;
+    activity: SubActivityItem
+}) {
+    const {
+        toggleChecked,
+        updateSubTitle,
+        changePriority,
+        openDeleteModal,
+        isEditableByClient
+    } = useSubActivities();
+    const {id, title = "", priority = "Low", checked = false} = activity;
     const styles = PRIORITY_STYLES[priority] ?? PRIORITY_STYLES.Low;
     const titleClasses = checked ? "font-bold line-through text-gray-400 opacity-70 placeholder-gray-400" : "font-bold text-gray-900";
 
@@ -168,9 +132,9 @@ function SubActivity({
                 <input
                     className={`${titleClasses} truncate placeholder-black focus:placeholder:opacity-0 flex-1 bg-transparent field-sizing-content focus:p-1`}
                     value={title}
-                    onChange={(e) => updateSubTitle(id, e.target.value.length > MAX_CHAR_LEN ? title : e.target.value)}
+                    onChange={(e) => updateSubTitle(id, e.target.value.length > MAX_TITLE_CHAR_LEN ? title : e.target.value)}
                     placeholder="Aktivitas Baru"
-                    disabled={!isEditable}
+                    disabled={!isEditableByClient}
                 />
             </div>
 

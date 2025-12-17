@@ -6,7 +6,7 @@ import {useAccount} from "./AccountContext.tsx"; // adjust path/type
 interface ActivityContextValue {
     activities: ActivityItem[];
     setActivities: React.Dispatch<React.SetStateAction<ActivityItem[]>>;
-    addActivities: (title?: string, description?:string) => void;
+    addActivities: (title?: string, description?: string) => void;
     removeActivities: (id: string | null) => void;
     changeTitle: (id: string, newTitle: string) => void
     changeStatus: (id: string, newStatus: ActivityStatus) => void;

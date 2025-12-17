@@ -1,4 +1,4 @@
-import React, {JSX, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import show from "../assets/show.png";
 import hide from "../assets/hide.png";
@@ -6,7 +6,7 @@ import {useAccount} from "../contexts/AccountContext.tsx";
 import {accounts} from "../types/account.ts";
 
 
-export default function LoginPage(): JSX.Element {
+export default function LoginPage() {
     const navigate = useNavigate();
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");

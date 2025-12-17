@@ -13,7 +13,7 @@ export default function AddActivityModal() {
 
     const handleSubmit = () => {
         const titleVal = newTitle.trim();
-        const descVal  = newDescription.trim();
+        const descVal = newDescription.trim();
 
         const newErrors = {
             title: titleVal === "" ? "Tidak Boleh Kosong" : "",

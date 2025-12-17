@@ -1,11 +1,11 @@
 import React, {createContext, useContext, useMemo, useState} from "react";
-import type {ActivityItem, Priority, SubActivity} from "../types/activity"; // your types
+import type {ActivityItem, Priority, SubActivityItem} from "../types/activity"; // your types
 import {useActivities} from "./ActivityContext";
 import {accounts} from "../types/account.ts";
 import {useAccount} from "./AccountContext.tsx"; // Activity context hook
 
 interface SubActivityContextValue {
-    subActivities: SubActivity[];
+    subActivities: SubActivityItem[];
     addSubActivity: () => void;
     removeSubActivity: (id: string | null) => void;
     updateSubTitle: (id: string, title: string) => void;
@@ -33,7 +33,7 @@ export function SubActivityProvider({children, activityId}: { children: React.Re
 
     const addSubActivity = () => {
         if (!activity) return;
-        const newSub: SubActivity = {id: crypto.randomUUID(), title: "", priority: "Low", checked: false};
+        const newSub: SubActivityItem = {id: crypto.randomUUID(), title: "", priority: "Low", checked: false};
         const next = activities.map(a => a.id === activityId ? {
             ...a,
             subActivities: [...(a.subActivities ?? []), newSub]
@@ -89,7 +89,7 @@ export function SubActivityProvider({children, activityId}: { children: React.Re
 
     const {account} = useAccount()
     const isEditable = activity?.status != "DONE" && activity?.status != "DECLINED"
-    const isEditableByClient= isEditable && accounts[account]?.role == "engineer";
+    const isEditableByClient = isEditable && accounts[account]?.role == "engineer";
 
     const value = useMemo(() => ({
         subActivities,

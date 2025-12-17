@@ -15,32 +15,8 @@ export const PRIORITY_STYLES: Record<Priority, { border: string; bg: string; tex
     Urgent: {border: "border-red-500", bg: "bg-red-500", text: "text-red-800"},
 };
 
-export const MAX_CHAR_LEN = 50
+export const MAX_TITLE_CHAR_LEN = 50
 
 export const enabledStyle = (enabled: boolean) => {
     return enabled ? "bg-batumbured opacity-80 hover:opacity-100 cursor-pointer" : "bg-gray-500";
 }
-export const STATUS_LABEL: Record<ActivityStatus, string> = {
-    TODO: "Back to Backlog",
-    "IN PROGRESS": "Start",
-    DONE: "Mark as Done",
-    PENDING: "Put on Hold",
-    DECLINED: "Decline"
-};
-
-export const PRIMARY_NEXT: Record<ActivityStatus, ActivityStatus | null> = {
-    TODO: "IN PROGRESS",
-    "IN PROGRESS": "DONE",
-    DONE: "TODO",
-    PENDING: "IN PROGRESS",
-    DECLINED: null
-};
-
-export const SECONDARY_NEXT: Record<ActivityStatus, ActivityStatus | null> = {
-    TODO: "DECLINED",
-    "IN PROGRESS": "PENDING",
-    DONE: "DECLINED",
-    PENDING: "DECLINED",
-    DECLINED: null
-};
-

@@ -2,7 +2,7 @@ export type ActivityStatus = "TODO" | "IN PROGRESS" | "DONE" | "PENDING" | "DECL
 export type ActivityFilter = ActivityStatus | "All";
 export type Priority = "Low" | "Medium" | "High" | "Urgent";
 
-export interface SubActivity {
+export interface SubActivityItem {
     id: string;
     title: string;
     priority?: Priority;
@@ -13,7 +13,7 @@ export interface ActivityItem {
     id: string;
     title: string;
     status: ActivityStatus;
-    subActivities: SubActivity[];
+    subActivities: SubActivityItem[];
     description: string;
     creator: string;
 }

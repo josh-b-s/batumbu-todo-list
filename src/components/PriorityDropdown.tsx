@@ -74,7 +74,7 @@ export default function PriorityDropdown({
                 sx={{
                     borderRadius: "14px",
                 }}
-                className={disabled? "" : "opacity-80 hover:opacity-100"}
+                className={disabled ? "" : "opacity-80 hover:opacity-100"}
             >
                 <MenuItem value="Low">Low</MenuItem>
                 <MenuItem value="Medium">Medium</MenuItem>

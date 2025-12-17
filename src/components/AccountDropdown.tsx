@@ -30,7 +30,7 @@ export default function AccountDropdown({className = "", setShowModal}: {
             >
                 <AccountIcon sx={{fontSize: 50}}/>
             </Icon>
-            <p>
+            <p className="hidden sm:block">
                 {accounts[account]?.name}
             </p>
 
@@ -52,7 +52,7 @@ export default function AccountDropdown({className = "", setShowModal}: {
                         },
                     }
                 }}
-                onClick={(e) => e.stopPropagation()} // prevent parent clicks
+                onClick={(e) => e.stopPropagation()}
             >
                 <MenuItem onClick={() => {
                     setShowModal(true);

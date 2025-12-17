@@ -55,6 +55,8 @@ function ActivityBody(): JSX.Element {
         if (statusFilter === "All") return activities;
         return activities.filter((a) => a.status === statusFilter);
     }
+    const {account} = useAccount();
+    const {openAddModal} = useActivities();
 
     return (
         <div className="mt-10 mx-4 sm:mx-20 lg:mx-48">
@@ -72,7 +74,7 @@ function ActivityBody(): JSX.Element {
                 )}
                 <button
                     className="bg-batumbured rounded-xl w-full py-2 text-white font-bold opacity-80 hover:opacity-100 text-2xl cursor-pointer block sm:hidden"
-                    onClick={() => addActivities()}
+                    onClick={() => accounts[account]?.role == "engineer" ? addActivities() : openAddModal()}
                 >
                     + Tambah
                 </button>
@@ -134,7 +136,7 @@ function Activity({
                       activity,
                   }: ActivityProps): JSX.Element {
     const navigate = useNavigate();
-    const {id, title, status} = activity;
+    const {id, title, status, creator} = activity;
     const styles = STATUS_STYLES[status] ?? STATUS_STYLES.TODO;
     const {changeTitle, changeStatus, openDeleteModal, isEditableByClient} = useActivities()
 
@@ -145,20 +147,24 @@ function Activity({
             onClick={() => navigate(`/activities/${id}`)}
             role="group"
         >
-            <div className="flex flex-col min-w-0">
-                <p className={`font-bold text-left ${styles.text}`}>
-                    {status}
+            <div className="flex items-center space-x-2">
+                <div className="flex flex-col min-w-0">
+                    <p className={`font-bold text-left ${styles.text}`}>
+                        {status}
+                    </p>
+
+                    <input
+                        className={`truncate font-bold placeholder-black focus:placeholder-transparent field-sizing-content focus:p-1 `}
+                        value={title}
+                        onChange={(e) => changeTitle(id, e.target.value.length > MAX_CHAR_LEN ? title : e.target.value)}
+                        onClick={(e) => e.stopPropagation()}
+                        placeholder="Aktivitas Baru"
+                    />
+                </div>
+                <p className={`text-gray-500`}>
+                    by {creator}
                 </p>
-
-                <input
-                    className={`truncate font-bold placeholder-black focus:placeholder-transparent field-sizing-content focus:p-1 `}
-                    value={title}
-                    onChange={(e) => changeTitle(id, e.target.value.length > MAX_CHAR_LEN ? title : e.target.value)}
-                    onClick={(e) => e.stopPropagation()}
-                    placeholder="Aktivitas Baru"
-                />
             </div>
-
             <div className="space-x-2 flex items-center">
                 <button
                     className={`${isEditableByClient ? "block" : "hidden"} text-gray-500 cursor-pointer hover:text-gray-900 hover:underline`}

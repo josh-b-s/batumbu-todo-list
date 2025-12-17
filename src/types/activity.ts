@@ -15,4 +15,5 @@ export interface ActivityItem {
     status: ActivityStatus;
     subActivities: SubActivity[];
     description: string;
+    creator: string;
 }

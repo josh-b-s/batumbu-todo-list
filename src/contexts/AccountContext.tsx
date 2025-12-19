@@ -8,7 +8,7 @@ export interface AccountContextValue {
     logout: () => void;
 }
 
-const AccountContext = createContext<AccountContextValue | undefined>(undefined);
+export const AccountContext = createContext<AccountContextValue | undefined>(undefined);
 
 export function AccountProvider({children}: { children: React.ReactNode }) {
     const [account, setAccount] = useState(() => {

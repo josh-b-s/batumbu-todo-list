@@ -3,17 +3,16 @@ import {useNavigate} from "react-router-dom";
 import Header from "../components/Header";
 import NoActivities from "../components/NoActivities";
 import ConfirmModal from "../components/ConfirmModal";
-import StatusDropdown from "../components/StatusDropdown.tsx";
 import {useAccount} from "../contexts/AccountContext.tsx";
 import {useActivityFilter} from "../contexts/ActivityFilterContext.tsx";
 import {useActivities} from "../contexts/ActivityContext.tsx";
-import {ActivityItem, ActivityStatus} from "../types/activity.ts";
+import {ActivityFilter, ActivityItem, ActivityStatus, statusDropdownActions} from "../types/activity.ts";
 import {MAX_TITLE_CHAR_LEN, STATUS_STYLES} from "../consts.ts";
 import {accounts} from "../types/account.ts";
 import AddActivityModal from "../components/AddActivityModal.tsx";
 import AddActivityButtonMobile from "../components/AddActivityButtonMobile.tsx";
 import AddActivityButton from "../components/AddActivityButton.tsx";
-import ActivityList from "../components/ActivityList.tsx";
+import ActivityDropdown from "../components/ActivityDropdown.tsx";
 
 export default function ActivityPage() {
     const navigate = useNavigate();
@@ -59,7 +58,9 @@ function ActivityBody() {
     const {statusFilter} = useActivityFilter();
 
     const filteredActivities = () => {
+        console.log(statusFilter);
         if (statusFilter === "All") return activities;
+        console.log(activities.filter((a) => a.status === statusFilter));
         return activities.filter((a) => a.status === statusFilter);
     }
     const noActivities = filteredActivities().length <= 0
@@ -74,7 +75,9 @@ function ActivityBody() {
 
             <div className="mt-4">
                 {noActivities && <NoActivities/>}
-                {!noActivities && <ActivityList activities={filteredActivities()} ActivityElement={Activity}/>}
+                {!noActivities && filteredActivities().map((activity) => (
+                    <Activity key={activity.id} activity={activity}/>
+                ))}
 
                 <AddActivityButtonMobile
                     onClick={() => accounts[account]?.role == "engineer" ? addActivities() : openAddModal()}/>
@@ -92,8 +95,10 @@ function ActivityHeader() {
         <div className="flex justify-between space-x-5">
             <h2 className="text-3xl sm:text-4xl font-bold">Aktivitas</h2>
             <div className="flex items-center space-x-2">
-                <StatusDropdown value={statusFilter} onChange={(newStatus) => setStatusFilter(newStatus)}
-                                className={`bg-batumbured rounded-3xl opacity-80 hover:opacity-100`} filter={true}/>
+                <ActivityDropdown value={statusFilter}
+                                  onChange={(newStatus) => setStatusFilter(newStatus as ActivityFilter)}
+                                  className={`bg-batumbured rounded-3xl opacity-80 hover:opacity-100`} filter={true}
+                                  actions={statusDropdownActions}/>
 
                 <AddActivityButton
                     onClick={() => accounts[account]?.role == "engineer" ? addActivities() : openAddModal()}/>
@@ -146,8 +151,9 @@ function Activity({activity,}: { activity: ActivityItem }) {
                     Delete
                 </button>
 
-                <StatusDropdown value={status} onChange={(newStatus) => changeStatus(id, newStatus as ActivityStatus)}
-                                className={`${isEditableByClient ? "block" : "hidden"} bg-batumbured rounded-xl mr-2 opacity-80 hover:opacity-100`}/>
+                <ActivityDropdown value={status} onChange={(newStatus) => changeStatus(id, newStatus as ActivityStatus)}
+                                  className={`${isEditableByClient ? "block" : "hidden"} bg-batumbured rounded-xl mr-2 opacity-80 hover:opacity-100`}
+                                  actions={statusDropdownActions}/>
 
             </div>
         </div>

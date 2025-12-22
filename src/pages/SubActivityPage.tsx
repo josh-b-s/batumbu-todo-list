@@ -2,17 +2,16 @@ import React, {useEffect} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import Header from "../components/Header";
 import NoActivities from "../components/NoActivities";
-import PriorityDropdown from "../components/PriorityDropdown";
 import ConfirmModal from "../components/ConfirmModal";
 import {useAccount} from "../contexts/AccountContext.tsx";
-import {SubActivityItem} from "../types/activity.ts";
+import {Priority, priorityDropdownActions, SubActivityItem} from "../types/activity.ts";
 import {useActivities} from "../contexts/ActivityContext.tsx";
 import {SubActivityProvider, useSubActivities} from "../contexts/SubActivityContext.tsx";
 import {MAX_TITLE_CHAR_LEN, PRIORITY_STYLES} from "../consts.ts";
 import AddActivityButtonMobile from "../components/AddActivityButtonMobile.tsx";
 import AddActivityButton from "../components/AddActivityButton.tsx";
-import ActivityList from "../components/ActivityList.tsx";
 import SubActivityDescBox from "../components/SubActivityDescBox.tsx";
+import ActivityDropdown from "../components/ActivityDropdown.tsx";
 
 
 export default function SubActivityPage() {
@@ -66,7 +65,9 @@ function SubActivityBody({activityId}: { activityId: string }) {
             <div className="mt-4">
                 <SubActivityDescBox activityId={activityId}/>
                 {noActivities && <NoActivities/>}
-                {!noActivities && <ActivityList activities={subActivities} ActivityElement={SubActivity}/>}
+                {!noActivities && subActivities.map((activity) => (
+                    <SubActivity key={activity.id} activity={activity}/>
+                ))}
                 <AddActivityButtonMobile onClick={addSubActivity} enabled={enabled}/>
             </div>
             <ConfirmModal
@@ -120,6 +121,7 @@ function SubActivity({
     const styles = PRIORITY_STYLES[priority] ?? PRIORITY_STYLES.Low;
     const titleClasses = checked ? "font-bold line-through text-gray-400 opacity-70 placeholder-gray-400" : "font-bold text-gray-900";
 
+
     return (
         <div
             className={`bg-white mb-2 rounded-xl p-4 flex justify-between items-center w-full border-2 ${styles.border} space-x-5`}>
@@ -139,9 +141,10 @@ function SubActivity({
             </div>
 
             <div className="flex items-center">
-                <PriorityDropdown value={priority} onChange={(newP) => changePriority(id, newP)}
+                <ActivityDropdown value={priority} onChange={(newP) => changePriority(id, newP as Priority)}
                                   className={`${styles.bg} rounded-xl mr-2`}
-                                  disabled={!isEditableByClient}/>
+                                  disabled={!isEditableByClient}
+                                  actions={priorityDropdownActions}/>
 
                 <button
                     className={`${isEditableByClient ? "block" : "hidden"} text-gray-500 cursor-pointer hover:text-gray-900 hover:underline`}

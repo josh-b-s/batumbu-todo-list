@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import NoActivities from "../components/NoActivities";
 import ConfirmModal from "../components/ConfirmModal";
 import {useAccount} from "../contexts/AccountContext.tsx";
-import {Priority, priorityDropdownActions, SubActivityItem} from "../types/activity.ts";
+import {Priority, priorityDropdownChoices, SubActivityItem} from "../types/activity.ts";
 import {useActivities} from "../contexts/ActivityContext.tsx";
 import {SubActivityProvider, useSubActivities} from "../contexts/SubActivityContext.tsx";
 import {MAX_TITLE_CHAR_LEN, PRIORITY_STYLES} from "../consts.ts";
@@ -144,7 +144,7 @@ function SubActivity({
                 <ActivityDropdown value={priority} onChange={(newP) => changePriority(id, newP as Priority)}
                                   className={`${styles.bg} rounded-xl mr-2`}
                                   disabled={!isEditableByClient}
-                                  actions={priorityDropdownActions}/>
+                                  choices={priorityDropdownChoices}/>
 
                 <button
                     className={`${isEditableByClient ? "block" : "hidden"} text-gray-500 cursor-pointer hover:text-gray-900 hover:underline`}

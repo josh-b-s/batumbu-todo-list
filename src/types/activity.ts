@@ -18,12 +18,12 @@ export interface ActivityItem {
     creator: string;
 }
 
-export const statusDropdownActions = [{label: "TODO", value: "TODO"}, {
+export const statusDropdownChoices = [{label: "TODO", value: "TODO"}, {
     label: "IN PROGRESS",
     value: "IN PROGRESS"
 }, {label: "DONE", value: "DONE"}, {label: "PENDING", value: "PENDING"}, {label: "DECLINED", value: "DECLINED"}]
 
-export const priorityDropdownActions = [{label: "Low", value: "Low"}, {
+export const priorityDropdownChoices = [{label: "Low", value: "Low"}, {
     label: "Medium",
     value: "Medium"
 }, {label: "High", value: "High"}, {label: "Urgent", value: "Urgent"}]

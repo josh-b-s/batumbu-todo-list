@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import ActivityPage from "./ActivityPage";
+import ActivityPage from "../pages/ActivityPage.tsx";
 
 const mockNavigate = vi.fn();
 const useAccountMock = vi.fn();

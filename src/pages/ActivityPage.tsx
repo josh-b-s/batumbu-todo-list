@@ -6,7 +6,7 @@ import ConfirmModal from "../components/ConfirmModal";
 import {useAccount} from "../contexts/AccountContext.tsx";
 import {useActivityFilter} from "../contexts/ActivityFilterContext.tsx";
 import {useActivities} from "../contexts/ActivityContext.tsx";
-import {ActivityFilter, ActivityItem, ActivityStatus, statusDropdownActions} from "../types/activity.ts";
+import {ActivityFilter, ActivityItem, ActivityStatus, statusDropdownChoices} from "../types/activity.ts";
 import {MAX_TITLE_CHAR_LEN, STATUS_STYLES} from "../consts.ts";
 import {accounts} from "../types/account.ts";
 import AddActivityModal from "../components/AddActivityModal.tsx";
@@ -98,7 +98,7 @@ function ActivityHeader() {
                 <ActivityDropdown value={statusFilter}
                                   onChange={(newStatus) => setStatusFilter(newStatus as ActivityFilter)}
                                   className={`bg-batumbured rounded-3xl opacity-80 hover:opacity-100`} filter={true}
-                                  actions={statusDropdownActions}/>
+                                  choices={statusDropdownChoices}/>
 
                 <AddActivityButton
                     onClick={() => accounts[account]?.role == "engineer" ? addActivities() : openAddModal()}/>
@@ -153,7 +153,7 @@ function Activity({activity,}: { activity: ActivityItem }) {
 
                 <ActivityDropdown value={status} onChange={(newStatus) => changeStatus(id, newStatus as ActivityStatus)}
                                   className={`${isEditableByClient ? "block" : "hidden"} bg-batumbured rounded-xl mr-2 opacity-80 hover:opacity-100`}
-                                  actions={statusDropdownActions}/>
+                                  choices={statusDropdownChoices}/>
 
             </div>
         </div>

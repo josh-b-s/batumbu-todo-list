@@ -8,7 +8,7 @@ interface ActivityDropdownProps {
     className?: string;
     filter?: boolean;
     disabled?: boolean;
-    actions: {label: string; value: string}[];
+    choices: {label: string; value: string}[];
 }
 
 export default function ActivityDropdown({
@@ -18,7 +18,7 @@ export default function ActivityDropdown({
                                              className = "",
                                              filter = false,
                                              disabled = false,
-                                             actions
+                                             choices
                                          }: ActivityDropdownProps): JSX.Element {
     const [openStyle, setOpenStyle] = React.useState<String>("")
 
@@ -86,7 +86,7 @@ export default function ActivityDropdown({
             >
 
                 {filter ? <MenuItem value="All">All</MenuItem> : null}
-                {actions.map((item, index) => (<MenuItem key={index} value={item.value}>{item.label}</MenuItem> ))}
+                {choices.map((item, index) => (<MenuItem key={index} value={item.value}>{item.label}</MenuItem> ))}
             </Select>
         </FormControl>
     );

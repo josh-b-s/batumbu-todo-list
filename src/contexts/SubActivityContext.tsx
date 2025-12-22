@@ -4,7 +4,7 @@ import {useActivities} from "./ActivityContext";
 import {accounts} from "../types/account.ts";
 import {useAccount} from "./AccountContext.tsx"; // Activity context hook
 
-interface SubActivityContextValue {
+export interface SubActivityContextValue {
     subActivities: SubActivityItem[];
     addSubActivity: () => void;
     removeSubActivity: (id: string | null) => void;
@@ -21,7 +21,7 @@ interface SubActivityContextValue {
     isEditableByClient: boolean
 }
 
-const SubActivityContext = createContext<SubActivityContextValue | undefined>(undefined);
+export const SubActivityContext = createContext<SubActivityContextValue | undefined>(undefined);
 
 export function SubActivityProvider({children, activityId}: { children: React.ReactNode; activityId: string }) {
     const {activities, setActivities} = useActivities();

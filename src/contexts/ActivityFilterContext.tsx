@@ -6,7 +6,7 @@ export interface ActivityFilterContextValue {
     setStatusFilter: (filter: ActivityFilter) => void;
 }
 
-const ActivityFilterContext = createContext<ActivityFilterContextValue | undefined>(undefined);
+export const ActivityFilterContext = createContext<ActivityFilterContextValue | undefined>(undefined);
 
 export function ActivityFilterProvider({children}: { children: React.ReactNode }) {
     const [statusFilter, setStatusFilter] = useState<ActivityFilter>("All")

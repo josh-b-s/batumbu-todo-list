@@ -3,7 +3,7 @@ import type {ActivityItem, ActivityStatus} from "../types/activity";
 import {accounts} from "../types/account.ts";
 import {useAccount} from "./AccountContext.tsx"; // adjust path/type
 
-interface ActivityContextValue {
+export interface ActivityContextValue {
     activities: ActivityItem[];
     setActivities: React.Dispatch<React.SetStateAction<ActivityItem[]>>;
     addActivities: (title?: string, description?: string) => void;
@@ -21,7 +21,7 @@ interface ActivityContextValue {
     showAddModal: boolean,
 }
 
-const ActivityContext = createContext<ActivityContextValue | undefined>(undefined);
+export const ActivityContext = createContext<ActivityContextValue | undefined>(undefined);
 
 export function ActivityProvider({children}: { children: React.ReactNode }) {
     const STORAGE_KEY = `batumbu.activities`

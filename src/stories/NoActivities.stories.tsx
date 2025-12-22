@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
-import { MockActivityFilterProvider } from "../stories/MockProviders";
-import NoActivities from "./NoActivities";
+import { MockActivityFilterProvider } from "./MockProviders.tsx";
+import NoActivities from "../components/NoActivities.tsx";
 
 const meta: Meta<typeof NoActivities> = {
   title: "Components/NoActivities",

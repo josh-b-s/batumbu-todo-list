@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
-import { MockAccountProvider } from "../stories/MockProviders";
-import Header from "./Header";
+import { MockAccountProvider } from "./MockProviders.tsx";
+import Header from "../components/Header.tsx";
 
 const meta: Meta<typeof Header> = {
   title: "Components/Header",

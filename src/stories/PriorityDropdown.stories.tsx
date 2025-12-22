@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import PriorityDropdown from "./PriorityDropdown";
+import { fn } from "storybook/test";
+import PriorityDropdown from "../components/PriorityDropdown.tsx";
 
 const meta: Meta<typeof PriorityDropdown> = {
   title: "Components/PriorityDropdown",

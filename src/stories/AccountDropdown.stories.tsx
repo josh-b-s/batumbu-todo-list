@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
+import { fn } from "storybook/test";
 import React from "react";
-import { MockAccountProvider } from "../stories/MockProviders";
-import AccountDropdown from "./AccountDropdown";
+import { MockAccountProvider } from "./MockProviders.tsx";
+import AccountDropdown from "../components/AccountDropdown.tsx";
 
 const meta: Meta<typeof AccountDropdown> = {
   title: "Components/AccountDropdown",

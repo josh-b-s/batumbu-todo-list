@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import AddActivityButton from "./AddActivityButton";
+import { fn } from "storybook/test";
+import AddActivityButton from "../components/AddActivityButton.tsx";
 
 const meta: Meta<typeof AddActivityButton> = {
   title: "Components/AddActivityButton",

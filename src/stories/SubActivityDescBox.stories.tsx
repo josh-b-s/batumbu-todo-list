@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
+import { fn } from "storybook/test";
 import React from "react";
 import {
   MockActivityProvider,
   MockSubActivityProvider,
   mockActivity,
-} from "../stories/MockProviders";
-import SubActivityDescBox from "./SubActivityDescBox";
+} from "./MockProviders.tsx";
+import SubActivityDescBox from "../components/SubActivityDescBox.tsx";
 
 const meta: Meta<typeof SubActivityDescBox> = {
   title: "Components/SubActivityDescBox",

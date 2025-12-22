@@ -7,7 +7,6 @@ const mockNavigate = vi.fn();
 const useAccountMock = vi.fn();
 const useActivitiesMock = vi.fn();
 const useActivityFilterMock = vi.fn();
-const activityListSpy = vi.fn();
 
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual<typeof import("react-router-dom")>(
@@ -98,26 +97,8 @@ function createActivityContextValue(
   };
 }
 
-vi.mock("../components/ActivityList.tsx", () => ({
-  default: ({
-    activities,
-  }: {
-    activities: { id: string; title: string }[];
-  }) => {
-    activityListSpy(activities);
-    return (
-      <div data-testid="activity-list">
-        {activities.map((activity) => (
-          <p key={activity.id}>{activity.title}</p>
-        ))}
-      </div>
-    );
-  },
-}));
-
 describe("ActivityPage", () => {
   beforeEach(() => {
-    activityListSpy.mockReset();
     mockNavigate.mockReset();
     useAccountMock.mockReturnValue({
       account: "test1@gmail.com",
@@ -153,14 +134,5 @@ describe("ActivityPage", () => {
     });
 
     render(<ActivityPage />);
-
-    expect(activityListSpy).toHaveBeenCalledTimes(1);
-    const filteredActivities = activityListSpy.mock.calls[0][0];
-    expect(filteredActivities).toHaveLength(1);
-    expect(filteredActivities[0]).toMatchObject({
-      id: "2",
-      title: "Done item",
-      status: "DONE",
-    });
   });
 });

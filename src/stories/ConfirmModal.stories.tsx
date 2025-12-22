@@ -1,6 +1,7 @@
 import type {Meta, StoryObj} from "@storybook/react";
-import {fn} from "@storybook/test";
-import ConfirmModal from "./ConfirmModal";
+import {fn} from "storybook/test";
+import ConfirmModal from "../components/ConfirmModal.tsx";
+import React from "react";
 
 const meta: Meta<typeof ConfirmModal> = {
   title: "Components/ConfirmModal",

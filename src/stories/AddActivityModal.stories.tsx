@@ -1,6 +1,7 @@
 import type {Meta, StoryObj} from "@storybook/react";
-import AddActivityModal from "./AddActivityModal";
-import {MockActivityProvider} from "../stories/MockProviders";
+import AddActivityModal from "../components/AddActivityModal.tsx";
+import {MockActivityProvider} from "./MockProviders.tsx";
+import React from "react";
 
 const meta: Meta<typeof AddActivityModal> = {
   title: "Components/AddActivityModal",

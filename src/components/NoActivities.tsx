@@ -1,5 +1,4 @@
 import React, {JSX} from "react";
-import search from "../assets/Search.png";
 import {useActivityFilter} from "../contexts/ActivityFilterContext.tsx";
 
 /**
@@ -12,7 +11,6 @@ export default function NoActivities(): JSX.Element {
 
     return (
         <div className="py-5 mb-5">
-            <img className="size-50 mx-auto my-7" src={search} alt="No activities found"/>
             <p className="text-2xl text-gray-600 font-medium text-center">{`Belum ada Aktivitas ${extra}`}</p>
         </div>
     );

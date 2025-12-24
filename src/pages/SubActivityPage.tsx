@@ -7,11 +7,12 @@ import {useAccount} from "../contexts/AccountContext.tsx";
 import {Priority, priorityDropdownChoices, SubActivityItem} from "../types/activity.ts";
 import {useActivities} from "../contexts/ActivityContext.tsx";
 import {SubActivityProvider, useSubActivities} from "../contexts/SubActivityContext.tsx";
-import {MAX_TITLE_CHAR_LEN, PRIORITY_STYLES} from "../consts.ts";
+import {MAX_TITLE_CHAR_LEN, placeholderColor, PRIORITY_STYLES, secondaryBgColor} from "../consts.ts";
 import AddActivityButtonMobile from "../components/AddActivityButtonMobile.tsx";
 import AddActivityButton from "../components/AddActivityButton.tsx";
 import SubActivityDescBox from "../components/SubActivityDescBox.tsx";
 import ActivityDropdown from "../components/ActivityDropdown.tsx";
+import {FaArrowLeft} from "react-icons/fa";
 
 
 export default function SubActivityPage() {
@@ -94,9 +95,7 @@ function ActivityHeader() {
     return (
         <div className="flex justify-between items-center space-x-5">
             <div className="flex items-center gap-4 min-w-0">
-                <button onClick={() => navigate(-1)} className="text-5xl opacity-70 hover:opacity-100 cursor-pointer">
-                    ←
-                </button>
+                <FaArrowLeft onClick={() => navigate(-1)} className="text-3xl opacity-70 hover:opacity-100 cursor-pointer"/>
                 <h2 className="text-3xl sm:text-4xl font-bold truncate">{activity?.title || "Aktivitas Baru"}</h2>
             </div>
 
@@ -119,12 +118,12 @@ function SubActivity({
     } = useSubActivities();
     const {id, title = "", priority = "Low", checked = false} = activity;
     const styles = PRIORITY_STYLES[priority] ?? PRIORITY_STYLES.Low;
-    const titleClasses = checked ? "font-bold line-through text-gray-400 opacity-70 placeholder-gray-400" : "font-bold text-gray-900";
+    const titleClasses = checked ? "line-through opacity-50" : "";
 
 
     return (
         <div
-            className={`bg-white mb-2 rounded-xl p-4 flex justify-between items-center w-full border-2 ${styles.border} space-x-5`}>
+            className={secondaryBgColor + ` mb-2 rounded-xl p-4 flex justify-between items-center w-full border-2 ${styles.border} space-x-5`}>
             <div className="flex items-center gap-3">
                 <input id={`chk-${id}`} type="checkbox" checked={checked} onChange={() => toggleChecked(id)}
                        className="h-5 w-5"
@@ -132,7 +131,7 @@ function SubActivity({
                 />
 
                 <input
-                    className={`${titleClasses} truncate placeholder-black focus:placeholder:opacity-0 flex-1 bg-transparent field-sizing-content focus:p-1`}
+                    className={`${titleClasses} ${placeholderColor} font-bold truncate flex-1 bg-transparent field-sizing-content focus:p-1`}
                     value={title}
                     onChange={(e) => updateSubTitle(id, e.target.value.length > MAX_TITLE_CHAR_LEN ? title : e.target.value)}
                     placeholder="Aktivitas Baru"
@@ -147,7 +146,7 @@ function SubActivity({
                                   choices={priorityDropdownChoices}/>
 
                 <button
-                    className={`${isEditableByClient ? "block" : "hidden"} text-gray-500 cursor-pointer hover:text-gray-900 hover:underline`}
+                    className={`${isEditableByClient ? "block" : "hidden"} not-hover:opacity-50 cursor-pointer hover:underline`}
                     onClick={() => openDeleteModal(id)}
                 >
                     Delete

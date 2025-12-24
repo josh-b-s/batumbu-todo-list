@@ -6,8 +6,17 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>batumbu-todo-list</title>
 </head>
-<body class="bg-gray-200">
+<body class="bg-gray-200 dark:bg-gray-900 dark:text-white">
 <div id="root"></div>
+<script>
+  const theme = localStorage.getItem("theme") || "light";
+  document.documentElement.dataset.theme = theme;
+
+  window.addEventListener("load", () => {
+    document.documentElement.classList.add("theme-transition");
+  });
+</script>
+
 <script src="/src/main.jsx" type="module"></script>
 </body>
 </html>

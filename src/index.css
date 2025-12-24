@@ -1,5 +1,10 @@
 @import "tailwindcss";
+@custom-variant dark (&:where([data-theme=Dark], [data-theme=Dark] *));
 
 @theme {
     --color-batumbured: #C42127;
+}
+
+.theme-transition * {
+    transition: background-color 300ms ease, color 300ms ease;
 }

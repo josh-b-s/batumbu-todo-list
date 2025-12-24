@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import show from "../assets/show.png";
-import hide from "../assets/hide.png";
 import {useAccount} from "../contexts/AccountContext.tsx";
 import {accounts} from "../types/account.ts";
-
+import {MdOutlineRemoveRedEye} from "react-icons/md";
+import {FaRegEyeSlash} from "react-icons/fa";
+import {secondaryBgColor} from "../consts.ts";
 
 export default function LoginPage() {
     const navigate = useNavigate();
@@ -58,9 +58,9 @@ export default function LoginPage() {
     }, [account, navigate]);
 
     return (
-        <div className="flex items-center justify-center h-screen bg-white sm:bg-transparent">
+        <div className="flex items-center justify-center h-screen sm:bg-transparent">
             <form onSubmit={handleSubmit}
-                  className="p-7 bg-white space-y-4 w-full sm:w-100 sm:rounded-xl sm:shadow-2xl flex flex-col items-center">
+                  className={secondaryBgColor + " p-7 space-y-4 w-full sm:w-100 sm:rounded-xl sm:shadow-2xl flex flex-col items-center"}>
                 <h1 className="font-bold text-center text-2xl">Batumbu Internship Management</h1>
                 <div className={"w-full space-y-3"}>
                     <label>Email</label>
@@ -101,8 +101,8 @@ export default function LoginPage() {
                             aria-pressed={showPassword}
                             aria-label={showPassword ? "Hide password" : "Show password"}
                         >
-                            {showPassword ? <img src={hide} alt="hide" className="h-5 w-5"/> :
-                                <img src={show} alt="show" className="h-5 w-5"/>}
+                            {showPassword ? <FaRegEyeSlash size={"1.25em"}/> :
+                                <MdOutlineRemoveRedEye size={"1.25em"}/>}
                         </button>
                     </div>
 

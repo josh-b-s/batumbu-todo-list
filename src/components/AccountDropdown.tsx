@@ -22,13 +22,13 @@ export default function AccountDropdown({className = "", setShowModal}: {
     };
 
     return (
-        <div className={`${className} ${openStyle} flex items-center space-x-2 font-bold text-white`}
+        <div className={`${className} ${openStyle} flex items-center space-x-2 font-medium text-white`}
              onClick={handleOpen}>
             <Icon
                 aria-label="account"
-                sx={{bgcolor: "transparent", color: "white", width: 48, height: 48}}
+                sx={{bgcolor: "transparent", color: "white", width: 40, height: 40}}
             >
-                <AccountIcon sx={{fontSize: 50}}/>
+                <AccountIcon sx={{fontSize: 40}}/>
             </Icon>
             <p className="hidden sm:block">
                 {accounts[account]?.name}

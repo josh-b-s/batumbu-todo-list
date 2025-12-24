@@ -1,5 +1,6 @@
 import React, {JSX} from "react";
 import {Box, Modal} from "@mui/material";
+import {secondaryBgColor} from "../consts.ts";
 
 interface ConfirmModalProps {
     open: boolean;
@@ -28,7 +29,7 @@ export default function ConfirmModal({
                                          confirmClassName =
                                          "bg-batumbured rounded-xl text-white font-bold opacity-80 hover:opacity-100 cursor-pointer px-6 py-2",
                                          cancelClassName =
-                                         "bg-gray-300 rounded-xl font-bold opacity-80 hover:opacity-100 cursor-pointer px-6 py-2",
+                                         "text-black bg-gray-300 rounded-xl font-bold opacity-80 hover:opacity-100 cursor-pointer px-6 py-2",
                                          children = null,
                                      }: ConfirmModalProps): JSX.Element {
     return (
@@ -59,7 +60,7 @@ export default function ConfirmModal({
                     outline: "none",
                     width: "calc(100% - 24px)"
                 }}
-                className="bg-white rounded-xl p-6"
+                className={"rounded-xl p-6 " + secondaryBgColor}
             >
                 <p id="confirm-modal-title" className="text-center font-bold text-2xl truncate whitespace-normal">
                     {title}

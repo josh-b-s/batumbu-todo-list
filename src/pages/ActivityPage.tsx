@@ -7,7 +7,7 @@ import {useAccount} from "../contexts/AccountContext.tsx";
 import {useActivityFilter} from "../contexts/ActivityFilterContext.tsx";
 import {useActivities} from "../contexts/ActivityContext.tsx";
 import {ActivityFilter, ActivityItem, ActivityStatus, statusDropdownChoices} from "../types/activity.ts";
-import {MAX_TITLE_CHAR_LEN, STATUS_STYLES} from "../consts.ts";
+import {MAX_TITLE_CHAR_LEN, placeholderColor, secondaryBgColor, STATUS_STYLES} from "../consts.ts";
 import {accounts} from "../types/account.ts";
 import AddActivityModal from "../components/AddActivityModal.tsx";
 import AddActivityButtonMobile from "../components/AddActivityButtonMobile.tsx";
@@ -118,7 +118,7 @@ function Activity({activity,}: { activity: ActivityItem }) {
 
     return (
         <div
-            className={`bg-white mb-2 gap-3 rounded-xl p-4 flex justify-between items-center w-full cursor-pointer ${styles.border}`}
+            className={`${secondaryBgColor} mb-2 gap-3 rounded-xl p-4 flex justify-between items-center w-full cursor-pointer ${styles.border}`}
             onClick={() => navigate(`/activities/${id}`)}
             role="group"
         >
@@ -129,7 +129,7 @@ function Activity({activity,}: { activity: ActivityItem }) {
                     </p>
 
                     <input
-                        className={`truncate font-bold placeholder-black focus:placeholder-transparent field-sizing-content focus:p-1 `}
+                        className={placeholderColor + `truncate font-bold field-sizing-content focus:p-1 `}
                         value={title}
                         onChange={(e) => changeTitle(id, e.target.value.length > MAX_TITLE_CHAR_LEN ? title : e.target.value)}
                         onClick={(e) => e.stopPropagation()}
@@ -142,7 +142,7 @@ function Activity({activity,}: { activity: ActivityItem }) {
             </div>
             <div className="space-x-2 flex items-center">
                 <button
-                    className={`${isEditableByClient ? "block" : "hidden"} text-gray-500 cursor-pointer hover:text-gray-900 hover:underline`}
+                    className={`${isEditableByClient ? "block" : "hidden"} not-hover:opacity-50 cursor-pointer hover:underline`}
                     onClick={(e) => {
                         e.stopPropagation();
                         openDeleteModal(id);

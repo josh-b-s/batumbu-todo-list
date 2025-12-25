@@ -1,3 +1,5 @@
+import {User, UserComment} from "./account.ts";
+
 export type ActivityStatus = "TODO" | "IN PROGRESS" | "DONE" | "PENDING" | "DECLINED";
 export type ActivityFilter = ActivityStatus | "All";
 export type Priority = "Low" | "Medium" | "High" | "Urgent";
@@ -15,7 +17,11 @@ export interface ActivityItem {
     status: ActivityStatus;
     subActivities: SubActivityItem[];
     description: string;
-    creator: string;
+    creator: User;
+    assignee: User | null;
+    creationDate: Date;
+    dueDate: Date | null;
+    comments: UserComment[];
 }
 
 export const statusDropdownChoices = [{label: "TODO", value: "TODO"}, {

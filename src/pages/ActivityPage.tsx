@@ -13,6 +13,10 @@ import AddActivityModal from "../components/AddActivityModal.tsx";
 import AddActivityButtonMobile from "../components/AddActivityButtonMobile.tsx";
 import AddActivityButton from "../components/AddActivityButton.tsx";
 import ActivityDropdown from "../components/ActivityDropdown.tsx";
+import {formatDate} from "../helpers/formatDate.ts";
+import {FaRegCalendar, FaRegCalendarCheck} from "react-icons/fa";
+import {BiSolidComment} from "react-icons/bi";
+import {IoPerson} from "react-icons/io5";
 
 export default function ActivityPage() {
     const navigate = useNavigate();
@@ -111,7 +115,7 @@ function ActivityHeader() {
 
 function Activity({activity,}: { activity: ActivityItem }) {
     const navigate = useNavigate();
-    const {id, title, status, creator} = activity;
+    const {id, title, status, creationDate, dueDate, assignee, comments} = activity;
     const styles = STATUS_STYLES[status] ?? STATUS_STYLES.TODO;
     const {changeTitle, changeStatus, openDeleteModal, isEditableByClient} = useActivities()
 
@@ -122,23 +126,46 @@ function Activity({activity,}: { activity: ActivityItem }) {
             onClick={() => navigate(`/activities/${id}`)}
             role="group"
         >
-            <div className="flex items-center space-x-2">
-                <div className="flex flex-col min-w-0">
-                    <p className={`font-bold text-left ${styles.text}`}>
-                        {status}
-                    </p>
-
-                    <input
-                        className={placeholderColor + `truncate font-bold field-sizing-content focus:p-1 `}
-                        value={title}
-                        onChange={(e) => changeTitle(id, e.target.value.length > MAX_TITLE_CHAR_LEN ? title : e.target.value)}
-                        onClick={(e) => e.stopPropagation()}
-                        placeholder="Aktivitas Baru"
-                    />
-                </div>
-                <p className={`text-gray-500`}>
-                    by {creator}
+            <div className="flex flex-col min-w-0 gap-2">
+                <p className={`text-xs text-left ${styles.text}`}>
+                    {status}
                 </p>
+
+                <input
+                    className={placeholderColor + `truncate font-bold field-sizing-content self-start w-auto max-w-full`}
+                    value={title}
+                    onChange={(e) => changeTitle(id, e.target.value.length > MAX_TITLE_CHAR_LEN ? title : e.target.value)}
+                    onClick={(e) => e.stopPropagation()}
+                    placeholder="Aktivitas Baru"
+                />
+
+
+                <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-1">
+                        <FaRegCalendarCheck size={"0.75em"}/>
+                        <p className={`text-xs`}>
+                            {formatDate(creationDate)}
+                        </p>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                        <FaRegCalendar size={"0.75em"}/>
+                        <p className={`text-xs`}>
+                            {dueDate ? formatDate(dueDate) : "-"}
+                        </p>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                        <BiSolidComment size={"0.75em"}/>
+                        <p className={`text-xs`}>
+                            {comments.length}
+                        </p>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                        <IoPerson size={"0.75em"}/>
+                        <p className={`text-xs`}>
+                            {assignee ? assignee.name : "-"}
+                        </p>
+                    </div>
+                </div>
             </div>
             <div className="space-x-2 flex items-center">
                 <button

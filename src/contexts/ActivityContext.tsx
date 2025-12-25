@@ -58,7 +58,11 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
                 status: "TODO",
                 subActivities: [],
                 description: description,
-                creator: accounts[account]?.name,
+                creator: accounts[account],
+                assignee: null,
+                creationDate: new Date(),
+                dueDate: null,
+                comments:[]
             },
         ]);
     };

@@ -80,7 +80,7 @@ export default function SubActivityDescBox({activityId}: { activityId: string })
     return (
         <div className={`${secondaryBgColor} rounded-xl p-3 mb-2`}>
             <div className="flex items-center justify-between mb-2">
-                <p className="text-gray-500 font-bold">Deskripsi</p>
+                <p>Deskripsi</p>
 
                 <div className="flex items-center gap-2">
                     {!editing ? (
@@ -88,6 +88,7 @@ export default function SubActivityDescBox({activityId}: { activityId: string })
                             onClick={onEdit}
                             className="bg-batumbured rounded-md text-white font-bold px-3 py-1"
                             type="button"
+                            key={"edit"}
                         >
                             Edit
                         </button>
@@ -102,7 +103,7 @@ export default function SubActivityDescBox({activityId}: { activityId: string })
                             </button>
                             <button
                                 onClick={onCancel}
-                                className="bg-batumbured rounded-md font-bold px-3 py-1"
+                                className="bg-batumbured text-white rounded-md font-bold px-3 py-1"
                                 type="button"
                             >
                                 Cancel

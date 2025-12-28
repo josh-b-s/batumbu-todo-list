@@ -162,7 +162,7 @@ function Activity({activity,}: { activity: ActivityItem }) {
                     <div className="flex items-center space-x-1">
                         <IoPerson size={"0.75em"}/>
                         <p className={`text-xs`}>
-                            {assignee ? assignee.name : "-"}
+                            {assignee?.name ? assignee.name : "-"}
                         </p>
                     </div>
                 </div>

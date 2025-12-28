@@ -1,6 +1,6 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
 import type {ActivityItem, ActivityStatus} from "../types/activity";
-import {accounts} from "../types/account.ts";
+import {accounts, User} from "../types/account.ts";
 import {useAccount} from "./AccountContext.tsx"; // adjust path/type
 
 export interface ActivityContextValue {
@@ -22,6 +22,7 @@ export interface ActivityContextValue {
     openAddModal: () => void;
     closeAddModal: () => void;
     showAddModal: boolean;
+    changeAssignee: (id: string, assignee: User) => void
 }
 
 
@@ -139,6 +140,12 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
         );
     };
 
+    const changeAssignee = (id: string, assignee: User) => {
+        setActivities((prev) =>
+            prev.map((a) => (a.id === id ? {...a, assignee: assignee} : a))
+        );
+    };
+
 
     const {account} = useAccount()
     const isEditableByClient = accounts[account]?.role == "engineer";
@@ -160,6 +167,7 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
         openAddModal,
         closeAddModal,
         showAddModal,
+        changeAssignee
     };
 
 

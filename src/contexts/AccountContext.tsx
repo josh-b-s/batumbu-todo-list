@@ -1,4 +1,6 @@
 import React, {createContext, useContext, useState} from "react";
+import {accounts} from "../types/account.ts";
+import {Choice} from "../components/ActivityDropdown.tsx";
 
 const LOGIN_KEY = "batumbu.login";
 
@@ -6,6 +8,7 @@ export interface AccountContextValue {
     account: string;
     login: (accountId: string) => void;
     logout: () => void;
+    getEngineerChoices: () => Choice[];
 }
 
 export const AccountContext = createContext<AccountContextValue | undefined>(undefined);
@@ -40,8 +43,17 @@ export function AccountProvider({children}: { children: React.ReactNode }) {
         }
     };
 
+    function getEngineerChoices() {
+        return Object.entries(accounts)
+            .filter(([, user]) => user.role === "engineer")
+            .map(([key, user]) => ({
+                label: user.name ?? key,
+                value: user,
+            }));
+    }
+
     return (
-        <AccountContext.Provider value={{account, login, logout}}>
+        <AccountContext.Provider value={{account, login, logout, getEngineerChoices}}>
             {children}
         </AccountContext.Provider>
     );

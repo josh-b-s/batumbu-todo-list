@@ -4,21 +4,28 @@ import FilterIcon from "@mui/icons-material/FilterAlt";
 
 interface ActivityDropdownProps {
     value?: string;
-    onChange?: (newPriority: string) => void;
+    onChange?: (newValue: any) => void;
     className?: string;
     filter?: boolean;
     disabled?: boolean;
-    choices: {label: string; value: string}[];
+    choices: Choice[];
+    hasEmptyChoice?: boolean;
+}
+
+export interface Choice {
+    label: string;
+    value: any
 }
 
 export default function ActivityDropdown({
-                                             value = "All",
+                                             value = "-",
                                              onChange = () => {
                                              },
                                              className = "",
                                              filter = false,
                                              disabled = false,
-                                             choices
+                                             choices,
+                                             hasEmptyChoice = false
                                          }: ActivityDropdownProps): JSX.Element {
     const [openStyle, setOpenStyle] = React.useState<String>("")
 
@@ -86,7 +93,8 @@ export default function ActivityDropdown({
             >
 
                 {filter ? <MenuItem value="All">All</MenuItem> : null}
-                {choices.map((item, index) => (<MenuItem key={index} value={item.value}>{item.label}</MenuItem> ))}
+                {hasEmptyChoice ? <MenuItem value="-">-</MenuItem> : null}
+                {choices.map((item, index) => (<MenuItem key={index} value={item.value}>{item.label}</MenuItem>))}
             </Select>
         </FormControl>
     );

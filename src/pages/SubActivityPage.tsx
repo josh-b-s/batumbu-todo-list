@@ -13,6 +13,7 @@ import AddActivityButton from "../components/AddActivityButton.tsx";
 import SubActivityDescBox from "../components/SubActivityDescBox.tsx";
 import ActivityDropdown from "../components/ActivityDropdown.tsx";
 import {FaArrowLeft} from "react-icons/fa";
+import ActivityDetails from "../components/ActivityDetails.tsx";
 
 
 export default function SubActivityPage() {
@@ -64,7 +65,7 @@ function SubActivityBody({activityId}: { activityId: string }) {
             <hr className="mt-4 border-gray-400 sm:border-0"/>
 
             <div className="mt-4">
-                <SubActivityDescBox activityId={activityId}/>
+                <ActivityDetails activityId={activityId}/>
                 {noActivities && <NoActivities/>}
                 {!noActivities && subActivities.map((activity) => (
                     <SubActivity key={activity.id} activity={activity}/>

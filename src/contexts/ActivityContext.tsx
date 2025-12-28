@@ -8,18 +8,22 @@ export interface ActivityContextValue {
     setActivities: React.Dispatch<React.SetStateAction<ActivityItem[]>>;
     addActivities: (title?: string, description?: string) => void;
     removeActivities: (id: string | null) => void;
-    changeTitle: (id: string, newTitle: string) => void
+    changeTitle: (id: string, newTitle: string) => void;
     changeStatus: (id: string, newStatus: ActivityStatus) => void;
-    openDeleteModal: (id: string) => void
-    closeDeleteModal: () => void
-    showDeleteModal: boolean
-    pendingDeleteId: string | null;
     changeDescription: (id: string, description: string) => void;
-    isEditableByClient: boolean,
-    openAddModal: () => void,
-    closeAddModal: () => void,
-    showAddModal: boolean,
+
+    changeDueDate: (id: string, dueDate: Date | null) => void; // ✅ ADD
+
+    openDeleteModal: (id: string) => void;
+    closeDeleteModal: () => void;
+    showDeleteModal: boolean;
+    pendingDeleteId: string | null;
+    isEditableByClient: boolean;
+    openAddModal: () => void;
+    closeAddModal: () => void;
+    showAddModal: boolean;
 }
+
 
 export const ActivityContext = createContext<ActivityContextValue | undefined>(undefined);
 
@@ -127,6 +131,15 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
         );
     }
 
+    const changeDueDate = (id: string, dueDate: Date | null) => {
+        setActivities(prev =>
+            prev.map(a =>
+                a.id === id ? { ...a, dueDate } : a
+            )
+        );
+    };
+
+
     const {account} = useAccount()
     const isEditableByClient = accounts[account]?.role == "engineer";
 
@@ -137,16 +150,18 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
         removeActivities,
         changeTitle,
         changeStatus,
+        changeDescription,
+        changeDueDate,
         openDeleteModal,
         closeDeleteModal,
         showDeleteModal,
         pendingDeleteId,
-        changeDescription,
         isEditableByClient,
         openAddModal,
         closeAddModal,
-        showAddModal
+        showAddModal,
     };
+
 
 
     return <ActivityContext.Provider value={value}>{children}</ActivityContext.Provider>;

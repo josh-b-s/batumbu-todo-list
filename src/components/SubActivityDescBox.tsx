@@ -9,7 +9,6 @@ import {secondaryBgColor} from "../consts.ts";
 export default function SubActivityDescBox({activityId}: { activityId: string }) {
     const {activity} = useSubActivities();
     const {changeDescription} = useActivities();
-
     const [draft, setDraft] = useState<string>(activity?.description ?? "<p></p>");
     const [editing, setEditing] = useState<boolean>(false);
 
@@ -28,7 +27,7 @@ export default function SubActivityDescBox({activityId}: { activityId: string })
         editorProps: {
             attributes: {
                 class:
-                    "p-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:pl-5 [&_ol]:list-decimal border border-gray-500 rounded-xl",
+                    "p-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:pl-5 [&_ol]:list-decimal border border-gray-500 rounded-2xl min-h-50",
             },
         },
         content: activity?.description ?? "<p></p>",
@@ -78,15 +77,15 @@ export default function SubActivityDescBox({activityId}: { activityId: string })
     };
 
     return (
-        <div className={`${secondaryBgColor} rounded-xl p-3 mb-2`}>
-            <div className="flex items-center justify-between mb-2">
-                <p>Deskripsi</p>
+        <div className={`${secondaryBgColor} rounded-2xl`}>
+            <div className="flex items-baseline justify-between">
+                <label>Deskripsi</label>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 mb-2">
                     {!editing ? (
                         <button
                             onClick={onEdit}
-                            className="bg-batumbured rounded-md text-white font-bold px-3 py-1"
+                            className="bg-batumbured rounded-lg text-white font-bold px-3 py-1"
                             type="button"
                             key={"edit"}
                         >
@@ -96,14 +95,14 @@ export default function SubActivityDescBox({activityId}: { activityId: string })
                         <>
                             <button
                                 onClick={onSave}
-                                className="bg-green-600 rounded-md text-white font-bold px-3 py-1"
+                                className="bg-green-600 rounded-lg text-white font-bold px-3 py-1"
                                 type="button"
                             >
                                 Save
                             </button>
                             <button
                                 onClick={onCancel}
-                                className="bg-batumbured text-white rounded-md font-bold px-3 py-1"
+                                className="bg-batumbured text-white rounded-lg font-bold px-3 py-1"
                                 type="button"
                             >
                                 Cancel

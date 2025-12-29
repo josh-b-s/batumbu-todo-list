@@ -10,6 +10,8 @@ interface ActivityDropdownProps {
     disabled?: boolean;
     choices: Choice[];
     hasEmptyChoice?: boolean;
+    dataTheme?: string;
+    fontWeight?: number;
 }
 
 export interface Choice {
@@ -25,7 +27,9 @@ export default function ActivityDropdown({
                                              filter = false,
                                              disabled = false,
                                              choices,
-                                             hasEmptyChoice = false
+                                             hasEmptyChoice = false,
+                                             dataTheme = "",
+                                             fontWeight = 400,
                                          }: ActivityDropdownProps): JSX.Element {
     const [openStyle, setOpenStyle] = React.useState<String>("")
 
@@ -45,93 +49,100 @@ export default function ActivityDropdown({
     };
 
     return (
-        <FormControl
-            className={`${className} ${openStyle}`}
-            onClick={stop}
-            onMouseDown={stop}
-            sx={{
-                "& .MuiOutlinedInput-notchedOutline": {border: "none"},
-
-                "& .MuiSelect-select": {
-                    color: "white",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 1,
-                },
-
-                "& .MuiSvgIcon-root": {color: "white"},
-
-                "& .MuiOutlinedInput-root": {borderRadius: "14px"},
-
-                "& .MuiOutlinedInput-root.Mui-disabled *": {
-                    color: "white !important",
-                    WebkitTextFillColor: "white",
-                },
-
-                "& .MuiOutlinedInput-root.Mui-disabled": {
-                    opacity: 1,
-                },
-            }}
-
-            disabled={disabled}
-        >
-            <Select
-                value={value}
-                onChange={handleChange}
+        <div data-theme={dataTheme}>
+            <FormControl
+                className={`${className} ${openStyle}`}
                 onClick={stop}
                 onMouseDown={stop}
-                displayEmpty
-                onOpen={() => setOpenStyle("opacity-100")}
-                onClose={() => setOpenStyle("opacity-80")}
                 sx={{
-                    borderRadius: "14px",
-                    height: "3rem",
+                    "& .MuiOutlinedInput-notchedOutline": {border: "none"},
+                    "& .MuiOutlinedInput-root": {borderRadius: "14px"},
 
+                    "& .MuiSelect-select": {
+                        color: "black",
+                        fontWeight: fontWeight,
+                    },
                     "& .MuiSvgIcon-root": {
-                        display: disabled ? "none" : "block",
+                        color: "black",
+                    },
+
+                    "&:where([data-theme=Dark], [data-theme=Dark] *) .MuiSelect-select": {
+                        color: "white",
+                    },
+                    "&:where([data-theme=Dark], [data-theme=Dark] *) .MuiSvgIcon-root": {
+                        color: "white",
+                    },
+
+                    "& .MuiOutlinedInput-root.Mui-disabled *": {
+                        color: "inherit !important",
+                        WebkitTextFillColor: "inherit",
+                    },
+                    "& .MuiOutlinedInput-root.Mui-disabled": {
+                        opacity: 1,
                     },
                 }}
 
-                MenuProps={{
-                    PaperProps: {
-                        sx: {
-                            borderRadius: 3,
 
-                            /* light mode (bg-white) */
-                            bgcolor: "white",
-                            color: "black",
-
-                            /* dark mode (dark:bg-gray-800) */
-                            "&:where([data-theme=Dark], [data-theme=Dark] *)": {
-                                bgcolor: "#1f2937", // tailwind gray-800
-                                color: "white",
-                            },
-
-                            "& .MuiMenuItem-root": {
-                                borderRadius: 2,
-                                mx: 1,
-                                my: 0.5,
-                                color: "inherit",
-                            },
-                        },
-                        onMouseDown: stop,
-                        onClick: stop,
-                    },
-                }}
-
-                renderValue={(selected) => (
-                    <Box display="flex" alignItems="center" gap={1}>
-                        {renderIcon()}
-                        {selected}
-                    </Box>
-                )}
-                className={disabled ? "" : "opacity-80 hover:opacity-100"}
+                disabled={disabled}
             >
+                <Select
+                    value={value}
+                    onChange={handleChange}
+                    onClick={stop}
+                    onMouseDown={stop}
+                    displayEmpty
+                    onOpen={() => setOpenStyle("opacity-100")}
+                    onClose={() => setOpenStyle("opacity-80")}
+                    sx={{
+                        borderRadius: "14px",
+                        height: "3rem",
 
-                {filter ? <MenuItem value="All">All</MenuItem> : null}
-                {hasEmptyChoice ? <MenuItem value="-">-</MenuItem> : null}
-                {choices.map((item, index) => (<MenuItem key={index} value={item.value}>{item.label}</MenuItem>))}
-            </Select>
-        </FormControl>
+                        "& .MuiSvgIcon-root": {
+                            display: disabled ? "none" : "block",
+                        },
+                    }}
+
+                    MenuProps={{
+                        PaperProps: {
+                            sx: {
+                                borderRadius: 3,
+
+                                /* light mode (bg-white) */
+                                bgcolor: "white",
+                                color: "black",
+
+                                /* dark mode (dark:bg-gray-800) */
+                                "&:where([data-theme=Dark], [data-theme=Dark] *)": {
+                                    bgcolor: "#1f2937", // tailwind gray-800
+                                    color: "white",
+                                },
+
+                                "& .MuiMenuItem-root": {
+                                    borderRadius: 2,
+                                    mx: 1,
+                                    my: 0.5,
+                                    color: "inherit",
+                                },
+                            },
+                            onMouseDown: stop,
+                            onClick: stop,
+                        },
+                    }}
+
+                    renderValue={(selected) => (
+                        <Box display="flex" alignItems="center" gap={1}>
+                            {renderIcon()}
+                            {selected}
+                        </Box>
+                    )}
+                    className={disabled ? "" : "opacity-80 hover:opacity-100"}
+                >
+
+                    {filter ? <MenuItem value="All">All</MenuItem> : null}
+                    {hasEmptyChoice ? <MenuItem value="-">-</MenuItem> : null}
+                    {choices.map((item, index) => (<MenuItem key={index} value={item.value}>{item.label}</MenuItem>))}
+                </Select>
+            </FormControl>
+        </div>
     );
 }

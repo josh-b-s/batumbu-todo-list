@@ -144,7 +144,9 @@ function SubActivity({
                 <ActivityDropdown value={priority} onChange={(newP) => changePriority(id, newP as Priority)}
                                   className={`${styles.bg} rounded-xl mr-2`}
                                   disabled={!isEditableByClient}
-                                  choices={priorityDropdownChoices}/>
+                                  choices={priorityDropdownChoices}
+                                  dataTheme="Dark"
+                                  fontWeight={600}/>
 
                 <button
                     className={`${isEditableByClient ? "block" : "hidden"} not-hover:opacity-50 cursor-pointer hover:underline`}

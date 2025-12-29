@@ -101,7 +101,9 @@ function ActivityHeader() {
                 <ActivityDropdown value={statusFilter}
                                   onChange={(newStatus) => setStatusFilter(newStatus as ActivityFilter)}
                                   className={`bg-batumbured rounded-3xl opacity-80 hover:opacity-100`} filter={true}
-                                  choices={statusDropdownChoices}/>
+                                  choices={statusDropdownChoices}
+                                  dataTheme="Dark"
+                                  fontWeight={600}/>
 
                 <AddActivityButton
                     onClick={() => account?.role == "engineer" ? addActivities() : openAddModal()}/>
@@ -179,7 +181,9 @@ function Activity({activity,}: { activity: ActivityItem }) {
 
                 <ActivityDropdown value={status} onChange={(newStatus) => changeStatus(id, newStatus as ActivityStatus)}
                                   className={`${isEditableByClient ? "block" : "hidden"} bg-batumbured rounded-xl mr-2 opacity-80 hover:opacity-100`}
-                                  choices={statusDropdownChoices}/>
+                                  choices={statusDropdownChoices}
+                                  dataTheme="Dark"
+                                  fontWeight={600}/>
 
             </div>
         </div>

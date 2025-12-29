@@ -18,21 +18,24 @@ export default function DueDatePicker({
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
+                disablePast
                 value={value ? dayjs(value) : null}
                 onChange={(newValue: Dayjs | null) => {
                     onChange(newValue ? newValue.toDate() : null);
                 }}
                 disabled={disabled}
                 sx={{
-                    "& .MuiSvgIcon-root": {
-                        color: "inherit",
-                    },
                     "&:where([data-theme=Dark], [data-theme=Dark] *) .MuiSvgIcon-root": {
                         color: "var(--color-white)",
                     },
 
                     "& .MuiPickersOutlinedInput-notchedOutline": {
                         borderColor: "#6b7280 !important",
+                    },
+
+                    "& .MuiPickersOutlinedInput-root.Mui-disabled *": {
+                        color: "inherit !important",
+                        WebkitTextFillColor: "inherit",
                     },
                 }}
                 slotProps={{
@@ -57,7 +60,7 @@ export default function DueDatePicker({
                     },
                     openPickerIcon: {
                         sx: {
-                            color: 'inherit',
+                            display: disabled ? "none" : "block",
                         },
                     }
                 }}

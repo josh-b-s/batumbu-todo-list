@@ -5,9 +5,11 @@ import SimpleMenuBar from "./SimpleMenuBar";
 import {useActivities} from "../contexts/ActivityContext";
 import {useSubActivities} from "../contexts/SubActivityContext";
 import {secondaryBgColor} from "../consts.ts";
+import {useAccount} from "../contexts/AccountContext.tsx";
 
 export default function SubActivityDescBox() {
     const {activity} = useSubActivities();
+    const {account} = useAccount();
     const {changeDescription} = useActivities();
     const [draft, setDraft] = useState<string>(activity?.description ?? "<p></p>");
     const [editing, setEditing] = useState<boolean>(false);
@@ -79,37 +81,39 @@ export default function SubActivityDescBox() {
     return (
         <div className={`${secondaryBgColor} rounded-2xl`}>
             <div className="flex items-baseline justify-between">
-                <label>Deskripsi</label>
+                <label className={"mb-2"}>Deskripsi</label>
 
-                <div className="flex items-center gap-2 mb-2">
-                    {!editing ? (
-                        <button
-                            onClick={onEdit}
-                            className="bg-batumbured rounded-lg text-white font-bold px-3 py-1"
-                            type="button"
-                            key={"edit"}
-                        >
-                            Edit
-                        </button>
-                    ) : (
-                        <>
-                            <button
-                                onClick={onSave}
-                                className="bg-green-600 rounded-lg text-white font-bold px-3 py-1"
-                                type="button"
-                            >
-                                Save
-                            </button>
-                            <button
-                                onClick={onCancel}
-                                className="bg-batumbured text-white rounded-lg font-bold px-3 py-1"
-                                type="button"
-                            >
-                                Cancel
-                            </button>
-                        </>
-                    )}
-                </div>
+                {activity?.creator.name == account?.name &&
+                  <div className="flex items-center gap-2 ">
+                      {!editing ? (
+                          <button
+                              onClick={onEdit}
+                              className="bg-batumbured rounded-lg text-white font-bold px-3 py-1"
+                              type="button"
+                              key={"edit"}
+                          >
+                              Edit
+                          </button>
+                      ) : (
+                          <>
+                              <button
+                                  onClick={onSave}
+                                  className="bg-green-600 rounded-lg text-white font-bold px-3 py-1"
+                                  type="button"
+                              >
+                                  Save
+                              </button>
+                              <button
+                                  onClick={onCancel}
+                                  className="bg-batumbured text-white rounded-lg font-bold px-3 py-1"
+                                  type="button"
+                              >
+                                  Cancel
+                              </button>
+                          </>
+                      )}
+                  </div>
+                }
             </div>
 
             {editing && <SimpleMenuBar editor={editor}/>}

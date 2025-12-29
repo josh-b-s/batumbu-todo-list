@@ -51,15 +51,28 @@ export default function ActivityDropdown({
             onMouseDown={stop}
             sx={{
                 "& .MuiOutlinedInput-notchedOutline": {border: "none"},
+
                 "& .MuiSelect-select": {
                     color: "white",
                     display: "flex",
                     alignItems: "center",
                     gap: 1,
                 },
+
                 "& .MuiSvgIcon-root": {color: "white"},
-                "& .MuiOutlinedInput-root": {borderRadius: "14px"}
+
+                "& .MuiOutlinedInput-root": {borderRadius: "14px"},
+
+                "& .MuiOutlinedInput-root.Mui-disabled *": {
+                    color: "white !important",
+                    WebkitTextFillColor: "white",
+                },
+
+                "& .MuiOutlinedInput-root.Mui-disabled": {
+                    opacity: 1,
+                },
             }}
+
             disabled={disabled}
         >
             <Select
@@ -70,7 +83,15 @@ export default function ActivityDropdown({
                 displayEmpty
                 onOpen={() => setOpenStyle("opacity-100")}
                 onClose={() => setOpenStyle("opacity-80")}
-                sx={{borderRadius: "14px", height: "3rem"}}
+                sx={{
+                    borderRadius: "14px",
+                    height: "3rem",
+
+                    "& .MuiSvgIcon-root": {
+                        display: disabled ? "none" : "block",
+                    },
+                }}
+
                 MenuProps={{
                     PaperProps: {
                         sx: {

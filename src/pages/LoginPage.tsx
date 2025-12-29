@@ -50,7 +50,7 @@ export default function LoginPage() {
             return;
         }
 
-        login(emailTrim);
+        login(accounts[emailTrim]);
     };
 
     useEffect(() => {

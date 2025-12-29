@@ -32,7 +32,7 @@ export default function DueDatePicker({
                     },
 
                     "& .MuiPickersOutlinedInput-notchedOutline": {
-                        borderColor: "gray !important",
+                        borderColor: "#6b7280 !important",
                     },
                 }}
                 slotProps={{

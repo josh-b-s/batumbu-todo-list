@@ -53,7 +53,6 @@ export default function ActivityDropdown({
                 "& .MuiOutlinedInput-notchedOutline": {border: "none"},
                 "& .MuiSelect-select": {
                     color: "white",
-                    fontWeight: 700,
                     display: "flex",
                     alignItems: "center",
                     gap: 1,

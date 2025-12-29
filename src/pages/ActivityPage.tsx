@@ -84,7 +84,7 @@ function ActivityBody() {
                 ))}
 
                 <AddActivityButtonMobile
-                    onClick={() => accounts[account]?.role == "engineer" ? addActivities() : openAddModal()}/>
+                    onClick={() => account?.role == "engineer" ? addActivities() : openAddModal()}/>
             </div>
         </div>
     );
@@ -105,7 +105,7 @@ function ActivityHeader() {
                                   choices={statusDropdownChoices}/>
 
                 <AddActivityButton
-                    onClick={() => accounts[account]?.role == "engineer" ? addActivities() : openAddModal()}/>
+                    onClick={() => account?.role == "engineer" ? addActivities() : openAddModal()}/>
             </div>
 
         </div>

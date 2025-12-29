@@ -10,7 +10,6 @@ import {SubActivityProvider, useSubActivities} from "../contexts/SubActivityCont
 import {MAX_TITLE_CHAR_LEN, placeholderColor, PRIORITY_STYLES, secondaryBgColor} from "../consts.ts";
 import AddActivityButtonMobile from "../components/AddActivityButtonMobile.tsx";
 import AddActivityButton from "../components/AddActivityButton.tsx";
-import SubActivityDescBox from "../components/SubActivityDescBox.tsx";
 import ActivityDropdown from "../components/ActivityDropdown.tsx";
 import {FaArrowLeft} from "react-icons/fa";
 import ActivityDetails from "../components/ActivityDetails.tsx";
@@ -29,13 +28,12 @@ export default function SubActivityPage() {
     return (
         <SubActivityProvider activityId={activityId ?? ""}>
             <Header/>
-            <SubActivityBody activityId={activityId ?? ""}/>
-
+            <SubActivityBody/>
         </SubActivityProvider>
     );
 }
 
-function SubActivityBody({activityId}: { activityId: string }) {
+function SubActivityBody() {
     const navigate = useNavigate();
     const {activities} = useActivities();
     const {
@@ -45,7 +43,8 @@ function SubActivityBody({activityId}: { activityId: string }) {
         removeSubActivity,
         pendingDeleteSubId,
         closeModal,
-        showModal
+        showModal,
+        activity
     } = useSubActivities()
     const enabled = subActivities.length < 10 && isEditableByClient;
     const noActivities = subActivities.length <= 0
@@ -53,10 +52,10 @@ function SubActivityBody({activityId}: { activityId: string }) {
 
 
     useEffect(() => {
-        if (activityId && !subActivities) {
+        if (activity?.id && !subActivities) {
             navigate("/activities", {replace: true});
         }
-    }, [activityId, subActivities, activities, navigate]);
+    }, [activity?.id, subActivities, activities, navigate]);
 
     return (
         <div className="mt-10 mx-4 sm:mx-20 lg:mx-48">
@@ -65,7 +64,7 @@ function SubActivityBody({activityId}: { activityId: string }) {
             <hr className="mt-4 border-gray-400 sm:border-0"/>
 
             <div className="mt-4">
-                <ActivityDetails activityId={activityId}/>
+                <ActivityDetails/>
                 {noActivities && <NoActivities/>}
                 {!noActivities && subActivities.map((activity) => (
                     <SubActivity key={activity.id} activity={activity}/>
@@ -96,7 +95,8 @@ function ActivityHeader() {
     return (
         <div className="flex justify-between items-center space-x-5">
             <div className="flex items-center gap-4 min-w-0">
-                <FaArrowLeft onClick={() => navigate(-1)} className="text-3xl opacity-70 hover:opacity-100 cursor-pointer"/>
+                <FaArrowLeft onClick={() => navigate(-1)}
+                             className="text-3xl opacity-70 hover:opacity-100 cursor-pointer"/>
                 <h2 className="text-3xl sm:text-4xl font-bold truncate">{activity?.title || "Aktivitas Baru"}</h2>
             </div>
 

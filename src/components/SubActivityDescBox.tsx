@@ -6,7 +6,7 @@ import {useActivities} from "../contexts/ActivityContext";
 import {useSubActivities} from "../contexts/SubActivityContext";
 import {secondaryBgColor} from "../consts.ts";
 
-export default function SubActivityDescBox({activityId}: { activityId: string }) {
+export default function SubActivityDescBox() {
     const {activity} = useSubActivities();
     const {changeDescription} = useActivities();
     const [draft, setDraft] = useState<string>(activity?.description ?? "<p></p>");
@@ -72,7 +72,7 @@ export default function SubActivityDescBox({activityId}: { activityId: string })
 
     const onSave = (e: React.MouseEvent) => {
         e.stopPropagation();
-        changeDescription(activityId, draft);
+        changeDescription(activity?.id!, draft);
         setEditing(false);
     };
 

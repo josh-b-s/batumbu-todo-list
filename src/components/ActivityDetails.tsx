@@ -6,14 +6,15 @@ import {useSubActivities} from "../contexts/SubActivityContext.tsx";
 import {secondaryBgColor} from "../consts.ts";
 import ActivityDropdown from "./ActivityDropdown.tsx";
 import {useAccount} from "../contexts/AccountContext.tsx";
+import CommentSection from "./CommentSection.tsx";
 
-export default function ActivityDetails({activityId}: { activityId: string }): JSX.Element {
+export default function ActivityDetails(): JSX.Element {
     const {activity} = useSubActivities();
     const {changeDueDate, changeAssignee} = useActivities();
     const {getEngineerChoices} = useAccount();
     return (
         <div className={secondaryBgColor + " rounded-xl p-4 space-y-3 mb-3"}>
-            <SubActivityDescBox activityId={activityId}/>
+            <SubActivityDescBox/>
             <p className={"mb-2"}>Due Date</p>
             <DueDatePicker
                 value={activity?.dueDate ?? null}
@@ -22,8 +23,9 @@ export default function ActivityDetails({activityId}: { activityId: string }): J
             <p className={"mb-2"}>Assignee</p>
             <ActivityDropdown choices={getEngineerChoices()} className={"border border-gray-500 w-full rounded-2xl"}
                               onChange={(newA) => {
-                                  changeAssignee(activityId, newA)
+                                  changeAssignee(activity?.id!, newA)
                               }} value={activity?.assignee?.name} hasEmptyChoice/>
+            <CommentSection/>
         </div>
     )
 }

@@ -1,12 +1,12 @@
 import React, {createContext, useContext, useState} from "react";
-import {accounts} from "../types/account.ts";
+import {accounts, User} from "../types/account.ts";
 import {Choice} from "../components/ActivityDropdown.tsx";
 
 const LOGIN_KEY = "batumbu.login";
 
 export interface AccountContextValue {
-    account: string;
-    login: (accountId: string) => void;
+    account: User | null;
+    login: (accountId: User) => void;
     logout: () => void;
     getEngineerChoices: () => Choice[];
 }
@@ -17,15 +17,15 @@ export function AccountProvider({children}: { children: React.ReactNode }) {
     const [account, setAccount] = useState(() => {
         try {
             const raw = localStorage.getItem(LOGIN_KEY);
-            return raw ? (JSON.parse(raw) as string) : "";
+            return raw ? (JSON.parse(raw) as User) : null;
         } catch (e) {
             console.error("Getting account failed", e);
-            return "";
+            return null
         }
     });
 
 
-    const login = (accountId: string) => {
+    const login = (accountId: User) => {
         setAccount(accountId);
         try {
             localStorage.setItem(LOGIN_KEY, JSON.stringify(accountId));
@@ -35,7 +35,7 @@ export function AccountProvider({children}: { children: React.ReactNode }) {
     };
 
     const logout = () => {
-        setAccount("");
+        setAccount(null);
         try {
             localStorage.removeItem(LOGIN_KEY);
         } catch (e) {

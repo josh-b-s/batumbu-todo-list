@@ -63,7 +63,7 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
                 status: "TODO",
                 subActivities: [],
                 description: description,
-                creator: accounts[account],
+                creator: account!,
                 assignee: null,
                 creationDate: new Date(),
                 dueDate: null,
@@ -148,7 +148,7 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
 
 
     const {account} = useAccount()
-    const isEditableByClient = accounts[account]?.role == "engineer";
+    const isEditableByClient = account?.role == "engineer";
 
     const value = {
         activities,

@@ -6,138 +6,138 @@ import {SubActivityContext, SubActivityContextValue} from "../contexts/SubActivi
 import type {ActivityItem, SubActivityItem} from "../types/activity.ts";
 
 export const mockSubActivities: SubActivityItem[] = [
-  {id: "sub-1", title: "Kick-off meeting", priority: "Medium", checked: true},
-  {id: "sub-2", title: "Finalize brief", priority: "High", checked: false},
+    {id: "sub-1", title: "Kick-off meeting", priority: "Medium", checked: true},
+    {id: "sub-2", title: "Finalize brief", priority: "High", checked: false},
 ];
 
 export const mockActivity: ActivityItem = {
-  id: "activity-1",
-  title: "Design Landing Page",
-  status: "IN PROGRESS",
-  description: "Tingkatkan hero copy dan layout CTA.",
-  creator: "Dewi",
-  subActivities: mockSubActivities,
+    id: "activity-1",
+    title: "Design Landing Page",
+    status: "IN PROGRESS",
+    description: "Tingkatkan hero copy dan layout CTA.",
+    creator: "Dewi",
+    subActivities: mockSubActivities,
 };
 
 const noop = () => undefined;
 
 export function createAccountContextValue(
-  overrides: Partial<AccountContextValue> = {},
+    overrides: Partial<AccountContextValue> = {},
 ): AccountContextValue {
-  return {
-    account: "test1@gmail.com",
-    login: noop,
-    logout: noop,
-    ...overrides,
-  };
+    return {
+        account: "test1@gmail.com",
+        login: noop,
+        logout: noop,
+        ...overrides,
+    };
 }
 
 export function MockAccountProvider({
-                                      children,
-                                      value = {},
+                                        children,
+                                        value = {},
                                     }: {
-  children: ReactNode;
-  value?: Partial<AccountContextValue>;
+    children: ReactNode;
+    value?: Partial<AccountContextValue>;
 }) {
-  return (
-    <AccountContext.Provider value={createAccountContextValue(value)}>
-      {children}
-    </AccountContext.Provider>
-  );
+    return (
+        <AccountContext.Provider value={createAccountContextValue(value)}>
+            {children}
+        </AccountContext.Provider>
+    );
 }
 
 export function createActivityContextValue(
-  overrides: Partial<ActivityContextValue> = {},
+    overrides: Partial<ActivityContextValue> = {},
 ): ActivityContextValue {
-  return {
-    activities: [mockActivity],
-    setActivities: noop as ActivityContextValue["setActivities"],
-    addActivities: noop,
-    removeActivities: noop,
-    changeTitle: noop,
-    changeStatus: noop,
-    openDeleteModal: noop,
-    closeDeleteModal: noop,
-    showDeleteModal: false,
-    pendingDeleteId: null,
-    changeDescription: noop,
-    isEditableByClient: true,
-    openAddModal: noop,
-    closeAddModal: noop,
-    showAddModal: false,
-    ...overrides,
-  };
+    return {
+        activities: [mockActivity],
+        setActivities: noop as ActivityContextValue["setActivities"],
+        addActivities: noop,
+        removeActivities: noop,
+        changeTitle: noop,
+        changeStatus: noop,
+        openDeleteModal: noop,
+        closeDeleteModal: noop,
+        showDeleteModal: false,
+        pendingDeleteId: null,
+        changeDescription: noop,
+        isEditableByClient: true,
+        openAddModal: noop,
+        closeAddModal: noop,
+        showAddModal: false,
+        ...overrides,
+    };
 }
 
 export function MockActivityProvider({
-                                       children,
-                                       value = {},
+                                         children,
+                                         value = {},
                                      }: {
-  children: ReactNode;
-  value?: Partial<ActivityContextValue>;
+    children: ReactNode;
+    value?: Partial<ActivityContextValue>;
 }) {
-  return (
-    <ActivityContext.Provider value={createActivityContextValue(value)}>
-      {children}
-    </ActivityContext.Provider>
-  );
+    return (
+        <ActivityContext.Provider value={createActivityContextValue(value)}>
+            {children}
+        </ActivityContext.Provider>
+    );
 }
 
 export function createActivityFilterContextValue(
-  overrides: Partial<ActivityFilterContextValue> = {},
+    overrides: Partial<ActivityFilterContextValue> = {},
 ): ActivityFilterContextValue {
-  return {
-    statusFilter: "All",
-    setStatusFilter: noop,
-    ...overrides,
-  };
+    return {
+        statusFilter: "All",
+        setStatusFilter: noop,
+        ...overrides,
+    };
 }
 
 export function MockActivityFilterProvider({
-                                             children,
-                                             value = {},
+                                               children,
+                                               value = {},
                                            }: {
-  children: ReactNode;
-  value?: Partial<ActivityFilterContextValue>;
+    children: ReactNode;
+    value?: Partial<ActivityFilterContextValue>;
 }) {
-  return (
-    <ActivityFilterContext.Provider value={createActivityFilterContextValue(value)}>
-      {children}
-    </ActivityFilterContext.Provider>
-  );
+    return (
+        <ActivityFilterContext.Provider value={createActivityFilterContextValue(value)}>
+            {children}
+        </ActivityFilterContext.Provider>
+    );
 }
 
 export function createSubActivityContextValue(
-  overrides: Partial<SubActivityContextValue> = {},
+    overrides: Partial<SubActivityContextValue> = {},
 ): SubActivityContextValue {
-  return {
-    subActivities: mockSubActivities,
-    addSubActivity: noop,
-    removeSubActivity: noop,
-    updateSubTitle: noop,
-    changePriority: noop,
-    toggleChecked: noop,
-    activity: mockActivity,
-    showModal: false,
-    openDeleteModal: noop,
-    closeModal: noop,
-    pendingDeleteSubId: null,
-    isEditable: true,
-    isEditableByClient: true,
-    ...overrides,
-  };
+    return {
+        subActivities: mockSubActivities,
+        addSubActivity: noop,
+        removeSubActivity: noop,
+        updateSubTitle: noop,
+        changePriority: noop,
+        toggleChecked: noop,
+        activity: mockActivity,
+        showModal: false,
+        openDeleteModal: noop,
+        closeModal: noop,
+        pendingDeleteSubId: null,
+        isEditable: true,
+        isEditableByClient: true,
+        ...overrides,
+    };
 }
 
 export function MockSubActivityProvider({
-                                          children,
-                                          value = {},
+                                            children,
+                                            value = {},
                                         }: {
-  children: ReactNode;
-  value?: Partial<SubActivityContextValue>;
+    children: ReactNode;
+    value?: Partial<SubActivityContextValue>;
 }) {
-  return (
-    <SubActivityContext.Provider value={createSubActivityContextValue(value)}>
-      {children}
-    </SubActivityContext.Provider>
-  );
+    return (
+        <SubActivityContext.Provider value={createSubActivityContextValue(value)}>
+            {children}
+        </SubActivityContext.Provider>
+    );
 }

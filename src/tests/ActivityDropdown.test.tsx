@@ -1,22 +1,22 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import {fireEvent, render, screen} from "@testing-library/react";
+import {describe, expect, it, vi} from "vitest";
 import React from "react";
 import ActivityDropdown from "../components/ActivityDropdown.tsx";
 
 describe("ActivityDropdown", () => {
     const choices = [
-        { label: "Todo", value: "TODO" },
-        { label: "Done", value: "DONE" },
+        {label: "Todo", value: "TODO"},
+        {label: "Done", value: "DONE"},
     ];
 
     it("renders with default value 'All' when filter is true", () => {
-        render(<ActivityDropdown choices={choices} filter />);
+        render(<ActivityDropdown choices={choices} filter/>);
 
         expect(screen.getByText("All")).toBeInTheDocument();
     });
 
     it("renders provided choices", async () => {
-        render(<ActivityDropdown choices={choices} filter />);
+        render(<ActivityDropdown choices={choices} filter/>);
 
         fireEvent.mouseDown(screen.getByRole("combobox"));
 
@@ -43,7 +43,7 @@ describe("ActivityDropdown", () => {
     });
 
     it("shows filter icon when filter is true", () => {
-        render(<ActivityDropdown choices={choices} filter />);
+        render(<ActivityDropdown choices={choices} filter/>);
         expect(document.querySelector("svg")).toBeTruthy();
     });
 

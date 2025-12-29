@@ -47,6 +47,97 @@ export default function DueDatePicker({
                                 enabled: false,
                             },
                         ],
+                        sx: {
+                            "& .MuiPickersArrowSwitcher-button": {
+                                color: "inherit",
+                            },
+
+                            "& .MuiPickersArrowSwitcher-button:hover": {
+                                backgroundColor: "rgba(0,0,0,0.08)",
+                            },
+
+                            "&:where([data-theme=Dark], [data-theme=Dark] *) .MuiPickersArrowSwitcher-button:hover": {
+                                backgroundColor: "rgba(255,255,255,0.12)",
+                            },
+
+                            "& .MuiPickersDay-root.Mui-disabled": {
+                                color: "rgba(0,0,0,0.35)",
+                            },
+
+                            "&:where([data-theme=Dark], [data-theme=Dark] *) .MuiPickersDay-root.Mui-disabled": {
+                                color: "rgba(255,255,255,0.35)",
+                            },
+
+                            "&:where([data-theme=Dark], [data-theme=Dark] *) .MuiPickersCalendarHeader-switchViewButton": {
+                                color: "rgba(255,255,255,1)",
+                            },
+
+                            "&:where([data-theme=Dark], [data-theme=Dark] *) .MuiYearCalendar-button.Mui-disabled": {
+                                color: "rgba(255,255,255,0.35)",
+                            },
+
+                            "& .MuiPickersDay-root:not(.Mui-selected):hover": {
+                                backgroundColor: "rgba(0,0,0,0.08)",
+                            },
+
+                            "&:where([data-theme=Dark], [data-theme=Dark] *) .MuiPickersDay-root:not(.Mui-selected):hover": {
+                                backgroundColor: "rgba(255,255,255,0.12)",
+                            },
+
+                            "& .MuiPickersLayout-contentWrapper": {
+                                paddingBottom: 1,
+                            },
+
+                            "& ::-webkit-scrollbar": {
+                                width: 8,
+                            },
+
+                            "& ::-webkit-scrollbar-track": {
+                                background: "transparent",
+                            },
+
+                            "& ::-webkit-scrollbar-thumb": {
+                                backgroundColor: "rgba(0,0,0,0.25)",
+                                borderRadius: 8,
+                            },
+
+                            "&:where([data-theme=Dark], [data-theme=Dark] *) ::-webkit-scrollbar-thumb": {
+                                backgroundColor: "rgba(255,255,255,0.25)",
+                            },
+
+                            "& .MuiPaper-root": {
+                                borderRadius: "20px",
+                                backgroundColor: "#ffffff",
+                                color: "#000000",
+                                overflow: "hidden"
+                            },
+
+                            "&:where([data-theme=Dark], [data-theme=Dark] *) .MuiPaper-root": {
+                                backgroundColor: "var(--color-dark, #1f2937)",
+                                color: "var(--color-white, #ffffff)",
+                            },
+
+                            // calendar days inherit text color
+                            "& .MuiPickersDay-root": {
+                                color: "inherit",
+                                borderRadius: "12px",
+                            },
+
+                            // weekday labels inherit text color
+                            "& .MuiDayCalendar-weekDayLabel": {
+                                color: "inherit",
+                            },
+
+                            // selected day styling
+                            "& .MuiPickersDay-root.Mui-selected": {
+                                backgroundColor: "var(--color-primary, #2563eb)",
+                                color: "#ffffff",
+                            },
+
+                            "& .MuiPickersDay-root.Mui-selected:hover": {
+                                backgroundColor: "var(--color-primary-dark, #1d4ed8)",
+                            },
+                        },
                     },
 
                     field: {
@@ -55,14 +146,14 @@ export default function DueDatePicker({
                     textField: {
                         fullWidth: true,
                         InputProps: {
-                            sx: {borderRadius: '15px', color: 'inherit'},
+                            sx: {borderRadius: "15px", color: "inherit"},
                         },
                     },
                     openPickerIcon: {
                         sx: {
                             display: disabled ? "none" : "block",
                         },
-                    }
+                    },
                 }}
             />
         </LocalizationProvider>

@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { useActivities } from "../contexts/ActivityContext";
-import { useSubActivities } from "../contexts/SubActivityContext";
-import { useAccount } from "../contexts/AccountContext";
-import { formatDate } from "../helpers/formatDate";
+import React, {useState} from "react";
+import {useActivities} from "../contexts/ActivityContext";
+import {useSubActivities} from "../contexts/SubActivityContext";
+import {useAccount} from "../contexts/AccountContext";
+import {formatDate} from "../helpers/formatDate";
 import {UserComment} from "../types/account.ts";
 
 export default function CommentSection() {
-    const { activity } = useSubActivities();
-    const { setActivities } = useActivities();
-    const { account } = useAccount(); // current logged-in account
+    const {activity} = useSubActivities();
+    const {setActivities} = useActivities();
+    const {account} = useAccount(); // current logged-in account
 
     const [text, setText] = useState("");
 
@@ -27,7 +27,7 @@ export default function CommentSection() {
         setActivities(prev =>
             prev.map(a =>
                 a.id === activity?.id
-                    ? { ...a, comments: [...(a.comments ?? []), newComment] }
+                    ? {...a, comments: [...(a.comments ?? []), newComment]}
                     : a
             )
         );

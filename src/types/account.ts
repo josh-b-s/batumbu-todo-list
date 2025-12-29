@@ -10,7 +10,7 @@ export interface UserComment {
     id: string;
     user: User;
     date: Date;
-    comment:string
+    comment: string
 }
 
 export const accounts: Record<string, User> = {

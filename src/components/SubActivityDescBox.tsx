@@ -5,11 +5,9 @@ import SimpleMenuBar from "./SimpleMenuBar";
 import {useActivities} from "../contexts/ActivityContext";
 import {useSubActivities} from "../contexts/SubActivityContext";
 import {secondaryBgColor} from "../consts.ts";
-import {useAccount} from "../contexts/AccountContext.tsx";
 
-export default function SubActivityDescBox() {
+export default function SubActivityDescBox({disabled}: { disabled?: boolean }) {
     const {activity} = useSubActivities();
-    const {account} = useAccount();
     const {changeDescription} = useActivities();
     const [draft, setDraft] = useState<string>(activity?.description ?? "<p></p>");
     const [editing, setEditing] = useState<boolean>(false);
@@ -83,7 +81,7 @@ export default function SubActivityDescBox() {
             <div className="flex items-baseline justify-between">
                 <label className={"mb-2"}>Deskripsi</label>
 
-                {activity?.creator.name == account?.name &&
+                {!disabled &&
                   <div className="flex items-center gap-2 ">
                       {!editing ? (
                           <button

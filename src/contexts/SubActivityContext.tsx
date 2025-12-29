@@ -1,7 +1,6 @@
 import React, {createContext, useContext, useMemo, useState} from "react";
 import type {ActivityItem, Priority, SubActivityItem} from "../types/activity"; // your types
 import {useActivities} from "./ActivityContext";
-import {accounts} from "../types/account.ts";
 import {useAccount} from "./AccountContext.tsx"; // Activity context hook
 
 export interface SubActivityContextValue {

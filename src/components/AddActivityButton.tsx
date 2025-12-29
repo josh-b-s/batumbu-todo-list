@@ -2,9 +2,9 @@ import React from "react";
 import {enabledStyle} from "../consts.ts";
 
 export default function AddActivityButton({
-                                                    onClick = () => {
-                                                    }, enabled = true
-                                                }) {
+                                              onClick = () => {
+                                              }, enabled = true
+                                          }) {
     return (
         <button
             className={`${enabledStyle(enabled)} rounded-full min-w-12 min-h-12 text-white font-bold text-2xl hidden sm:block`}

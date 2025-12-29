@@ -1,6 +1,6 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
 import type {ActivityItem, ActivityStatus} from "../types/activity";
-import {accounts, User} from "../types/account.ts";
+import {User} from "../types/account.ts";
 import {useAccount} from "./AccountContext.tsx"; // adjust path/type
 
 export interface ActivityContextValue {
@@ -67,7 +67,7 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
                 assignee: null,
                 creationDate: new Date(),
                 dueDate: null,
-                comments:[]
+                comments: []
             },
         ]);
     };
@@ -135,7 +135,7 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
     const changeDueDate = (id: string, dueDate: Date | null) => {
         setActivities(prev =>
             prev.map(a =>
-                a.id === id ? { ...a, dueDate } : a
+                a.id === id ? {...a, dueDate} : a
             )
         );
     };
@@ -169,7 +169,6 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
         showAddModal,
         changeAssignee
     };
-
 
 
     return <ActivityContext.Provider value={value}>{children}</ActivityContext.Provider>;

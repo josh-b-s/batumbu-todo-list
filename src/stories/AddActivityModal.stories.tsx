@@ -4,19 +4,19 @@ import {MockActivityProvider} from "./MockProviders.tsx";
 import React from "react";
 
 const meta: Meta<typeof AddActivityModal> = {
-  title: "Components/AddActivityModal",
-  component: AddActivityModal,
-  decorators: [
-    (Story) => (
-      <MockActivityProvider value={{showAddModal: true}}>
-        <Story/>
-      </MockActivityProvider>
-    ),
-  ],
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
+    title: "Components/AddActivityModal",
+    component: AddActivityModal,
+    decorators: [
+        (Story) => (
+            <MockActivityProvider value={{showAddModal: true}}>
+                <Story/>
+            </MockActivityProvider>
+        ),
+    ],
+    parameters: {
+        layout: "centered",
+    },
+    tags: ["autodocs"],
 };
 
 export default meta;

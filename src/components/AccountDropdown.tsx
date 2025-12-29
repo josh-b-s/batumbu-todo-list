@@ -2,7 +2,6 @@ import React from "react";
 import {Icon, Menu, MenuItem} from "@mui/material";
 import AccountIcon from "@mui/icons-material/AccountCircle";
 import {useAccount} from "../contexts/AccountContext.tsx";
-import {accounts} from "../types/account.ts";
 
 export default function AccountDropdown({className = "", setShowModal}: {
     className?: string,
@@ -37,24 +36,30 @@ export default function AccountDropdown({className = "", setShowModal}: {
             <Menu
                 anchorEl={anchorEl}
                 open={open}
-                //@ts-ignore
                 onClose={handleClose}
+                onClick={(e) => e.stopPropagation()}
                 slotProps={{
                     paper: {
                         sx: {
-                            borderRadius: 3,
+                            borderRadius: 5,
+
                             bgcolor: "white",
+                            "&:where([data-theme=Dark], [data-theme=Dark] *)": {
+                                bgcolor: "#1f2937",
+                                color: "white",
+                            },
+
                             "& .MuiMenuItem-root": {
-                                borderRadius: 2,
+                                borderRadius: 4,
                                 mx: 1,
                                 my: 0.5,
                             },
                         },
-                    }
+                    },
                 }}
-                onClick={(e) => e.stopPropagation()}
             >
-                <MenuItem onClick={() => {
+
+            <MenuItem onClick={() => {
                     setShowModal(true);
                     handleClose();
                 }}>Logout</MenuItem>

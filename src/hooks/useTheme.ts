@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 
 export function useTheme() {
     const [theme, setTheme] = useState<"Light" | "Dark">(
-        ()=>{
+        () => {
             try {
                 const saved = localStorage.getItem("theme") as "Light" | "Dark" | null;
                 if (saved) return saved;
-            } catch (e) {}
+            } catch (e) {
+            }
             return "Light"
         }
     );
@@ -17,5 +18,5 @@ export function useTheme() {
         localStorage.setItem("theme", theme);
     }, [theme]);
 
-    return { theme, toggle: () => setTheme(t => (t === "Dark" ? "Light" : "Dark")) };
+    return {theme, toggle: () => setTheme(t => (t === "Dark" ? "Light" : "Dark"))};
 }

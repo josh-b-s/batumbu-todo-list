@@ -3,13 +3,13 @@ import {fn} from "storybook/test";
 import AddActivityButtonMobile from "../components/AddActivityButtonMobile.tsx";
 
 const meta: Meta<typeof AddActivityButtonMobile> = {
-  title: "Components/AddActivityButtonMobile",
-  component: AddActivityButtonMobile,
-  args: {
-    enabled: true,
-    onClick: fn(),
-  },
-  tags: ["autodocs"],
+    title: "Components/AddActivityButtonMobile",
+    component: AddActivityButtonMobile,
+    args: {
+        enabled: true,
+        onClick: fn(),
+    },
+    tags: ["autodocs"],
 };
 
 export default meta;
@@ -18,7 +18,7 @@ type Story = StoryObj<typeof AddActivityButtonMobile>;
 export const Enabled: Story = {};
 
 export const Disabled: Story = {
-  args: {
-    enabled: false,
-  },
+    args: {
+        enabled: false,
+    },
 };

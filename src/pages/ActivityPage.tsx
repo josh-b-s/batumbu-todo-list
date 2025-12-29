@@ -8,7 +8,6 @@ import {useActivityFilter} from "../contexts/ActivityFilterContext.tsx";
 import {useActivities} from "../contexts/ActivityContext.tsx";
 import {ActivityFilter, ActivityItem, ActivityStatus, statusDropdownChoices} from "../types/activity.ts";
 import {MAX_TITLE_CHAR_LEN, placeholderColor, secondaryBgColor, STATUS_STYLES} from "../consts.ts";
-import {accounts} from "../types/account.ts";
 import AddActivityModal from "../components/AddActivityModal.tsx";
 import AddActivityButtonMobile from "../components/AddActivityButtonMobile.tsx";
 import AddActivityButton from "../components/AddActivityButton.tsx";

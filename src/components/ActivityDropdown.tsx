@@ -96,13 +96,29 @@ export default function ActivityDropdown({
                     PaperProps: {
                         sx: {
                             borderRadius: 3,
+
+                            /* light mode (bg-white) */
                             bgcolor: "white",
-                            "& .MuiMenuItem-root": {borderRadius: 2, mx: 1, my: 0.5},
+                            color: "black",
+
+                            /* dark mode (dark:bg-gray-800) */
+                            "&:where([data-theme=Dark], [data-theme=Dark] *)": {
+                                bgcolor: "#1f2937", // tailwind gray-800
+                                color: "white",
+                            },
+
+                            "& .MuiMenuItem-root": {
+                                borderRadius: 2,
+                                mx: 1,
+                                my: 0.5,
+                                color: "inherit",
+                            },
                         },
                         onMouseDown: stop,
                         onClick: stop,
                     },
                 }}
+
                 renderValue={(selected) => (
                     <Box display="flex" alignItems="center" gap={1}>
                         {renderIcon()}

@@ -1,29 +1,29 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type {Meta, StoryObj} from "@storybook/react";
 import React from "react";
-import { MockActivityFilterProvider } from "./MockProviders.tsx";
+import {MockActivityFilterProvider} from "./MockProviders.tsx";
 import NoActivities from "../components/NoActivities.tsx";
 
 const meta: Meta<typeof NoActivities> = {
-  title: "Components/NoActivities",
-  component: NoActivities,
-  tags: ["autodocs"],
+    title: "Components/NoActivities",
+    component: NoActivities,
+    tags: ["autodocs"],
 };
 
 export default meta;
 type Story = StoryObj<typeof NoActivities>;
 
 export const EmptyAll: Story = {
-  render: () => (
-    <MockActivityFilterProvider value={{ statusFilter: "All" }}>
-      <NoActivities />
-    </MockActivityFilterProvider>
-  ),
+    render: () => (
+        <MockActivityFilterProvider value={{statusFilter: "All"}}>
+            <NoActivities/>
+        </MockActivityFilterProvider>
+    ),
 };
 
 export const EmptyDoneOnly: Story = {
-  render: () => (
-    <MockActivityFilterProvider value={{ statusFilter: "DONE" }}>
-      <NoActivities />
-    </MockActivityFilterProvider>
-  ),
+    render: () => (
+        <MockActivityFilterProvider value={{statusFilter: "DONE"}}>
+            <NoActivities/>
+        </MockActivityFilterProvider>
+    ),
 };

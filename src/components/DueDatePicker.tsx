@@ -32,11 +32,6 @@ export default function DueDatePicker({
                     "& .MuiPickersOutlinedInput-notchedOutline": {
                         borderColor: "#6b7280 !important",
                     },
-
-                    "& .MuiPickersOutlinedInput-root.Mui-disabled *": {
-                        color: "inherit !important",
-                        WebkitTextFillColor: "inherit",
-                    },
                 }}
                 slotProps={{
                     popper: {
@@ -53,35 +48,15 @@ export default function DueDatePicker({
                             },
 
                             "& .MuiPickersArrowSwitcher-button:hover": {
-                                backgroundColor: "rgba(0,0,0,0.08)",
-                            },
-
-                            "&:where([data-theme=Dark], [data-theme=Dark] *) .MuiPickersArrowSwitcher-button:hover": {
-                                backgroundColor: "rgba(255,255,255,0.12)",
-                            },
-
-                            "& .MuiPickersDay-root.Mui-disabled": {
-                                color: "rgba(0,0,0,0.35)",
-                            },
-
-                            "&:where([data-theme=Dark], [data-theme=Dark] *) .MuiPickersDay-root.Mui-disabled": {
-                                color: "rgba(255,255,255,0.35)",
+                                backgroundColor: "rgba(107, 114, 128,0.25)",
                             },
 
                             "&:where([data-theme=Dark], [data-theme=Dark] *) .MuiPickersCalendarHeader-switchViewButton": {
                                 color: "rgba(255,255,255,1)",
                             },
 
-                            "&:where([data-theme=Dark], [data-theme=Dark] *) .MuiYearCalendar-button.Mui-disabled": {
-                                color: "rgba(255,255,255,0.35)",
-                            },
-
                             "& .MuiPickersDay-root:not(.Mui-selected):hover": {
-                                backgroundColor: "rgba(0,0,0,0.08)",
-                            },
-
-                            "&:where([data-theme=Dark], [data-theme=Dark] *) .MuiPickersDay-root:not(.Mui-selected):hover": {
-                                backgroundColor: "rgba(255,255,255,0.12)",
+                                backgroundColor: "rgba(107, 114, 128,0.25)",
                             },
 
                             "& .MuiPickersLayout-contentWrapper": {
@@ -97,12 +72,8 @@ export default function DueDatePicker({
                             },
 
                             "& ::-webkit-scrollbar-thumb": {
-                                backgroundColor: "rgba(0,0,0,0.25)",
+                                backgroundColor: "rgba(107, 114, 128,1)",
                                 borderRadius: 8,
-                            },
-
-                            "&:where([data-theme=Dark], [data-theme=Dark] *) ::-webkit-scrollbar-thumb": {
-                                backgroundColor: "rgba(255,255,255,0.25)",
                             },
 
                             "& .MuiPaper-root": {
@@ -120,7 +91,7 @@ export default function DueDatePicker({
                             // calendar days inherit text color
                             "& .MuiPickersDay-root": {
                                 color: "inherit",
-                                borderRadius: "12px",
+                                border: "0"
                             },
 
                             // weekday labels inherit text color
@@ -136,6 +107,11 @@ export default function DueDatePicker({
 
                             "& .MuiPickersDay-root.Mui-selected:hover": {
                                 backgroundColor: "var(--color-primary-dark, #1d4ed8)",
+                            },
+
+                            "& .Mui-disabled": {
+                                color: "#6b7280 !important",
+                                opacity:0.5
                             },
                         },
                     },

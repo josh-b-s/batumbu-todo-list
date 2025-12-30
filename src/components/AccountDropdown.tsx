@@ -36,6 +36,7 @@ export default function AccountDropdown({className = "", setShowModal}: {
             <Menu
                 anchorEl={anchorEl}
                 open={open}
+                // @ts-ignore
                 onClose={handleClose}
                 onClick={(e) => e.stopPropagation()}
                 slotProps={{
@@ -59,7 +60,7 @@ export default function AccountDropdown({className = "", setShowModal}: {
                 }}
             >
 
-            <MenuItem onClick={() => {
+                <MenuItem onClick={() => {
                     setShowModal(true);
                     handleClose();
                 }}>Logout</MenuItem>

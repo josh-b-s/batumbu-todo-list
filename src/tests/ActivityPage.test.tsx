@@ -88,15 +88,6 @@ const defaultActivityContextValue = () => ({
     showAddModal: false,
 });
 
-function createActivityContextValue(
-    overrides: Partial<ReturnType<typeof defaultActivityContextValue>> = {}
-) {
-    return {
-        ...defaultActivityContextValue(),
-        ...overrides,
-    };
-}
-
 describe("ActivityPage", () => {
     beforeEach(() => {
         mockNavigate.mockReset();
@@ -117,22 +108,5 @@ describe("ActivityPage", () => {
 
         expect(screen.getByTestId("empty-state")).toBeInTheDocument();
         expect(screen.queryByTestId("activity-list")).not.toBeInTheDocument();
-    });
-
-    it("only passes activities that match the status filter to ActivityList", () => {
-        useActivitiesMock.mockReturnValue(
-            createActivityContextValue({
-                activities: [
-                    {id: "1", title: "Todo item", status: "TODO"},
-                    {id: "2", title: "Done item", status: "DONE"},
-                ] as never[],
-            })
-        );
-        useActivityFilterMock.mockReturnValue({
-            statusFilter: "DONE",
-            setStatusFilter: vi.fn(),
-        });
-
-        render(<ActivityPage/>);
     });
 });

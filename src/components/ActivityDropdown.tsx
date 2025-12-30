@@ -20,7 +20,7 @@ export interface Choice {
 }
 
 export default function ActivityDropdown({
-                                             value = "-",
+                                             value,
                                              onChange = () => {
                                              },
                                              className = "",
@@ -31,7 +31,10 @@ export default function ActivityDropdown({
                                              dataTheme = "",
                                              fontWeight = 400,
                                          }: ActivityDropdownProps): JSX.Element {
-    const [openStyle, setOpenStyle] = React.useState<String>("")
+    // compute selected value: prefer provided `value`, otherwise choose sensible default
+    const selectedValue = value !== undefined && value !== null ? value : (filter ? "All" : "-");
+
+    const [openStyle, setOpenStyle] = React.useState<String>("");
 
     const handleChange = (event: any) => {
         onChange(event.target.value);
@@ -80,12 +83,10 @@ export default function ActivityDropdown({
                         opacity: 0.5,
                     },
                 }}
-
-
                 disabled={disabled}
             >
                 <Select
-                    value={value}
+                    value={selectedValue}
                     onChange={handleChange}
                     onClick={stop}
                     onMouseDown={stop}
@@ -96,22 +97,16 @@ export default function ActivityDropdown({
                         borderRadius: "14px",
                         height: "3rem",
                     }}
-
                     MenuProps={{
                         PaperProps: {
                             sx: {
                                 borderRadius: 3,
-
-                                /* light mode (bg-white) */
                                 bgcolor: "white",
                                 color: "black",
-
-                                /* dark mode (dark:bg-gray-800) */
                                 "&:where([data-theme=Dark], [data-theme=Dark] *)": {
-                                    bgcolor: "#1f2937", // tailwind gray-800
+                                    bgcolor: "#1f2937",
                                     color: "white",
                                 },
-
                                 "& .MuiMenuItem-root": {
                                     borderRadius: 2,
                                     mx: 1,
@@ -123,7 +118,6 @@ export default function ActivityDropdown({
                             onClick: stop,
                         },
                     }}
-
                     renderValue={(selected) => (
                         <Box display="flex" alignItems="center" gap={1}>
                             {renderIcon()}
@@ -132,12 +126,16 @@ export default function ActivityDropdown({
                     )}
                     className={disabled ? "" : "opacity-80 hover:opacity-100"}
                 >
-
                     {filter ? <MenuItem value="All">All</MenuItem> : null}
                     {hasEmptyChoice ? <MenuItem value="-">-</MenuItem> : null}
-                    {choices.map((item, index) => (<MenuItem key={index} value={item.value}>{item.label}</MenuItem>))}
+                    {choices.map((item, index) => (
+                        <MenuItem key={index} value={item.value}>
+                            {item.label}
+                        </MenuItem>
+                    ))}
                 </Select>
             </FormControl>
         </div>
     );
 }
+

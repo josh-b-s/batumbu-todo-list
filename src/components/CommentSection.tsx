@@ -68,12 +68,11 @@ export default function CommentSection() {
                 ))}
             </div>
 
-            {/* Add comment */}
             <div className="border border-gray-500 dark:bg-gray-900 dark:text-white rounded-2xl p-4">
                 <p className="font-medium mb-2">Tambah Komentar</p>
 
                 <textarea
-                    className="w-full min-h-[10rem] bg-transparent border border-gray-500 rounded-2xl p-3 resize-none focus:outline-none"
+                    className="w-full min-h-[10rem] bg-transparent border border-gray-500 rounded-2xl p-3 resize-none focus:outline-none placeholder-gray-500"
                     placeholder="Tulis komentar..."
                     value={text}
                     onChange={e => setText(e.target.value)}

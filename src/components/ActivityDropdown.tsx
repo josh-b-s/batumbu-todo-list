@@ -74,11 +74,10 @@ export default function ActivityDropdown({
                     },
 
                     "& .MuiOutlinedInput-root.Mui-disabled *": {
-                        color: "inherit !important",
                         WebkitTextFillColor: "inherit",
                     },
                     "& .MuiOutlinedInput-root.Mui-disabled": {
-                        opacity: 1,
+                        opacity: 0.5,
                     },
                 }}
 
@@ -96,10 +95,6 @@ export default function ActivityDropdown({
                     sx={{
                         borderRadius: "14px",
                         height: "3rem",
-
-                        "& .MuiSvgIcon-root": {
-                            display: disabled ? "none" : "block",
-                        },
                     }}
 
                     MenuProps={{

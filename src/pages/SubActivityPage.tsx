@@ -39,14 +39,14 @@ function SubActivityBody() {
     const {
         subActivities,
         addSubActivity,
-        isEditableByClient,
+        isEditable,
         removeSubActivity,
         pendingDeleteSubId,
         closeModal,
         showModal,
         activity
     } = useSubActivities()
-    const enabled = subActivities.length < 10 && isEditableByClient;
+    const enabled = subActivities.length < 10 && isEditable;
     const noActivities = subActivities.length <= 0
     const pendingTitle = (subActivities.find((s) => s.id === pendingDeleteSubId)?.title || "Aktivitas Baru").trim();
 
@@ -87,10 +87,10 @@ function ActivityHeader() {
         addSubActivity,
         activity,
         subActivities,
-        isEditableByClient,
+        isEditable,
     } = useSubActivities()
     const navigate = useNavigate();
-    const enabled = subActivities.length < 10 && isEditableByClient;
+    const enabled = subActivities.length < 10 && isEditable;
 
     return (
         <div className="flex justify-between items-center space-x-5">
@@ -115,7 +115,7 @@ function SubActivity({
         updateSubTitle,
         changePriority,
         openDeleteModal,
-        isEditableByClient
+        isEditable
     } = useSubActivities();
     const {id, title = "", priority = "Low", checked = false} = activity;
     const styles = PRIORITY_STYLES[priority] ?? PRIORITY_STYLES.Low;
@@ -128,7 +128,7 @@ function SubActivity({
             <div className="flex items-center gap-3">
                 <input id={`chk-${id}`} type="checkbox" checked={checked} onChange={() => toggleChecked(id)}
                        className="h-5 w-5"
-                       disabled={!isEditableByClient}
+                       disabled={!isEditable}
                 />
 
                 <input
@@ -136,20 +136,20 @@ function SubActivity({
                     value={title}
                     onChange={(e) => updateSubTitle(id, e.target.value.length > MAX_TITLE_CHAR_LEN ? title : e.target.value)}
                     placeholder="Aktivitas Baru"
-                    disabled={!isEditableByClient}
+                    disabled={!isEditable}
                 />
             </div>
 
             <div className="flex items-center">
                 <ActivityDropdown value={priority} onChange={(newP) => changePriority(id, newP as Priority)}
                                   className={`${styles.bg} rounded-xl mr-2`}
-                                  disabled={!isEditableByClient}
+                                  disabled={!isEditable}
                                   choices={priorityDropdownChoices}
                                   dataTheme="Dark"
                                   fontWeight={600}/>
 
                 <button
-                    className={`${isEditableByClient ? "block" : "hidden"} not-hover:opacity-50 cursor-pointer hover:underline`}
+                    className={`${isEditable ? "block" : "hidden"} not-hover:opacity-50 cursor-pointer hover:underline`}
                     onClick={() => openDeleteModal(id)}
                 >
                     Delete

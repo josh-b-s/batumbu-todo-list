@@ -20,7 +20,7 @@ export default function Header(): JSX.Element {
             <h1 className="text-2xl text-white font-bold block sm:hidden">Batumbu</h1>
             <div className="flex flex-row justify-between space-x-2">
                 <button onClick={toggle}
-                        className="flex items-center text-white border border-white/50 rounded-full px-4 gap-2">
+                        className="flex items-center text-white border border-white/50 rounded-full px-4 gap-2 hover:cursor-pointer hover:bg-black/10 !transition-none">
                     {theme === "Dark" ? <MdOutlineDarkMode size={"1.25em"}/> : <IoSunnyOutline size={"1.25em"}/>}
                     {theme}
                 </button>

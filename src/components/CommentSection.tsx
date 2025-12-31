@@ -14,8 +14,15 @@ export default function CommentSection() {
 
     const comments: UserComment[] = activity?.comments ?? [];
 
+    const [isEmptyError, setIsEmptyError] = useState(false)
+
+    const border = isEmptyError ? " border-red-500 " : ""
+
     const addComment = () => {
-        if (!text.trim() || !account) return;
+        if (!text.trim() || !account) {
+            setIsEmptyError(true)
+            return
+        }
 
         const newComment: UserComment = {
             id: crypto.randomUUID(),
@@ -72,15 +79,23 @@ export default function CommentSection() {
                 <p className="font-medium mb-2">Tambah Komentar</p>
 
                 <textarea
-                    className="w-full min-h-[10rem] bg-transparent border border-gray-500 rounded-2xl p-3 resize-none focus:outline-none placeholder-gray-500"
+                    className={border + "w-full min-h-[10rem] bg-transparent border border-gray-500 rounded-2xl p-3 resize-none focus:outline-none placeholder-gray-500"}
                     placeholder="Tulis komentar..."
                     value={text}
-                    onChange={e => setText(e.target.value)}
+                    onChange={e => {
+                        setText(e.target.value)
+                        setIsEmptyError(false)
+                    }}
                 />
 
+                {isEmptyError && <p
+                        className="text-red-500"
+                        >
+                  Komentar tidak boleh kosong
+                </p>}
                 <button
                     onClick={addComment}
-                    className="mt-4 w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-md"
+                    className="mt-4 w-full bg-batumbured opacity-80 hover:opacity-100 text-white font-semibold py-2 rounded-xl cursor-pointer !transition-none"
                 >
                     Kirim
                 </button>
@@ -113,7 +128,7 @@ function CommentItem({
                 {canDelete && (
                     <button
                         onClick={onDelete}
-                        className="text-sm text-slate-300 hover:text-white"
+                        className="text-sm text-gray-500 hover:text-white hover:underline cursor-pointer !transition-none"
                     >
                         Delete
                     </button>

@@ -119,11 +119,11 @@ function Activity({activity,}: { activity: ActivityItem }) {
     const {id, title, status, creationDate, dueDate, assignee, comments} = activity;
     const styles = STATUS_STYLES[status] ?? STATUS_STYLES.TODO;
     const {changeTitle, changeStatus, openDeleteModal, isEditableByClient} = useActivities()
-
+    const overdueBorder = dueDate ? (new Date() >= new Date(dueDate) ? "border-2 border-red-500" : "") : ""
 
     return (
         <div
-            className={`${secondaryBgColor} mb-2 gap-3 rounded-xl p-4 flex justify-between items-center w-full cursor-pointer ${styles.border}`}
+            className={`${secondaryBgColor} mb-2 gap-3 rounded-xl p-4 flex justify-between items-center w-full cursor-pointer ${styles.border} ${overdueBorder}`}
             onClick={() => navigate(`/activities/${id}`)}
             role="group"
         >
@@ -151,7 +151,7 @@ function Activity({activity,}: { activity: ActivityItem }) {
                     <div className="flex items-center space-x-1">
                         <FaRegCalendar size={"0.75em"}/>
                         <p className={`text-xs`}>
-                            {dueDate ? formatDate(dueDate) : "-"}
+                            {dueDate ? formatDate(dueDate, {showTime: false}) : "-"}
                         </p>
                     </div>
                     <div className="flex items-center space-x-1">

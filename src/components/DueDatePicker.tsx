@@ -32,6 +32,9 @@ export default function DueDatePicker({
                     "& .MuiPickersOutlinedInput-notchedOutline": {
                         borderColor: "#6b7280 !important",
                     },
+                    "& .Mui-disabled *": {
+                        color: "#6b7280 !important",
+                    },
                 }}
                 slotProps={{
                     popper: {

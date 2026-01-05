@@ -68,10 +68,10 @@ export function createActivityContextValue(
         showDeleteModal: false,
         pendingDeleteId: null,
         changeDescription: noop,
-        isEditable: true,
         openAddModal: noop,
         closeAddModal: noop,
         showAddModal: false,
+        checkEditAccess: () => true,
         ...overrides,
     };
 }
@@ -130,7 +130,6 @@ export function createSubActivityContextValue(
         closeModal: noop,
         pendingDeleteSubId: null,
         isEditable: true,
-        isEditableByClient: true,
         ...overrides,
     };
 }

@@ -114,7 +114,7 @@ export default function DueDatePicker({
 
                             "& .Mui-disabled": {
                                 color: "#6b7280 !important",
-                                opacity:0.5
+                                opacity: 0.5
                             },
                         },
                     },

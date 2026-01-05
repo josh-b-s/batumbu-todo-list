@@ -93,7 +93,7 @@ function ActivityHeader() {
     const navigate = useNavigate();
     const enabled = subActivities.length < 10 && isEditable;
 
-    if(!activity) return
+    if (!activity) return
 
     const {creator, creationDate} = activity
 
@@ -104,7 +104,8 @@ function ActivityHeader() {
                              className="text-3xl opacity-70 hover:opacity-100 cursor-pointer"/>
                 <div>
                     <h2 className="text-3xl sm:text-4xl font-bold truncate">{activity?.title || "Aktivitas Baru"}</h2>
-                    <p className={"text-sm opacity-50"}>Dibuat oleh <b>{creator.name}</b> pada <b>{formatDate(creationDate)}</b>
+                    <p className={"text-sm opacity-50"}>Dibuat
+                        oleh <b>{creator.name}</b> pada <b>{formatDate(creationDate)}</b>
                     </p>
                 </div>
             </div>

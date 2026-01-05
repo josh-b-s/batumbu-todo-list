@@ -1,56 +1,88 @@
+import React, {ReactNode, useState} from "react";
 import type {Meta, StoryObj} from "@storybook/react";
-import {fn} from "storybook/test";
-import React from "react";
-import {mockActivity, MockActivityProvider, MockSubActivityProvider,} from "./MockProviders.tsx";
-import SubActivityDescBox from "../components/SubActivityDescBox.tsx";
+import SubActivityDescBox from "../components/SubActivityDescBox";
+import {ActivityContext} from "../contexts/ActivityContext";
+import {SubActivityContext} from "../contexts/SubActivityContext";
+import {secondaryBgColor} from "../consts";
 
 const meta: Meta<typeof SubActivityDescBox> = {
     title: "Components/SubActivityDescBox",
     component: SubActivityDescBox,
-    tags: ["autodocs"],
 };
-
 export default meta;
+
 type Story = StoryObj<typeof SubActivityDescBox>;
 
-export const Editable: Story = {
-    render: () => (
-        <MockActivityProvider
+
+type MockActivity = {
+    id: string;
+    description: string;
+};
+
+function MockProviders({
+                           children,
+                           initialDescription,
+                       }: {
+    children: ReactNode;
+    initialDescription: string;
+}) {
+    const [activity, setActivity] = useState<MockActivity>({
+        id: "sub-1",
+        description: initialDescription,
+    });
+
+    return (
+        <ActivityContext.Provider
             value={{
-                activities: [mockActivity],
-                changeDescription: fn(),
-            }}
+                changeDescription: (id: string, desc: string) => {
+                    if (id === activity.id) {
+                        setActivity((prev) => ({...prev, description: desc}));
+                    }
+                },
+            } as any}
         >
-            <MockSubActivityProvider
+            <SubActivityContext.Provider
                 value={{
-                    activity: mockActivity,
-                    isEditable: true,
-                    isEditableByClient: true,
-                }}
+                    activity,
+                } as any}
             >
-                <SubActivityDescBox activityId={mockActivity.id}/>
-            </MockSubActivityProvider>
-        </MockActivityProvider>
+                <div className={`${secondaryBgColor} p-4 rounded-2xl max-w-xl`}>
+                    {children}
+                </div>
+            </SubActivityContext.Provider>
+        </ActivityContext.Provider>
+    );
+}
+
+
+export const Default: Story = {
+    render: () => (
+        <MockProviders initialDescription="<p>This is a description.</p>">
+            <SubActivityDescBox/>
+        </MockProviders>
     ),
 };
 
-export const ReadOnly: Story = {
+export const Editing: Story = {
     render: () => (
-        <MockActivityProvider
-            value={{
-                activities: [{...mockActivity, status: "DONE"}],
-                changeDescription: fn(),
-            }}
-        >
-            <MockSubActivityProvider
-                value={{
-                    activity: {...mockActivity, status: "DONE"},
-                    isEditable: false,
-                    isEditableByClient: false,
-                }}
-            >
-                <SubActivityDescBox activityId={mockActivity.id}/>
-            </MockSubActivityProvider>
-        </MockActivityProvider>
+        <MockProviders initialDescription="<p>Edit me ✏️</p>">
+            <SubActivityDescBox/>
+        </MockProviders>
+    ),
+};
+
+export const Disabled: Story = {
+    render: () => (
+        <MockProviders initialDescription="<p>Read-only description</p>">
+            <SubActivityDescBox disabled/>
+        </MockProviders>
+    ),
+};
+
+export const EmptyDescription: Story = {
+    render: () => (
+        <MockProviders initialDescription="<p></p>">
+            <SubActivityDescBox/>
+        </MockProviders>
     ),
 };

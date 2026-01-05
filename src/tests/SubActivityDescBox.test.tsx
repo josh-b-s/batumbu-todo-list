@@ -1,5 +1,5 @@
-import {render, screen, fireEvent} from "@testing-library/react";
-import {describe, it, expect, vi, beforeEach} from "vitest";
+import {fireEvent, render, screen} from "@testing-library/react";
+import {beforeEach, describe, expect, it, vi} from "vitest";
 import SubActivityDescBox from "../components/SubActivityDescBox";
 import React from "react";
 
@@ -7,7 +7,7 @@ import React from "react";
 
 // mock SimpleMenuBar to avoid tiptap internals
 vi.mock("../components/SimpleMenuBar", () => ({
-    default: () => <div data-testid="simple-menu-bar" />,
+    default: () => <div data-testid="simple-menu-bar"/>,
 }));
 
 // editor spies (reused across tests)
@@ -17,7 +17,7 @@ const runMock = vi.fn();
 
 // mock @tiptap/react
 vi.mock("@tiptap/react", () => ({
-    EditorContent: () => <div data-testid="editor-content" />,
+    EditorContent: () => <div data-testid="editor-content"/>,
     useEditor: () => ({
         commands: {
             setContent: setContentMock,
@@ -58,14 +58,14 @@ describe("SubActivityDescBox", () => {
     });
 
     it("renders label and Edit button when not disabled", () => {
-        render(<SubActivityDescBox />);
+        render(<SubActivityDescBox/>);
 
         expect(screen.getByText("Deskripsi")).toBeInTheDocument();
         expect(screen.getByRole("button", {name: /edit/i})).toBeInTheDocument();
     });
 
     it("does not render Edit button when disabled prop is true", () => {
-        render(<SubActivityDescBox disabled />);
+        render(<SubActivityDescBox disabled/>);
 
         expect(
             screen.queryByRole("button", {name: /edit/i})
@@ -73,7 +73,7 @@ describe("SubActivityDescBox", () => {
     });
 
     it("entering edit mode shows Save and Cancel; Save calls changeDescription", () => {
-        render(<SubActivityDescBox />);
+        render(<SubActivityDescBox/>);
 
         fireEvent.click(screen.getByRole("button", {name: /edit/i}));
 
@@ -90,7 +90,7 @@ describe("SubActivityDescBox", () => {
     });
 
     it("cancel resets content via editor.commands.setContent and exits edit mode", () => {
-        render(<SubActivityDescBox />);
+        render(<SubActivityDescBox/>);
 
         fireEvent.click(screen.getByRole("button", {name: /edit/i}));
         fireEvent.click(screen.getByRole("button", {name: /cancel/i}));

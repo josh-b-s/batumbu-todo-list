@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { formatDate } from "../helpers/formatDate";
+import {describe, expect, it} from "vitest";
+import {formatDate} from "../helpers/formatDate";
 
 describe("formatDate", () => {
     it("formats a Date object correctly", () => {

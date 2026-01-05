@@ -149,7 +149,7 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
 
     const {account} = useAccount()
 
-    function checkEditAccess(activityId:string){
+    function checkEditAccess(activityId: string) {
         const activity = activities.find(a => a.id === activityId);
         const {account} = useAccount();
         return (activity?.assignee?.name == account?.name || activity?.creator?.name == account?.name)

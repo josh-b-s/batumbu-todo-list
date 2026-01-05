@@ -117,7 +117,7 @@ describe("CommentSection", () => {
 
         render(<CommentSection/>);
 
-        const deleteButton = screen.getByRole("button", { name: "Delete" });
+        const deleteButton = screen.getByRole("button", {name: "Delete"});
         fireEvent.click(deleteButton);
 
         expect(setActivitiesMock).toHaveBeenCalled();

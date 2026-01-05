@@ -89,8 +89,8 @@ export default function CommentSection() {
                 />
 
                 {isEmptyError && <p
-                        className="text-red-500"
-                        >
+                  className="text-red-500"
+                >
                   Komentar tidak boleh kosong
                 </p>}
                 <button

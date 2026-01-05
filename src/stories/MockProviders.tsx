@@ -15,9 +15,9 @@ export const mockActivity: ActivityItem = {
     title: "Design Landing Page",
     status: "IN PROGRESS",
     description: "Tingkatkan hero copy dan layout CTA.",
-    creator: {role: "engineer", name: "test", pass:""},
+    creator: {role: "engineer", name: "test", pass: ""},
     subActivities: mockSubActivities,
-    assignee: {role: "engineer", name: "test", pass:""},
+    assignee: {role: "engineer", name: "test", pass: ""},
     creationDate: new Date(),
     dueDate: new Date(),
     comments: []
@@ -29,7 +29,7 @@ export function createAccountContextValue(
     overrides: Partial<AccountContextValue> = {},
 ): AccountContextValue {
     return {
-        account: {role: "engineer", name: "test", pass:""},
+        account: {role: "engineer", name: "test", pass: ""},
         login: noop,
         logout: noop,
         getEngineerChoices: () => [],

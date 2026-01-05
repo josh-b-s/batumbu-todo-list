@@ -3,32 +3,58 @@ import {useActivities} from "../contexts/ActivityContext";
 import {useSubActivities} from "../contexts/SubActivityContext";
 import {useAccount} from "../contexts/AccountContext";
 import {formatDate} from "../helpers/formatDate";
-import {UserComment} from "../types/account.ts";
+import {UserComment} from "../types/account";
+import {EditorContent, useEditor} from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 
 export default function CommentSection() {
     const {activity} = useSubActivities();
     const {setActivities} = useActivities();
-    const {account} = useAccount(); // current logged-in account
-
-    const [text, setText] = useState("");
+    const {account} = useAccount();
 
     const comments: UserComment[] = activity?.comments ?? [];
+    const [isEmptyError, setIsEmptyError] = useState(false);
 
-    const [isEmptyError, setIsEmptyError] = useState(false)
-
-    const border = isEmptyError ? " border-red-500 " : ""
+    const editor = useEditor({
+        extensions: [
+            StarterKit.configure({
+                heading: false,
+                code: false,
+                codeBlock: false,
+                blockquote: false,
+                strike: false,
+                horizontalRule: false,
+                hardBreak: false,
+            }),
+        ],
+        editorProps: {
+            attributes: {
+                class:
+                    "p-3 min-h-[10rem] border border-gray-500 rounded-2xl bg-transparent focus:outline-none",
+            },
+        },
+        content: "",
+        onUpdate: () => {
+            setIsEmptyError(false);
+        },
+    });
 
     const addComment = () => {
-        if (!text.trim() || !account) {
-            setIsEmptyError(true)
-            return
+        if (!editor || !account) return;
+
+        const html = editor.getHTML().trim();
+        const plainText = editor.getText().trim();
+
+        if (!plainText) {
+            setIsEmptyError(true);
+            return;
         }
 
         const newComment: UserComment = {
             id: crypto.randomUUID(),
             user: account,
             date: new Date(),
-            comment: text.trim(),
+            comment: html,
         };
 
         setActivities(prev =>
@@ -39,7 +65,7 @@ export default function CommentSection() {
             )
         );
 
-        setText("");
+        editor.commands.clearContent();
     };
 
     const deleteComment = (commentId: string) => {
@@ -49,7 +75,7 @@ export default function CommentSection() {
                     ? {
                         ...a,
                         comments: (a.comments ?? []).filter(
-                            (c: UserComment) => c.id !== commentId
+                            c => c.id !== commentId
                         ),
                     }
                     : a
@@ -63,7 +89,6 @@ export default function CommentSection() {
                 Komentar ({comments.length})
             </h3>
 
-            {/* Comment list */}
             <div className="space-y-3">
                 {comments.map(c => (
                     <CommentItem
@@ -78,24 +103,17 @@ export default function CommentSection() {
             <div className="border border-gray-500 dark:bg-gray-900 dark:text-white rounded-2xl p-4">
                 <p className="font-medium mb-2">Tambah Komentar</p>
 
-                <textarea
-                    className={border + "w-full min-h-[10rem] bg-transparent border border-gray-500 rounded-2xl p-3 resize-none focus:outline-none placeholder-gray-500"}
-                    placeholder="Tulis komentar..."
-                    value={text}
-                    onChange={e => {
-                        setText(e.target.value)
-                        setIsEmptyError(false)
-                    }}
-                />
+                <EditorContent editor={editor}/>
 
-                {isEmptyError && <p
-                  className="text-red-500"
-                >
-                  Komentar tidak boleh kosong
-                </p>}
+                {isEmptyError && (
+                    <p className="text-red-500 mt-1">
+                        Komentar tidak boleh kosong
+                    </p>
+                )}
+
                 <button
                     onClick={addComment}
-                    className="mt-4 w-full bg-batumbured opacity-80 hover:opacity-100 text-white font-semibold py-2 rounded-xl cursor-pointer !transition-none"
+                    className="mt-4 w-full bg-batumbured opacity-80 hover:opacity-100 text-white font-semibold py-2 rounded-xl"
                 >
                     Kirim
                 </button>
@@ -135,9 +153,10 @@ function CommentItem({
                 )}
             </div>
 
-            <p className="mt-2 text-sm">
-                {comment.comment}
-            </p>
+            <p
+                className="mt-2 text-sm"
+                dangerouslySetInnerHTML={{__html: comment.comment}}
+            />
         </div>
     );
 }

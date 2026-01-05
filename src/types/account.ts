@@ -16,6 +16,8 @@ export interface UserComment {
 export const accounts: Record<string, User> = {
     "eng1@gmail.com": {pass: "pass", name: "eng1", role: "engineer"},
     "eng2@gmail.com": {pass: "pass", name: "eng2", role: "engineer"},
+    "eng3@gmail.com": {pass: "pass", name: "eng3", role: "engineer"},
     "cli1@gmail.com": {pass: "pass", name: "cli1", role: "client"},
     "cli2@gmail.com": {pass: "pass", name: "cli2", role: "client"},
+    "cli3@gmail.com": {pass: "pass", name: "cli3", role: "client"},
 };

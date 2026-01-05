@@ -23,7 +23,7 @@ export interface SubActivityContextValue {
 export const SubActivityContext = createContext<SubActivityContextValue | undefined>(undefined);
 
 export function SubActivityProvider({children, activityId}: { children: React.ReactNode; activityId: string }) {
-    const {activities, setActivities} = useActivities();
+    const {activities, setActivities, checkEditAccess} = useActivities();
     const activity = activities.find(a => a.id === activityId) ?? null;
     const subActivities = activity?.subActivities ?? [];
 
@@ -87,7 +87,7 @@ export function SubActivityProvider({children, activityId}: { children: React.Re
     };
 
     const {account} = useAccount()
-    const isEditable = activity?.status != "DONE" && activity?.status != "DECLINED" && (activity?.assignee?.name == account?.name || activity?.creator?.name == account?.name)
+    const isEditable = activity?.status != "DONE" && activity?.status != "DECLINED" && checkEditAccess(activityId)
     const isEditableByClient = isEditable && account?.role == "engineer";
 
     const value = useMemo(() => ({

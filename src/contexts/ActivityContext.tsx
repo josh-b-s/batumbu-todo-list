@@ -18,11 +18,11 @@ export interface ActivityContextValue {
     closeDeleteModal: () => void;
     showDeleteModal: boolean;
     pendingDeleteId: string | null;
-    isEditableByClient: boolean;
     openAddModal: () => void;
     closeAddModal: () => void;
     showAddModal: boolean;
-    changeAssignee: (id: string, assignee: User) => void
+    changeAssignee: (id: string, assignee: User) => void;
+    checkEditAccess: (activityId: string) => boolean;
 }
 
 
@@ -148,7 +148,12 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
 
 
     const {account} = useAccount()
-    const isEditableByClient = account?.role == "engineer";
+
+    function checkEditAccess(activityId:string){
+        const activity = activities.find(a => a.id === activityId);
+        const {account} = useAccount();
+        return (activity?.assignee?.name == account?.name || activity?.creator?.name == account?.name)
+    }
 
     const value = {
         activities,
@@ -163,11 +168,11 @@ export function ActivityProvider({children}: { children: React.ReactNode }) {
         closeDeleteModal,
         showDeleteModal,
         pendingDeleteId,
-        isEditableByClient,
         openAddModal,
         closeAddModal,
         showAddModal,
-        changeAssignee
+        changeAssignee,
+        checkEditAccess,
     };
 
 

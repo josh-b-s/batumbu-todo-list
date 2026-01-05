@@ -55,7 +55,7 @@ describe("CommentSection", () => {
 
         render(<CommentSection/>);
 
-        expect(screen.getByText(/Komentar \(1\)/i)).toBeInTheDocument();
+        expect(screen.getByText("Komentar (1)")).toBeInTheDocument();
         expect(screen.getByText("hello world")).toBeInTheDocument();
         expect(screen.getByText(mockUser.name)).toBeInTheDocument();
     });
@@ -67,8 +67,8 @@ describe("CommentSection", () => {
 
         render(<CommentSection/>);
 
-        const textarea = screen.getByPlaceholderText(/Tulis komentar/i) as HTMLTextAreaElement;
-        const sendButton = screen.getByRole("button", {name: /kirim/i});
+        const textarea = screen.getByPlaceholderText("Tulis komentar...") as HTMLTextAreaElement;
+        const sendButton = screen.getByRole("button", {name: "Kirim"});
 
         fireEvent.change(textarea, {target: {value: "  new comment  "}});
         fireEvent.click(sendButton);
@@ -100,11 +100,11 @@ describe("CommentSection", () => {
 
         render(<CommentSection/>);
 
-        const sendButton = screen.getByRole("button", {name: /kirim/i});
+        const sendButton = screen.getByRole("button", {name: "Kirim"});
 
         fireEvent.click(sendButton);
 
-        expect(screen.getByText(/Komentar tidak boleh kosong/i)).toBeInTheDocument();
+        expect(screen.getByText("Komentar tidak boleh kosong")).toBeInTheDocument();
 
         expect(setActivitiesMock).not.toHaveBeenCalled();
     });
@@ -117,7 +117,7 @@ describe("CommentSection", () => {
 
         render(<CommentSection/>);
 
-        const deleteButton = screen.getByRole("button", { name: /delete/i });
+        const deleteButton = screen.getByRole("button", { name: "Delete" });
         fireEvent.click(deleteButton);
 
         expect(setActivitiesMock).toHaveBeenCalled();

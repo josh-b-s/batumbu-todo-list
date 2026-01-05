@@ -2,7 +2,7 @@ export function formatDate(
     date: Date | string,
     options?: { showTime?: boolean }
 ) {
-    const d = typeof date === "string" ? new Date(date) : date;
+    const d = new Date(date);
 
     if (isNaN(d.getTime())) return "-";
 

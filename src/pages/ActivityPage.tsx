@@ -118,8 +118,9 @@ function Activity({activity,}: { activity: ActivityItem }) {
     const navigate = useNavigate();
     const {id, title, status, creationDate, dueDate, assignee, comments} = activity;
     const styles = STATUS_STYLES[status] ?? STATUS_STYLES.TODO;
-    const {changeTitle, changeStatus, openDeleteModal, isEditableByClient} = useActivities()
-    const overdueBorder = dueDate ? (new Date() >= new Date(dueDate) ? "border-2 border-red-500" : "") : ""
+    const {changeTitle, changeStatus, openDeleteModal, checkEditAccess} = useActivities()
+    const overdueBorder = dueDate ? (new Date() >= new Date(dueDate) && status != "DONE" ? "border-2 border-red-500" : "") : ""
+    const isEditable = checkEditAccess(activity.id)
 
     return (
         <div
@@ -170,7 +171,7 @@ function Activity({activity,}: { activity: ActivityItem }) {
             </div>
             <div className="space-x-2 flex items-center">
                 <button
-                    className={`${isEditableByClient ? "block" : "hidden"} not-hover:opacity-50 cursor-pointer hover:underline`}
+                    className={`${isEditable ? "block" : "hidden"} not-hover:opacity-50 cursor-pointer hover:underline`}
                     onClick={(e) => {
                         e.stopPropagation();
                         openDeleteModal(id);
@@ -180,7 +181,7 @@ function Activity({activity,}: { activity: ActivityItem }) {
                 </button>
 
                 <ActivityDropdown value={status} onChange={(newStatus) => changeStatus(id, newStatus as ActivityStatus)}
-                                  className={`${isEditableByClient ? "block" : "hidden"} bg-batumbured rounded-xl mr-2 opacity-80 hover:opacity-100`}
+                                  className={`${isEditable ? "block" : "hidden"} bg-batumbured rounded-xl mr-2 opacity-80 hover:opacity-100`}
                                   choices={statusDropdownChoices}
                                   dataTheme="Dark"
                                   fontWeight={600}/>

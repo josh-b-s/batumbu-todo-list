@@ -25,7 +25,8 @@ function MockProviders({
     selectedActivityId: string;
     currentAccount: User | null;
 }) {
-    const [activities, setActivities] = useState<ActivityItem[]>(initialActivities);
+    const [activities, setActivities] =
+        useState<ActivityItem[]>(initialActivities);
 
     const accountCtx = {
         account: currentAccount,
@@ -36,20 +37,22 @@ function MockProviders({
     const activityCtx = {
         activities,
         setActivities,
-        openDeleteModal: (_id?: string) => undefined,
+        openDeleteModal: () => undefined,
         showDeleteModal: false,
         pendingDeleteId: null,
-        changeDescription: (_id?: string, _desc?: string) => undefined,
+        changeDescription: () => undefined,
         isEditableByClient: true,
         showAddModal: false,
     };
 
-    const subActivity = activities.find((a) => a.id === selectedActivityId) ?? null;
+    const subActivity =
+        activities.find(a => a.id === selectedActivityId) ?? null;
+
     const subActivityCtx = {
         activity: subActivity,
         subActivities: subActivity?.subActivities ?? [],
         addSubActivity: () => undefined,
-        openDeleteModal: (_id?: string) => undefined,
+        openDeleteModal: () => undefined,
         closeModal: () => undefined,
     };
 
@@ -67,14 +70,14 @@ function MockProviders({
 const demoUser: User = {
     name: "Test User",
     role: "engineer",
-    pass: ""
+    pass: "",
 };
 
 const demoComment: UserComment = {
     id: "c-1",
     user: demoUser,
     date: new Date("2025-12-24T17:54:00"),
-    comment: "This is a demo comment",
+    comment: "<p>This is a demo comment</p>",
 };
 
 const demoActivity: ActivityItem = {
@@ -108,7 +111,7 @@ export const EmptyComments: Story = {
     render: () => (
         <MockProviders
             initialActivities={[
-                {...demoActivity, id: "act-2", comments: [] as UserComment[]},
+                {...demoActivity, id: "act-2", comments: []},
             ]}
             selectedActivityId="act-2"
             currentAccount={demoUser}
@@ -122,18 +125,28 @@ export const EmptyComments: Story = {
 
 export const MultipleComments: Story = {
     render: () => {
-        const moreComments: UserComment[] = [
+        const comments: UserComment[] = [
             demoComment,
-            {id: "c-2", user: demoUser, date: new Date(), comment: "Second comment"},
             {
-                id: "c-3", user: {
-                    name: "Other",
-                    role: "engineer",
-                    pass: ""
-                }, date: new Date(), comment: "Third comment"
+                id: "c-2",
+                user: demoUser,
+                date: new Date(),
+                comment: "<p>Second comment</p>",
+            },
+            {
+                id: "c-3",
+                user: {name: "Other", role: "engineer", pass: ""},
+                date: new Date(),
+                comment: "<p>Third comment</p>",
             },
         ];
-        const activity: ActivityItem = {...demoActivity, id: "act-3", comments: moreComments};
+
+        const activity: ActivityItem = {
+            ...demoActivity,
+            id: "act-3",
+            comments,
+        };
+
         return (
             <MockProviders
                 initialActivities={[activity]}

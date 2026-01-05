@@ -30,7 +30,7 @@ export default function CommentSection() {
         editorProps: {
             attributes: {
                 class:
-                    "p-3 min-h-[10rem] border border-gray-500 rounded-2xl bg-transparent focus:outline-none",
+                    "p-3 min-h-[10rem] border border-gray-500 rounded-2xl bg-transparent focus:outline-none [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:pl-5 [&_ol]:list-decimal",
             },
         },
         content: "",
@@ -154,7 +154,7 @@ function CommentItem({
             </div>
 
             <p
-                className="mt-2 text-sm"
+                className="mt-2 text-sm [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:pl-5 [&_ol]:list-decimal"
                 dangerouslySetInnerHTML={{__html: comment.comment}}
             />
         </div>

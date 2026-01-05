@@ -1,7 +1,8 @@
-import React from "react";
+import React, {act} from "react";
 import {fireEvent, render, screen} from "@testing-library/react";
 import {beforeEach, describe, expect, it, vi} from "vitest";
 import CommentSection from "../components/CommentSection";
+import {waitFor} from "storybook/test";
 
 const setActivitiesMock = vi.fn();
 const useActivitiesMock = vi.fn();
@@ -61,32 +62,36 @@ describe("CommentSection (TipTap)", () => {
     });
 
     it("adds a comment: calls setActivities updater", async () => {
-        render(<CommentSection/>);
-
-        const editor = document.querySelector(
-            '[contenteditable="true"]'
-        ) as HTMLElement;
-
-        expect(editor).toBeTruthy();
-
-        fireEvent.input(editor, {
-            target: {innerHTML: "<p>new comment</p>"},
+        useSubActivitiesMock.mockReturnValue({
+            activity: {id: "a1", comments: []},
         });
 
-        const sendButton = screen.getByRole("button", {name: "Kirim"});
-        fireEvent.click(sendButton);
+        render(<CommentSection/>);
 
-        expect(setActivitiesMock).toHaveBeenCalled();
+        const sendButton = screen.getByRole("button", {name: "Kirim"});
+
+        const editor = document.querySelector("[contenteditable='true']")!;
+        expect(editor).toBeTruthy();
+
+        await act(async () => {
+            editor.innerHTML = "<p>new comment</p>";
+            editor.dispatchEvent(new Event("input", {bubbles: true}));
+        });
+
+        await act(async () => {
+            fireEvent.click(sendButton);
+        });
+
+        await waitFor(() => {
+            expect(setActivitiesMock).toHaveBeenCalled();
+        });
 
         const updater = setActivitiesMock.mock.calls[0][0];
-        expect(typeof updater).toBe("function");
-
         const prev = [{id: "a1", comments: []}];
         const next = updater(prev);
 
         const updated = next.find((a: any) => a.id === "a1");
-        expect(updated).toBeTruthy();
-        expect(updated.comments.length).toBe(1);
+        expect(updated.comments).toHaveLength(1);
         expect(updated.comments[0].comment).toBe("<p>new comment</p>");
         expect(updated.comments[0].user).toEqual(mockUser);
     });

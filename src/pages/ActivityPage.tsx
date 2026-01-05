@@ -119,7 +119,7 @@ function Activity({activity,}: { activity: ActivityItem }) {
     const {id, title, status, creationDate, dueDate, assignee, comments} = activity;
     const styles = STATUS_STYLES[status] ?? STATUS_STYLES.TODO;
     const {changeTitle, changeStatus, openDeleteModal, checkEditAccess} = useActivities()
-    const overdueBorder = dueDate ? (new Date() >= new Date(dueDate) && status != "DONE" ? "border-2 border-red-500" : "") : ""
+    const overdueBorder = dueDate ? (new Date() >= new Date(dueDate) && status != "DONE" ? "border-2 !border-red-500" : "") : ""
     const isEditable = checkEditAccess(activity.id)
 
     return (

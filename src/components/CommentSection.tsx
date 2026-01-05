@@ -128,7 +128,7 @@ function CommentItem({
                 {canDelete && (
                     <button
                         onClick={onDelete}
-                        className="text-sm text-gray-500 hover:text-white hover:underline cursor-pointer !transition-none"
+                        className="text-sm opacity-50 hover:opacity-100 hover:underline cursor-pointer !transition-none"
                     >
                         Delete
                     </button>

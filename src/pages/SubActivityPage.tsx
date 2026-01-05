@@ -13,6 +13,7 @@ import AddActivityButton from "../components/AddActivityButton.tsx";
 import ActivityDropdown from "../components/ActivityDropdown.tsx";
 import {FaArrowLeft} from "react-icons/fa";
 import ActivityDetails from "../components/ActivityDetails.tsx";
+import {formatDate} from "../helpers/formatDate.ts";
 
 
 export default function SubActivityPage() {
@@ -92,12 +93,20 @@ function ActivityHeader() {
     const navigate = useNavigate();
     const enabled = subActivities.length < 10 && isEditable;
 
+    if(!activity) return
+
+    const {creator, creationDate} = activity
+
     return (
         <div className="flex justify-between items-center space-x-5">
             <div className="flex items-center gap-4 min-w-0">
                 <FaArrowLeft onClick={() => navigate(-1)}
                              className="text-3xl opacity-70 hover:opacity-100 cursor-pointer"/>
-                <h2 className="text-3xl sm:text-4xl font-bold truncate">{activity?.title || "Aktivitas Baru"}</h2>
+                <div>
+                    <h2 className="text-3xl sm:text-4xl font-bold truncate">{activity?.title || "Aktivitas Baru"}</h2>
+                    <p className={"text-sm opacity-50"}>Dibuat oleh <b>{creator.name}</b> pada <b>{formatDate(creationDate)}</b>
+                    </p>
+                </div>
             </div>
 
             <AddActivityButton onClick={addSubActivity} enabled={enabled}/>
